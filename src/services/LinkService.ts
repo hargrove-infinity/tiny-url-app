@@ -1,19 +1,37 @@
 import { PromiseLink } from "@src/types";
 import { LinkRepo } from "@src/repos";
-import { generateUniqueShortUrl } from "./helpers";
+import { generateShortId, prisma } from "@src/util";
 
 /**
  * Add one link.
  */
 async function addOne(url: string): PromiseLink {
-  return await generateUniqueShortUrl(url);
+  let shortUrl = generateShortId(url);
+
+  let fetchedLink = await LinkRepo.getFirst({
+    prisma,
+    args: { where: { shortener: shortUrl } },
+  });
+
+  while (fetchedLink) {
+    shortUrl = generateShortId(url);
+    fetchedLink = await LinkRepo.getFirst({
+      prisma,
+      args: { where: { shortener: shortUrl } },
+    });
+  }
+
+  return LinkRepo.add({ prisma, url, shortener: shortUrl });
 }
 
 /**
  * Redirect to url.
  */
 async function redirectToUrl(shortUrl: string) {
-  return await LinkRepo.getFirst({ where: { shortener: shortUrl } });
+  return await LinkRepo.getFirst({
+    prisma,
+    args: { where: { shortener: shortUrl } },
+  });
 }
 
 /******************************************************************************

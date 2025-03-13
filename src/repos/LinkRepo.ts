@@ -1,18 +1,24 @@
-import { Prisma } from "@prisma/client";
-import { IAddLinkArgs, PromiseLink, PromiseLinkOrNull } from "@src/types";
-import { prisma } from "@src/util";
+import {
+  IAddLinkArgs,
+  IGetFirstLinkArgs,
+  PromiseLink,
+  PromiseLinkOrNull,
+} from "@src/types";
 
 /**
  * Get first link.
  */
-async function getFirst(args: Prisma.LinkFindFirstArgs): PromiseLinkOrNull {
+async function getFirst({
+  prisma,
+  args,
+}: IGetFirstLinkArgs): PromiseLinkOrNull {
   return await prisma.link.findFirst(args);
 }
 
 /**
  * Add one link.
  */
-async function add({ url, shortener }: IAddLinkArgs): PromiseLink {
+async function add({ prisma, url, shortener }: IAddLinkArgs): PromiseLink {
   return await prisma.link.create({ data: { url, shortener } });
 }
 
