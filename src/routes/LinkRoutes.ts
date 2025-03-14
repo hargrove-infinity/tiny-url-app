@@ -7,9 +7,13 @@ import { IAddLinkBody, IRedirectLinkParams, Req } from "@src/types";
  * Add one link.
  */
 async function add(req: Req<{}, {}, IAddLinkBody>, res: Response) {
-  const { url } = req.body;
-  const link = await LinkService.addOne(url);
-  res.status(HttpStatusCodes.CREATED).send(link);
+  try {
+    const { url } = req.body;
+    const link = await LinkService.addOne(url);
+    res.status(HttpStatusCodes.CREATED).send(link);
+  } catch (error) {
+    res.status(HttpStatusCodes.BAD_REQUEST).send({ error });
+  }
 }
 
 /**
