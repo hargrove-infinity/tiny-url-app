@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validate } from "@src/middlewares";
-import { LinkSchema } from "@src/validation";
+import { LinkSchema, ShortUrlSchema } from "@src/validation";
 import { Paths } from "@src/common";
 import { LinkRoutes } from "./LinkRoutes";
 
@@ -14,8 +14,18 @@ const BaseRouter = Router();
 
 // Init router
 const linkRouter = Router();
-linkRouter.post(Paths.Links.Base, validate(LinkSchema), LinkRoutes.add);
-linkRouter.get(Paths.Links.RedirectToUrl, LinkRoutes.redirectToUrl);
+
+linkRouter.post(
+  Paths.Links.Base,
+  validate({ schema: LinkSchema }),
+  LinkRoutes.add
+);
+
+linkRouter.get(
+  Paths.Links.RedirectToUrl,
+  validate({ schema: ShortUrlSchema, key: "params" }),
+  LinkRoutes.redirectToUrl
+);
 
 // Add LinkRouter
 BaseRouter.use(linkRouter);
