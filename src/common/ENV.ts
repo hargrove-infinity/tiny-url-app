@@ -1,13 +1,10 @@
-import jetEnv, { num } from "jet-env";
-import { isEnumVal } from "jet-validators";
-
-import { NodeEnvs } from "./constants";
+import { EnvSchema } from "@src/validation";
 
 /******************************************************************************
                                  Setup
 ******************************************************************************/
 
-export const ENV = jetEnv({
-  NodeEnv: isEnumVal(NodeEnvs),
-  Port: num,
+export const ENV = EnvSchema.parse({
+  NodeEnv: process.env.NodeEnv,
+  Port: process.env.Port,
 });
