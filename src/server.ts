@@ -5,8 +5,9 @@ import "express-async-errors";
 
 import { BaseRouter } from "@src/routes";
 
-import { ENV, NodeEnvs } from "@src/common";
+import { ENV, NodeEnvs, Paths } from "@src/common";
 import { pinoLogger, pinoLoggerHttp } from "@src/logger";
+import { handleCatchAllRouteError } from "@src/util";
 
 /******************************************************************************
                                 Setup
@@ -30,6 +31,8 @@ if (ENV.NodeEnv === NodeEnvs.Production) {
 
 // Add APIs, must be after middleware
 app.use(BaseRouter);
+
+app.all(Paths.CatchAll, handleCatchAllRouteError);
 
 // Add error handler
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
