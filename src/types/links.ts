@@ -1,7 +1,13 @@
 import { Prisma, PrismaClient, Link } from "@prisma/client";
+import { ApplicationError } from "@src/common";
 
-export type PromiseLink = Promise<Link>;
-export type PromiseLinkOrNull = Promise<Link | null>;
+type OptionalLink = Link | null;
+
+type OptionalApplicationError = ApplicationError | null;
+
+export type LinkServiceResult = Promise<
+  [OptionalLink, OptionalApplicationError]
+>;
 
 export interface IGetFirstLinkArgs {
   prisma: PrismaClient;
