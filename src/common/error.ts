@@ -24,6 +24,8 @@ export const LINKS = {
   },
 };
 
+export const DEFAULT_ERROR_MESSAGE = "Something went wrong";
+
 export class ApplicationError extends Error {
   public statusCode: number;
   public errorCode: string;

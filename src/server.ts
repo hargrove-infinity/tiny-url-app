@@ -5,7 +5,7 @@ import "express-async-errors";
 
 import { BaseRouter } from "@src/routes";
 
-import { ENV, NodeEnvs, Paths } from "@src/common";
+import { DEFAULT_ERROR_MESSAGE, ENV, NodeEnvs, Paths } from "@src/common";
 import { pinoLogger, pinoLoggerHttp } from "@src/logger";
 import { handleCatchAllRouteError } from "@src/util";
 
@@ -39,7 +39,8 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
   if (ENV.NodeEnv !== NodeEnvs.Test.valueOf()) {
     pinoLogger.error(err);
   }
-  return next(err);
+
+  res.status(500).send({ error: err.message || DEFAULT_ERROR_MESSAGE });
 });
 
 export { app };
