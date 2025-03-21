@@ -3,7 +3,7 @@ import {
   DEFAULT_SHORT_URL_LENGTH,
   SHORT_URL_REGEXP,
 } from "@src/common/Constants";
-import { LINKS } from "@src/common/Error";
+import { LINKS } from "@src/common/ErrorCodes";
 
 export const ShortUrlSchema: ZodObject<ZodRawShape> = z.object({
   shortUrl: z

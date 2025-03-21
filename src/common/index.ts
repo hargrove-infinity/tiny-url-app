@@ -1,5 +1,5 @@
 export * from "./Constants";
 export * from "./ENV";
-export * from "./Error";
+export * from "./ErrorCodes";
 export * from "./HttpStatusCodes";
 export * from "./Paths";
