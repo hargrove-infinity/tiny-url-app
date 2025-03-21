@@ -1,4 +1,10 @@
+import { DEFAULT_SHORT_URL_LENGTH } from "./Constants";
+
 export const LINKS = {
+  VALIDATION_MESSAGES: {
+    DEFINED_SHORT_URL_LENGTH: `Short URL must be exactly ${DEFAULT_SHORT_URL_LENGTH} characters`,
+    SHORT_URL_PATTERN: "Short URL must be a valid string",
+  },
   ERROR_MESSAGES: {
     DATABASE_ERROR_LINKS: "DATABASE_ERROR_LINKS",
     SERVICE_ERROR_LINKS: "SERVICE_ERROR_LINKS",
