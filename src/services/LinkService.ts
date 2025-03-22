@@ -20,14 +20,14 @@ async function addOne(url: string): LinkServiceResult {
 
     let shortUrl = generateShortId(url);
 
-    let fetchedLink = await LinkRepo.getFirst({
+    let fetchedLink = await LinkRepo.getUnique({
       prisma,
       args: { where: { shortener: shortUrl } },
     });
 
     while (fetchedLink) {
       shortUrl = generateShortId(url);
-      fetchedLink = await LinkRepo.getFirst({
+      fetchedLink = await LinkRepo.getUnique({
         prisma,
         args: { where: { shortener: shortUrl } },
       });
@@ -72,7 +72,7 @@ async function redirectToUrl(shortUrl: string): LinkServiceResult {
     }
 
     return [
-      await LinkRepo.getFirst({
+      await LinkRepo.getUnique({
         prisma,
         args: { where: { shortener: shortUrl } },
       }),
