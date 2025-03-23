@@ -1,9 +1,7 @@
 import { Prisma, PrismaClient, Link } from "@prisma/client";
-import { ApplicationError } from "@src/common";
+import { OptionalApplicationError } from "./errors";
 
 type OptionalLink = Link | null;
-
-type OptionalApplicationError = ApplicationError | null;
 
 export type LinkServiceResult = Promise<
   [OptionalLink, OptionalApplicationError]

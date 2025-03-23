@@ -1,6 +1,6 @@
 import { LinkRepo } from "@src/repos";
 import { ApplicationError, HttpStatusCodes, LINKS } from "@src/common";
-import { generateShortId, prisma } from "@src/util";
+import { buildResponse, generateShortId, prisma } from "@src/util";
 import { LinkServiceResult } from "@src/types";
 
 /**
@@ -9,13 +9,14 @@ import { LinkServiceResult } from "@src/types";
 async function addOne(url: string): LinkServiceResult {
   try {
     if (!url) {
-      return [
-        null,
-        new ApplicationError(LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS, {
+      return buildResponse({
+        responseData: null,
+        errorData: {
+          message: LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS,
           errorCode: LINKS.ERROR_CODES.URL_FOR_CONVERTING_NOT_PROVIDED,
           statusCode: HttpStatusCodes.BAD_REQUEST,
-        }),
-      ];
+        },
+      });
     }
 
     let shortUrl = generateShortId(url);
@@ -33,26 +34,31 @@ async function addOne(url: string): LinkServiceResult {
       });
     }
 
-    return [await LinkRepo.add({ prisma, url, shortener: shortUrl }), null];
+    return buildResponse({
+      responseData: await LinkRepo.add({ prisma, url, shortener: shortUrl }),
+      errorData: null,
+    });
   } catch (error) {
     if (error instanceof ApplicationError) {
-      return [
-        null,
-        new ApplicationError(error.message, {
+      return buildResponse({
+        responseData: null,
+        errorData: {
+          message: error.message,
           errorCode: error.appErrorCode,
           statusCode: error.httpStatusCode,
-        }),
-      ];
+        },
+      });
     }
 
-    return [
-      null,
-      new ApplicationError(LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS, {
+    return buildResponse({
+      responseData: null,
+      errorData: {
+        message: LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS,
         errorCode:
           LINKS.ERROR_CODES.UNKNOWN_SERVICE_ERROR_FOR_CREATING_SHORT_URL,
         statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-      }),
-    ];
+      },
+    });
   }
 }
 
@@ -62,41 +68,44 @@ async function addOne(url: string): LinkServiceResult {
 async function redirectToUrl(shortUrl: string): LinkServiceResult {
   try {
     if (!shortUrl) {
-      return [
-        null,
-        new ApplicationError(LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS, {
+      return buildResponse({
+        responseData: null,
+        errorData: {
+          message: LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS,
           errorCode: LINKS.ERROR_CODES.SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED,
           statusCode: HttpStatusCodes.BAD_REQUEST,
-        }),
-      ];
+        },
+      });
     }
 
-    return [
-      await LinkRepo.getFirst({
+    return buildResponse({
+      responseData: await LinkRepo.getFirst({
         prisma,
         args: { where: { shortener: shortUrl } },
       }),
-      null,
-    ];
+      errorData: null,
+    });
   } catch (error) {
     if (error instanceof ApplicationError) {
-      return [
-        null,
-        new ApplicationError(error.message, {
+      return buildResponse({
+        responseData: null,
+        errorData: {
+          message: error.message,
           errorCode: error.appErrorCode,
           statusCode: error.httpStatusCode,
-        }),
-      ];
+        },
+      });
     }
 
-    return [
-      null,
-      new ApplicationError(LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS, {
+    return buildResponse({
+      responseData: null,
+      errorData: {
+        message: LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS,
         errorCode:
           LINKS.ERROR_CODES.UNKNOWN_SERVICE_ERROR_FOR_REDIRECTING_TO_URL,
         statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-      }),
-    ];
+      },
+    });
   }
 }
 
