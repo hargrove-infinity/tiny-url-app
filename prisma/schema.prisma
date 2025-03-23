@@ -16,7 +16,9 @@ datasource db {
 model Link {
   id        Int      @id @default(autoincrement())
   url       String
-  shortener String   @unique @db.VarChar(10)
+  shortener String   @db.VarChar(10)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([shortener])
 }
