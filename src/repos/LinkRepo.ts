@@ -1,15 +1,15 @@
 import { ApplicationError, HttpStatusCodes, LINKS } from "@src/common";
-import { IAddLinkArgs, IGetUniqueLinkArgs } from "@src/types";
+import { IAddLinkArgs, IGetFirstLinkArgs } from "@src/types";
 
 /**
- * Get unique link.
+ * Get first link.
  */
-async function getUnique({ prisma, args }: IGetUniqueLinkArgs) {
+async function getFirst({ prisma, args }: IGetFirstLinkArgs) {
   try {
-    return await prisma.link.findUnique(args);
+    return await prisma.link.findFirst(args);
   } catch (error) {
     throw new ApplicationError(LINKS.ERROR_MESSAGES.DATABASE_ERROR_LINKS, {
-      errorCode: LINKS.ERROR_CODES.DATABASE_ERROR_GET_UNIQUE_LINK,
+      errorCode: LINKS.ERROR_CODES.DATABASE_ERROR_GET_FIRST_LINK,
       statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
     });
   }
@@ -33,4 +33,4 @@ async function add({ prisma, url, shortener }: IAddLinkArgs) {
                                 Export
 ******************************************************************************/
 
-export const LinkRepo = { getUnique, add } as const;
+export const LinkRepo = { getFirst, add } as const;

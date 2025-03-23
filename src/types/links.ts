@@ -9,9 +9,9 @@ export type LinkServiceResult = Promise<
   [OptionalLink, OptionalApplicationError]
 >;
 
-export interface IGetUniqueLinkArgs {
+export interface IGetFirstLinkArgs {
   prisma: PrismaClient;
-  args: Prisma.LinkFindUniqueArgs;
+  args: Prisma.LinkFindFirstArgs;
 }
 
 export interface IAddLinkArgs {
