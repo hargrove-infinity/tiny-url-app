@@ -22,3 +22,12 @@ model Link {
 
   @@index([shortener])
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  username  String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
