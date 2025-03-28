@@ -34,10 +34,13 @@ async function addOne(url: string): LinkServiceResult {
       });
     }
 
-    return buildResponse({
-      responseData: await LinkRepo.add({ prisma, url, shortener: shortUrl }),
-      errorData: null,
+    const responseData = await LinkRepo.add({
+      prisma,
+      url,
+      shortener: shortUrl,
     });
+
+    return buildResponse({ responseData, errorData: null });
   } catch (error) {
     if (error instanceof ApplicationError) {
       return buildResponse({
@@ -78,13 +81,24 @@ async function redirectToUrl(shortUrl: string): LinkServiceResult {
       });
     }
 
-    return buildResponse({
-      responseData: await LinkRepo.getFirst({
-        prisma,
-        args: { where: { shortener: shortUrl } },
-      }),
-      errorData: null,
+    const responseData = await LinkRepo.getFirst({
+      prisma,
+      args: { where: { shortener: shortUrl } },
     });
+
+    if (!responseData) {
+      return buildResponse({
+        responseData: null,
+        errorData: {
+          message: LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS,
+          errorCode:
+            LINKS.ERROR_CODES.SHORT_URL_FOR_REDIRECTING_NOT_FOUND_IN_DATABASE,
+          statusCode: HttpStatusCodes.NOT_FOUND,
+        },
+      });
+    }
+
+    return buildResponse({ responseData, errorData: null });
   } catch (error) {
     if (error instanceof ApplicationError) {
       return buildResponse({

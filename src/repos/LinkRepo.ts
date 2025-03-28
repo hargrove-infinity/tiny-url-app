@@ -20,7 +20,8 @@ async function getFirst({ prisma, args }: IGetFirstLinkArgs) {
  */
 async function add({ prisma, url, shortener }: IAddLinkArgs) {
   try {
-    return await prisma.link.create({ data: { url, shortener } });
+    //! TMP added userId
+    return await prisma.link.create({ data: { userId: 1, url, shortener } });
   } catch (error) {
     throw new ApplicationError(LINKS.ERROR_MESSAGES.DATABASE_ERROR_LINKS, {
       errorCode: LINKS.ERROR_CODES.DATABASE_ERROR_ADD_ONE_LINK,
