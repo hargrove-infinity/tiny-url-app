@@ -10,7 +10,9 @@
     "start": "NODE_ENV=production node -r ./config.js ./dist",
     "test": "NODE_ENV=test ts-node ./spec",
     "test:hot": "nodemon --exec \"npm run test\" --watch ./src --watch ./spec --ext .ts",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
   },
   "engines": {
     "node": ">=16.0.0"
