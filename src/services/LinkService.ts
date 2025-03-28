@@ -1,6 +1,5 @@
 import { LinkRepo } from "@src/repos";
-import { HttpStatusCodes, LINKS } from "@src/common";
-import { buildResponse, generateShortId, prisma } from "@src/util";
+import { ErrorHandler, generateShortId, prisma } from "@src/util";
 import { LinkServiceResult } from "@src/types";
 
 /**
@@ -9,14 +8,7 @@ import { LinkServiceResult } from "@src/types";
 async function addOne(url: string): LinkServiceResult {
   try {
     if (!url) {
-      return buildResponse({
-        responseData: null,
-        errorData: {
-          message: LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS,
-          errorCode: LINKS.ERROR_CODES.URL_FOR_CONVERTING_NOT_PROVIDED,
-          statusCode: HttpStatusCodes.BAD_REQUEST,
-        },
-      });
+      return [null, ErrorHandler.Links.urlForConvertingNotProvided()];
     }
 
     let shortUrl = generateShortId(url);
@@ -27,14 +19,10 @@ async function addOne(url: string): LinkServiceResult {
     });
 
     if (errorFetchedLink) {
-      return buildResponse({
-        responseData: null,
-        errorData: {
-          message: errorFetchedLink.message,
-          errorCode: errorFetchedLink.appErrorCode,
-          statusCode: errorFetchedLink.httpStatusCode,
-        },
-      });
+      return [
+        null,
+        ErrorHandler.Common.reThrowApplicationError(errorFetchedLink),
+      ];
     }
 
     while (fetchedLink) {
@@ -45,14 +33,10 @@ async function addOne(url: string): LinkServiceResult {
       });
 
       if (errorFetchedLink) {
-        return buildResponse({
-          responseData: null,
-          errorData: {
-            message: errorFetchedLink.message,
-            errorCode: errorFetchedLink.appErrorCode,
-            statusCode: errorFetchedLink.httpStatusCode,
-          },
-        });
+        return [
+          null,
+          ErrorHandler.Common.reThrowApplicationError(errorFetchedLink),
+        ];
       }
     }
 
@@ -63,38 +47,19 @@ async function addOne(url: string): LinkServiceResult {
     });
 
     if (errorCreatedLink) {
-      return buildResponse({
-        responseData: null,
-        errorData: {
-          message: errorCreatedLink.message,
-          errorCode: errorCreatedLink.appErrorCode,
-          statusCode: errorCreatedLink.httpStatusCode,
-        },
-      });
+      return [
+        null,
+        ErrorHandler.Common.reThrowApplicationError(errorCreatedLink),
+      ];
     }
 
     if (!createdLink) {
-      return buildResponse({
-        responseData: null,
-        errorData: {
-          message: LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS,
-          errorCode: LINKS.ERROR_CODES.ERROR_WHILE_CREATION_LINK,
-          statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-        },
-      });
+      return [null, ErrorHandler.Links.errorWhileCreationLink()];
     }
 
-    return buildResponse({ responseData: createdLink, errorData: null });
+    return [createdLink, null];
   } catch (error) {
-    return buildResponse({
-      responseData: null,
-      errorData: {
-        message: LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS,
-        errorCode:
-          LINKS.ERROR_CODES.UNKNOWN_SERVICE_ERROR_FOR_CREATING_SHORT_URL,
-        statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-      },
-    });
+    return [null, ErrorHandler.Links.unknownServiceErrorForCreatingLink()];
   }
 }
 
@@ -104,14 +69,7 @@ async function addOne(url: string): LinkServiceResult {
 async function redirectToUrl(shortUrl: string): LinkServiceResult {
   try {
     if (!shortUrl) {
-      return buildResponse({
-        responseData: null,
-        errorData: {
-          message: LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS,
-          errorCode: LINKS.ERROR_CODES.SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED,
-          statusCode: HttpStatusCodes.BAD_REQUEST,
-        },
-      });
+      return [null, ErrorHandler.Links.shortUrlForRedirectingNotProvided()];
     }
 
     const [firstLink, error] = await LinkRepo.getFirst({
@@ -120,39 +78,19 @@ async function redirectToUrl(shortUrl: string): LinkServiceResult {
     });
 
     if (error) {
-      return buildResponse({
-        responseData: null,
-        errorData: {
-          message: error.message,
-          errorCode: error.appErrorCode,
-          statusCode: error.httpStatusCode,
-        },
-      });
+      return [null, ErrorHandler.Common.reThrowApplicationError(error)];
     }
 
     if (!firstLink) {
-      return buildResponse({
-        responseData: null,
-        errorData: {
-          message: LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS,
-          errorCode:
-            LINKS.ERROR_CODES.SHORT_URL_FOR_REDIRECTING_NOT_FOUND_IN_DATABASE,
-          statusCode: HttpStatusCodes.NOT_FOUND,
-        },
-      });
+      return [
+        null,
+        ErrorHandler.Links.shortUrlForRedirectingNotFoundInDatabase(),
+      ];
     }
 
-    return buildResponse({ responseData: firstLink, errorData: null });
+    return [firstLink, null];
   } catch (error) {
-    return buildResponse({
-      responseData: null,
-      errorData: {
-        message: LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS,
-        errorCode:
-          LINKS.ERROR_CODES.UNKNOWN_SERVICE_ERROR_FOR_REDIRECTING_TO_URL,
-        statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-      },
-    });
+    return [null, ErrorHandler.Links.unknownServiceErrorForRedirectingToUrl()];
   }
 }
 
