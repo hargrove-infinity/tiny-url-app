@@ -1,5 +1,6 @@
 import { ApplicationError, HttpStatusCodes, LINKS } from "@src/common";
 import { IAddLinkArgs, IGetFirstLinkArgs, LinkServiceResult } from "@src/types";
+import { ErrorHandler } from "@src/util";
 
 /**
  * Get first link.
@@ -12,13 +13,7 @@ async function getFirst({
     const firstLink = await prisma.link.findFirst(args);
     return [firstLink, null];
   } catch (error) {
-    return [
-      null,
-      new ApplicationError(LINKS.ERROR_MESSAGES.DATABASE_ERROR_LINKS, {
-        errorCode: LINKS.ERROR_CODES.DATABASE_ERROR_GET_FIRST_LINK,
-        statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-      }),
-    ];
+    return [null, ErrorHandler.Links.getFirstLinkDatabaseError()];
   }
 }
 

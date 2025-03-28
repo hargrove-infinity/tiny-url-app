@@ -1,5 +1,5 @@
 import { LinkRepo } from "@src/repos";
-import { ApplicationError, HttpStatusCodes, LINKS } from "@src/common";
+import { HttpStatusCodes, LINKS } from "@src/common";
 import { buildResponse, generateShortId, prisma } from "@src/util";
 import { LinkServiceResult } from "@src/types";
 
