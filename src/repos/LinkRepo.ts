@@ -1,17 +1,24 @@
 import { ApplicationError, HttpStatusCodes, LINKS } from "@src/common";
-import { IAddLinkArgs, IGetFirstLinkArgs } from "@src/types";
+import { IAddLinkArgs, IGetFirstLinkArgs, LinkServiceResult } from "@src/types";
 
 /**
  * Get first link.
  */
-async function getFirst({ prisma, args }: IGetFirstLinkArgs) {
+async function getFirst({
+  prisma,
+  args,
+}: IGetFirstLinkArgs): LinkServiceResult {
   try {
-    return await prisma.link.findFirst(args);
+    const firstLink = await prisma.link.findFirst(args);
+    return [firstLink, null];
   } catch (error) {
-    throw new ApplicationError(LINKS.ERROR_MESSAGES.DATABASE_ERROR_LINKS, {
-      errorCode: LINKS.ERROR_CODES.DATABASE_ERROR_GET_FIRST_LINK,
-      statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-    });
+    return [
+      null,
+      new ApplicationError(LINKS.ERROR_MESSAGES.DATABASE_ERROR_LINKS, {
+        errorCode: LINKS.ERROR_CODES.DATABASE_ERROR_GET_FIRST_LINK,
+        statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
+      }),
+    ];
   }
 }
 

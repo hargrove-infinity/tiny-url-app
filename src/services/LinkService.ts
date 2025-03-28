@@ -21,14 +21,25 @@ async function addOne(url: string): LinkServiceResult {
 
     let shortUrl = generateShortId(url);
 
-    let fetchedLink = await LinkRepo.getFirst({
+    let [fetchedLink, error] = await LinkRepo.getFirst({
       prisma,
       args: { where: { shortener: shortUrl } },
     });
 
+    if (error) {
+      return buildResponse({
+        responseData: null,
+        errorData: {
+          message: error.message,
+          errorCode: error.appErrorCode,
+          statusCode: error.httpStatusCode,
+        },
+      });
+    }
+
     while (fetchedLink) {
       shortUrl = generateShortId(url);
-      fetchedLink = await LinkRepo.getFirst({
+      [fetchedLink, error] = await LinkRepo.getFirst({
         prisma,
         args: { where: { shortener: shortUrl } },
       });
@@ -42,17 +53,6 @@ async function addOne(url: string): LinkServiceResult {
 
     return buildResponse({ responseData, errorData: null });
   } catch (error) {
-    if (error instanceof ApplicationError) {
-      return buildResponse({
-        responseData: null,
-        errorData: {
-          message: error.message,
-          errorCode: error.appErrorCode,
-          statusCode: error.httpStatusCode,
-        },
-      });
-    }
-
     return buildResponse({
       responseData: null,
       errorData: {
@@ -81,24 +81,23 @@ async function redirectToUrl(shortUrl: string): LinkServiceResult {
       });
     }
 
-    const responseData = await LinkRepo.getFirst({
+    const [firstLink, error] = await LinkRepo.getFirst({
       prisma,
       args: { where: { shortener: shortUrl } },
     });
 
-    if (!responseData) {
+    if (error) {
       return buildResponse({
         responseData: null,
         errorData: {
-          message: LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS,
-          errorCode:
-            LINKS.ERROR_CODES.SHORT_URL_FOR_REDIRECTING_NOT_FOUND_IN_DATABASE,
-          statusCode: HttpStatusCodes.NOT_FOUND,
+          message: error.message,
+          errorCode: error.appErrorCode,
+          statusCode: error.httpStatusCode,
         },
       });
     }
 
-    return buildResponse({ responseData, errorData: null });
+    return buildResponse({ responseData: firstLink, errorData: null });
   } catch (error) {
     if (error instanceof ApplicationError) {
       return buildResponse({
