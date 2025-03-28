@@ -1,4 +1,3 @@
-import { ApplicationError, HttpStatusCodes, LINKS } from "@src/common";
 import { IAddLinkArgs, IGetFirstLinkArgs, LinkServiceResult } from "@src/types";
 import { ErrorHandler } from "@src/util";
 
@@ -30,15 +29,10 @@ async function add({
     const createdLink = await prisma.link.create({
       data: { userId: 1, url, shortener },
     });
+
     return [createdLink, null];
   } catch (error) {
-    return [
-      null,
-      new ApplicationError(LINKS.ERROR_MESSAGES.DATABASE_ERROR_LINKS, {
-        errorCode: LINKS.ERROR_CODES.DATABASE_ERROR_ADD_ONE_LINK,
-        statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-      }),
-    ];
+    return [null, ErrorHandler.Links.addOneLinkDatabaseError()];
   }
 }
 
