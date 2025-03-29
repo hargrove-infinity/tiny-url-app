@@ -1,11 +1,19 @@
 import { Prisma, PrismaClient, Link } from "@prisma/client";
-import { OptionalApplicationError } from "./errors";
+import { ApplicationError } from "@src/common";
 
-type OptionalLink = Link | null;
+export type OperationResult<T> = Promise<[T, null] | [null, ApplicationError]>;
 
-export type LinkServiceResult = Promise<
-  [OptionalLink, OptionalApplicationError]
+export type NullableOperationResult<T> = Promise<
+  [T, null] | [null, ApplicationError] | [null, null]
 >;
+
+export type GetFirstLinkRepoResult = NullableOperationResult<Link>;
+
+export type AddLinkRepoResult = OperationResult<Link>;
+
+export type AddOneLinkServiceResult = OperationResult<Link>;
+
+export type RedirectToUrlServiceResult = OperationResult<Link>;
 
 export interface IGetFirstLinkArgs {
   prisma: PrismaClient;

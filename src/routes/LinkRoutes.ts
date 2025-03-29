@@ -11,17 +11,11 @@ async function add(req: Req<{}, {}, IAddLinkBody>, res: Response) {
     const { url } = req.body;
     const [link, error] = await LinkService.addOne(url);
 
-    if (link) {
-      return res.status(HttpStatusCodes.CREATED).send(link);
-    }
-
     if (error) {
       return res.status(error.httpStatusCode).send({ err: error.appErrorCode });
     }
 
-    return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
-      error: LINKS.ERROR_CODES.ERROR_RETURN_TYPE_ADD_LINK_SERVICE,
-    });
+    return res.status(HttpStatusCodes.CREATED).send(link);
   } catch (error) {
     if (error instanceof ApplicationError) {
       return res.status(HttpStatusCodes.BAD_REQUEST).send({ error });
@@ -44,17 +38,11 @@ async function redirectToUrl(
     const { shortUrl } = req.params;
     const [link, error] = await LinkService.redirectToUrl(shortUrl);
 
-    if (link) {
-      return res.status(HttpStatusCodes.MOVED_PERMANENTLY).redirect(link.url);
-    }
-
     if (error) {
       return res.status(error.httpStatusCode).send({ err: error.appErrorCode });
     }
 
-    return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
-      error: LINKS.ERROR_CODES.ERROR_RETURN_TYPE_REDIRECT_LINK_SERVICE,
-    });
+    return res.status(HttpStatusCodes.MOVED_PERMANENTLY).redirect(link.url);
   } catch (error) {
     if (error instanceof ApplicationError) {
       return res.status(HttpStatusCodes.BAD_REQUEST).send({ error });
