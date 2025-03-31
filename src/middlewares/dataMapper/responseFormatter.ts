@@ -1,12 +1,16 @@
 import { Request, Response, NextFunction } from "express";
-import { AnyObject, BodyType } from "./types";
+import { AnyObject, BodyType, ErrorObject } from "./types";
+
+function checkErrorObject(data?: BodyType): data is ErrorObject {
+  return !!(data && typeof data === "object" && data.error);
+}
 
 function formatResponse({ req, body }: { req: Request; body?: BodyType }) {
-  return {
-    path: req.path,
-    method: req.method,
-    payload: body === undefined ? {} : body,
-  };
+  const defaultBody = { path: req.path, method: req.method };
+
+  return checkErrorObject(body)
+    ? { ...defaultBody, error: body.error }
+    : { ...defaultBody, payload: body === undefined ? {} : body };
 }
 
 function safelyParseJson(data: string): AnyObject | null {
@@ -42,7 +46,7 @@ export function responseFormatter(
 ) {
   const originalSend = res.send;
 
-  res.send = function (body: any) {
+  res.send = function (body: AnyObject) {
     if (isAlreadyFormattedResponse(body)) {
       return originalSend.call(this, body);
     }

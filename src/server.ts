@@ -39,7 +39,7 @@ app.use(BaseRouter);
 app.all(Paths.CatchAll, handleCatchAllRouteError);
 
 // Add error handler
-app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (ENV.NodeEnv !== NodeEnvs.Test.valueOf()) {
     pinoLogger.error(err);
   }
