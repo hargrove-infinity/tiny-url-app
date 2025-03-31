@@ -12,7 +12,8 @@
     "test:hot": "nodemon --exec \"npm run test\" --watch ./src --watch ./spec --ext .ts",
     "type-check": "tsc --noEmit",
     "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down"
+    "docker:down": "docker-compose down",
+    "db:deploy:dev": "dotenv -e ./config/.env.development -- npx prisma migrate deploy"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -49,6 +50,7 @@
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.13.8",
     "@types/supertest": "^6.0.2",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^9.21.0",
     "eslint-plugin-n": "^17.16.1",
     "find": "^0.3.0",
