@@ -8,6 +8,7 @@ import { BaseRouter } from "@src/routes";
 import { DEFAULT_ERROR_MESSAGE, ENV, NodeEnvs, Paths } from "@src/common";
 import { pinoLogger, pinoLoggerHttp } from "@src/logger";
 import { handleCatchAllRouteError } from "@src/util";
+import { responseFormatter } from "@src/middlewares";
 
 /******************************************************************************
                                 Setup
@@ -23,6 +24,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Logger middleware
 app.use(pinoLoggerHttp);
+
+// Response formatter middleware
+app.use(responseFormatter);
 
 // Security
 if (ENV.NodeEnv === NodeEnvs.Production) {
