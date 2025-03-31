@@ -13,7 +13,8 @@
     "type-check": "tsc --noEmit",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
-    "db:deploy:dev": "dotenv -e ./config/.env.development -- npx prisma migrate deploy"
+    "db:migrate:dev": "dotenv -e ./config/.env.development -- npx prisma migrate dev",
+    "db:migrate:deploy:dev": "dotenv -e ./config/.env.development -- npx prisma migrate deploy"
   },
   "engines": {
     "node": ">=16.0.0"
