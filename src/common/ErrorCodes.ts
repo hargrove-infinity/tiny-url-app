@@ -1,4 +1,4 @@
-import { DEFAULT_SHORT_URL_LENGTH } from "./Constants";
+import { DEFAULT_SHORT_URL_LENGTH } from "./Definitions";
 
 export const LINKS = {
   VALIDATION_MESSAGES: {

@@ -12,18 +12,18 @@ async function add(req: Req<{}, {}, IAddLinkBody>, res: Response) {
     const [link, error] = await LinkService.addOne(url);
 
     if (error) {
-      return res
-        .status(error.httpStatusCode)
-        .send({ error: error.appErrorCode });
+      res.status(error.httpStatusCode).send({ error: error.appErrorCode });
+      return;
     }
 
-    return res.status(HttpStatusCodes.CREATED).send(link);
+    res.status(HttpStatusCodes.CREATED).send(link);
   } catch (error) {
     if (error instanceof ApplicationError) {
-      return res.status(HttpStatusCodes.BAD_REQUEST).send({ error });
+      res.status(HttpStatusCodes.BAD_REQUEST).send({ error });
+      return;
     }
 
-    return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
+    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
       error: LINKS.ERROR_CODES.UNKNOWN_ROUTE_ERROR_FOR_CREATING_SHORT_URL,
     });
   }
@@ -41,18 +41,18 @@ async function redirectToUrl(
     const [link, error] = await LinkService.redirectToUrl(shortUrl);
 
     if (error) {
-      return res
-        .status(error.httpStatusCode)
-        .send({ error: error.appErrorCode });
+      res.status(error.httpStatusCode).send({ error: error.appErrorCode });
+      return;
     }
 
-    return res.status(HttpStatusCodes.MOVED_PERMANENTLY).redirect(link.url);
+    res.status(HttpStatusCodes.MOVED_PERMANENTLY).redirect(link.url);
   } catch (error) {
     if (error instanceof ApplicationError) {
-      return res.status(HttpStatusCodes.BAD_REQUEST).send({ error });
+      res.status(HttpStatusCodes.BAD_REQUEST).send({ error });
+      return;
     }
 
-    return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
+    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
       error: LINKS.ERROR_CODES.UNKNOWN_ROUTE_ERROR_FOR_REDIRECTING_TO_URL,
     });
   }

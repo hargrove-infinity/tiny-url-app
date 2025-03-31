@@ -2,7 +2,7 @@ import { z, ZodObject, ZodRawShape } from "zod";
 import {
   DEFAULT_SHORT_URL_LENGTH,
   SHORT_URL_REGEXP,
-} from "@src/common/Constants";
+} from "@src/common/Definitions";
 import { LINKS } from "@src/common/ErrorCodes";
 
 export const ShortUrlSchema: ZodObject<ZodRawShape> = z.object({
