@@ -1,11 +1,6 @@
+import { Request } from "express";
 import { Prisma, PrismaClient, Link } from "@prisma/client";
-import { ApplicationError } from "@src/common";
-
-export type OperationResult<T> = Promise<[T, null] | [null, ApplicationError]>;
-
-export type NullableOperationResult<T> = Promise<
-  [T, null] | [null, ApplicationError] | [null, null]
->;
+import { NullableOperationResult, OperationResult } from "./misc";
 
 export type GetFirstLinkRepoResult = NullableOperationResult<Link>;
 
@@ -26,10 +21,14 @@ export interface IAddLinkArgs {
   shortener: string;
 }
 
-export interface IAddLinkBody {
+interface IAddLinkBody {
   url: string;
 }
 
-export interface IRedirectLinkParams {
+export type AddLinkRequest = Request<{}, {}, IAddLinkBody>;
+
+interface IRedirectLinkParams {
   shortUrl: string;
 }
+
+export type RedirectLinkRequest = Request<IRedirectLinkParams, {}, {}>;

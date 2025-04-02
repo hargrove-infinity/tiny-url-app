@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { validate } from "@src/middlewares";
-import { LinkSchema, ShortUrlSchema } from "@src/validation";
+import { LinkSchema, ShortUrlSchema, UserSchema } from "@src/validation";
 import { Paths } from "@src/common";
 import { LinkRoutes } from "./LinkRoutes";
+import { UserRoutes } from "./UserRoutes";
 
 /******************************************************************************
                                 Variables
@@ -10,7 +11,7 @@ import { LinkRoutes } from "./LinkRoutes";
 
 const BaseRouter = Router();
 
-// ** Add LinkRouter ** //
+// ** Setup LinkRouter ** //
 
 // Init router
 const linkRouter = Router();
@@ -27,8 +28,21 @@ linkRouter.get(
   LinkRoutes.redirectToUrl
 );
 
+// ** Setup UserRouter ** //
+
+// Init router
+const userRouter = Router();
+
+userRouter.post(
+  Paths.Users.Base,
+  validate({ schema: UserSchema }),
+  UserRoutes.add
+);
+
 // Add LinkRouter
 BaseRouter.use(linkRouter);
+// Add UserRouter
+BaseRouter.use(userRouter);
 
 /******************************************************************************
                                 Export

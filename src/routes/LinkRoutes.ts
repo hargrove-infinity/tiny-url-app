@@ -1,12 +1,12 @@
 import { Response } from "express";
 import { LinkService } from "@src/services";
 import { ApplicationError, HttpStatusCodes, LINKS } from "@src/common";
-import { IAddLinkBody, IRedirectLinkParams, Req } from "@src/types";
+import { AddLinkRequest, RedirectLinkRequest } from "@src/types";
 
 /**
  * Add one link.
  */
-async function add(req: Req<{}, {}, IAddLinkBody>, res: Response) {
+async function add(req: AddLinkRequest, res: Response): Promise<void> {
   try {
     const { url } = req.body;
     const [link, error] = await LinkService.addOne(url);
@@ -33,9 +33,9 @@ async function add(req: Req<{}, {}, IAddLinkBody>, res: Response) {
  * Redirect to url.
  */
 async function redirectToUrl(
-  req: Req<IRedirectLinkParams, {}, {}>,
+  req: RedirectLinkRequest,
   res: Response
-) {
+): Promise<void> {
   try {
     const { shortUrl } = req.params;
     const [link, error] = await LinkService.redirectToUrl(shortUrl);
