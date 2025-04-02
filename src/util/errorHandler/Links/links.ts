@@ -21,13 +21,6 @@ function urlForConvertingNotProvided(): ApplicationError {
   });
 }
 
-function errorWhileCreationLink(): ApplicationError {
-  return new ApplicationError(LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS, {
-    errorCode: LINKS.ERROR_CODES.ERROR_WHILE_CREATION_LINK,
-    statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-  });
-}
-
 function unknownServiceErrorForCreatingLink(): ApplicationError {
   return new ApplicationError(LINKS.ERROR_MESSAGES.SERVICE_ERROR_LINKS, {
     errorCode: LINKS.ERROR_CODES.UNKNOWN_SERVICE_ERROR_FOR_CREATING_SHORT_URL,
@@ -61,7 +54,6 @@ export const Links = {
   addOneLinkDatabaseError,
   getFirstLinkDatabaseError,
   urlForConvertingNotProvided,
-  errorWhileCreationLink,
   unknownServiceErrorForCreatingLink,
   shortUrlForRedirectingNotProvided,
   shortUrlForRedirectingNotFoundInDatabase,

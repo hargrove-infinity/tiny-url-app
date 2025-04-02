@@ -56,11 +56,6 @@ async function addOne(url: string): AddOneLinkServiceResult {
       ];
     }
 
-    // !REMOVE
-    if (!createdLink) {
-      return [null, ErrorHandler.Links.errorWhileCreationLink()];
-    }
-
     return [createdLink, null];
   } catch (error) {
     return [null, ErrorHandler.Links.unknownServiceErrorForCreatingLink()];
