@@ -37,9 +37,11 @@ async function add(req: AddUserRequest, res: Response): Promise<void> {
 /**
  * Login user.
  */
-
-async function login(req: LoginUserRequest, res: Response) {
+async function login(req: LoginUserRequest, res: Response): Promise<void> {
   try {
+    const { body } = req;
+    UserService.login(body);
+    // TODO change response
     res.send("OK");
   } catch (error) {
     if (error instanceof ApplicationError) {

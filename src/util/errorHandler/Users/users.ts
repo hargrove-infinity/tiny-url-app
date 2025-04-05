@@ -81,6 +81,18 @@ function unknownRouteErrorForLoginUser(): IErrorPayloadItem[] {
   ];
 }
 
+function unknownServiceErrorLoginUser(): IErrorPayloadItem[] {
+  return [
+    {
+      code: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_LOGIN_USER.code,
+      description:
+        ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_LOGIN_USER.description,
+      id: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_LOGIN_USER.id,
+      data: [],
+    },
+  ];
+}
+
 export const Users = {
   getFirstUserDatabaseError,
   createUserDatabaseError,
@@ -88,4 +100,5 @@ export const Users = {
   unknownServiceErrorForCreatingUser,
   unknownRouteErrorForCreatingUser,
   unknownRouteErrorForLoginUser,
+  unknownServiceErrorLoginUser,
 } as const;

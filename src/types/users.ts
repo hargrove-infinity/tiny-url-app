@@ -26,9 +26,9 @@ export type CreateUserRepoResult = OperationResult<User>;
 
 export type CreateUserServiceResult = OperationResult<User>;
 
-export interface ILoginUserArgs {
+export interface ILoginUserBody {
   username: string;
   password: string;
 }
 
-export type LoginUserRequest = Request<{}, {}, ILoginUserArgs>;
+export type LoginUserRequest = Request<{}, {}, ILoginUserBody>;

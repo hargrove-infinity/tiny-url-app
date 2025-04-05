@@ -1,5 +1,9 @@
 import { UserRepo } from "@src/repos";
-import { CreateUserServiceResult, IAddUserBody } from "@src/types";
+import {
+  CreateUserServiceResult,
+  IAddUserBody,
+  ILoginUserBody,
+} from "@src/types";
 import { Encryption, ErrorHandler, prisma } from "@src/util";
 
 /**
@@ -49,4 +53,16 @@ async function add(userDto: IAddUserBody): CreateUserServiceResult {
   }
 }
 
-export const UserService = { add } as const;
+/**
+ * Login user.
+ */
+async function login(loginUserDto: ILoginUserBody) {
+  try {
+    // TODO get user by username
+    return [];
+  } catch (error) {
+    return [null, ErrorHandler.Users.unknownServiceErrorLoginUser()];
+  }
+}
+
+export const UserService = { add, login } as const;
