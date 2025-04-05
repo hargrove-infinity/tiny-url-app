@@ -1,6 +1,11 @@
 import { Router } from "express";
 import { validate } from "@src/middlewares";
-import { LinkSchema, ShortUrlSchema, UserSchema } from "@src/validation";
+import {
+  LinkSchema,
+  ShortUrlSchema,
+  UserSchema,
+  LoginUserSchema,
+} from "@src/validation";
 import { Paths } from "@src/common";
 import { LinkRoutes } from "./LinkRoutes";
 import { UserRoutes } from "./UserRoutes";
@@ -37,6 +42,12 @@ userRouter.post(
   Paths.Users.Base,
   validate({ schema: UserSchema }),
   UserRoutes.add
+);
+
+userRouter.post(
+  Paths.Users.Login,
+  validate({ schema: LoginUserSchema }),
+  UserRoutes.login
 );
 
 // Add LinkRouter

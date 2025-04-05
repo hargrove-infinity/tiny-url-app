@@ -70,10 +70,22 @@ function unknownRouteErrorForCreatingUser(): IErrorPayloadItem[] {
   ];
 }
 
+function unknownRouteErrorForLoginUser(): IErrorPayloadItem[] {
+  return [
+    {
+      code: ERROR_DEFINITIONS.UNKNOWN_ROUTE_ERROR_LOGIN_USER.code,
+      description: ERROR_DEFINITIONS.UNKNOWN_ROUTE_ERROR_LOGIN_USER.description,
+      id: ERROR_DEFINITIONS.UNKNOWN_ROUTE_ERROR_LOGIN_USER.id,
+      data: [],
+    },
+  ];
+}
+
 export const Users = {
   getFirstUserDatabaseError,
   createUserDatabaseError,
   userWithEmailAlreadyExists,
   unknownServiceErrorForCreatingUser,
   unknownRouteErrorForCreatingUser,
+  unknownRouteErrorForLoginUser,
 } as const;

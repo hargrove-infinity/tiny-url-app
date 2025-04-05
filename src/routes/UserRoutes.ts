@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { UserService } from "@src/services";
 import { ApplicationError, HttpStatusCodes } from "@src/common";
-import { AddUserRequest } from "@src/types";
+import { AddUserRequest, LoginUserRequest } from "@src/types";
 import { ErrorHandler } from "@src/util";
 
 /**
@@ -34,4 +34,25 @@ async function add(req: AddUserRequest, res: Response): Promise<void> {
   }
 }
 
-export const UserRoutes = { add } as const;
+/**
+ * Login user.
+ */
+
+async function login(req: LoginUserRequest, res: Response) {
+  try {
+    res.send("OK");
+  } catch (error) {
+    if (error instanceof ApplicationError) {
+      res
+        .status(HttpStatusCodes.BAD_REQUEST)
+        .send({ errors: error.buildErrorPayload() });
+      return;
+    }
+
+    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
+      errors: ErrorHandler.Users.unknownRouteErrorForLoginUser(),
+    });
+  }
+}
+
+export const UserRoutes = { add, login } as const;

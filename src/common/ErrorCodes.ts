@@ -119,66 +119,71 @@ const ERROR_DEFINITIONS_USERS = {
     description: "Error during get first link in database",
     message: "Error during get first link in database (getFirst LinkRepo)",
   },
+  UNKNOWN_ROUTE_ERROR_LOGIN_USER: {
+    code: "UNKNOWN_ROUTE_ERROR_LOGIN_USER",
+    id: "00020",
+    description: "Unknown error in login user route",
+  },
 };
 
 const ERROR_DEFINITIONS_LINKS = {
   SHORT_URL_MUST_BE_STRING: {
     code: "SHORT_URL_MUST_BE_STRING",
-    id: "00020",
+    id: "00021",
     description: "Short url must be string",
   },
   SHORT_URL_DEFINED_LENGTH: {
     code: "SHORT_URL_DEFINED_LENGTH",
-    id: "00021",
+    id: "00022",
     description: `Short url must be ${DEFAULT_SHORT_URL_LENGTH} characters length`,
   },
   SHORT_URL_PATTERN: {
     code: "SHORT_URL_PATTERN",
-    id: "00022",
+    id: "00023",
     description:
       "Only capital letters or lower letters or number or dash or underscore",
   },
   URL_FOR_CONVERTING_NOT_PROVIDED: {
     code: "URL_FOR_CONVERTING_NOT_PROVIDED",
-    id: "00023",
+    id: "00024",
     description: "Url was not provided for the converting",
     message: "Url was not provided for the converting (addOne LinkService)",
   },
   UNKNOWN_SERVICE_ERROR_CREATION_LINK: {
     code: "UNKNOWN_SERVICE_ERROR_CREATION_LINK",
-    id: "00024",
+    id: "00025",
     description: "Unknown error in service for creation link",
     message:
       "Unknown error in service for creation link (addOne LinkService catch block)",
   },
   SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED: {
     code: "SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED",
-    id: "00025",
+    id: "00026",
     description: "Short url was not provided for the redirecting",
     message:
       "Short url was not provided for the redirecting (redirectToUrl LinkService)",
   },
   SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE: {
     code: "SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE",
-    id: "00026",
+    id: "00027",
     description: "Short url was not found in database",
     message: "Short url was not found in database (redirectToUrl LinkService)",
   },
   UNKNOWN_SERVICE_ERROR_REDIRECT_LINK: {
     code: "UNKNOWN_SERVICE_ERROR_REDIRECT_LINK",
-    id: "00027",
+    id: "00028",
     description: "Unknown error in service for redirecting link",
     message:
       "Unknown error in service for redirecting link (redirectToUrl LinkService catch block)",
   },
   UNKNOWN_ROUTE_ERROR_CREATION_LINK: {
     code: "UNKNOWN_ROUTE_ERROR_CREATION_LINK",
-    id: "00028",
+    id: "00029",
     description: "Unknown error in route for creation link",
   },
   UNKNOWN_ROUTE_ERROR_REDIRECT_URL: {
     code: "UNKNOWN_ROUTE_ERROR_REDIRECT_URL",
-    id: "00029",
+    id: "00030",
     description: "Unknown error in route for redirect url",
   },
 };

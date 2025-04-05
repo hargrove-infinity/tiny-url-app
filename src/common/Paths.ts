@@ -4,5 +4,5 @@ export const Paths = {
     Base: "/links",
     RedirectToUrl: "/links/:shortUrl",
   },
-  Users: { Base: "/users" },
+  Users: { Base: "/users", Login: "/login" },
 } as const;
