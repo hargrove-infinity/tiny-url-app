@@ -1,7 +1,9 @@
+import { IErrorPayloadItem } from "@src/types";
+
 export type AnyObject = Record<string, any>;
 
 export interface ErrorObject {
-  error: string;
+  errors: IErrorPayloadItem[];
 }
 
 export type BodyType =

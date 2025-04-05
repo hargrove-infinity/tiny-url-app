@@ -1,7 +1,8 @@
 import { Response } from "express";
-import { ApplicationError, HttpStatusCodes, USERS } from "@src/common";
-import { AddUserRequest } from "@src/types";
 import { UserService } from "@src/services";
+import { ApplicationError, HttpStatusCodes } from "@src/common";
+import { AddUserRequest } from "@src/types";
+import { ErrorHandler } from "@src/util";
 
 /**
  * Add one user.
@@ -12,19 +13,23 @@ async function add(req: AddUserRequest, res: Response): Promise<void> {
     const [user, error] = await UserService.add(body);
 
     if (error) {
-      res.status(error.httpStatusCode).send({ error });
+      res
+        .status(error.httpStatusCode)
+        .send({ errors: error.buildErrorPayload() });
       return;
     }
 
     res.status(HttpStatusCodes.CREATED).send(user);
   } catch (error) {
     if (error instanceof ApplicationError) {
-      res.status(HttpStatusCodes.BAD_REQUEST).send({ error });
+      res
+        .status(HttpStatusCodes.BAD_REQUEST)
+        .send({ errors: error.buildErrorPayload() });
       return;
     }
 
     res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
-      error: USERS.ERROR_CODES.UNKNOWN_ROUTE_ERROR_FOR_CREATING_USER,
+      errors: ErrorHandler.Users.unknownRouteErrorForCreatingUser(),
     });
   }
 }

@@ -1,62 +1,191 @@
 import { DEFAULT_SHORT_URL_LENGTH, PASSWORD_MIN_LENGTH } from "./Definitions";
 
-export const LINKS = {
-  VALIDATION_MESSAGES: {
-    DEFINED_SHORT_URL_LENGTH: `Short URL must be exactly ${DEFAULT_SHORT_URL_LENGTH} characters`,
-    SHORT_URL_PATTERN: "Short URL must be a valid string",
+const ERROR_DEFINITIONS_MISC = {
+  UNKNOWN_ERROR: {
+    code: "UNKNOWN_ERROR",
+    id: "00000",
+    description: "Unknown error",
   },
-  ERROR_MESSAGES: {
-    DATABASE_ERROR_LINKS: "DATABASE_ERROR_LINKS",
-    SERVICE_ERROR_LINKS: "SERVICE_ERROR_LINKS",
+  ROUTE_NOT_FOUND: {
+    code: "ROUTE_NOT_FOUND",
+    id: "00001",
+    description: "Url not found",
   },
-  ERROR_CODES: {
-    DATABASE_ERROR_GET_FIRST_LINK: "DATABASE_ERROR_GET_FIRST_LINK",
-    DATABASE_ERROR_ADD_ONE_LINK: "DATABASE_ERROR_ADD_ONE_LINK",
-    URL_FOR_CONVERTING_NOT_PROVIDED: "URL_FOR_CONVERTING_NOT_PROVIDED",
-    UNKNOWN_SERVICE_ERROR_FOR_CREATING_SHORT_URL:
-      "UNKNOWN_SERVICE_ERROR_FOR_CREATING_SHORT_URL",
-    UNKNOWN_ROUTE_ERROR_FOR_CREATING_SHORT_URL:
-      "UNKNOWN_ROUTE_ERROR_FOR_CREATING_SHORT_URL",
-    SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED:
-      "SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED",
-    SHORT_URL_FOR_REDIRECTING_NOT_FOUND_IN_DATABASE:
-      "SHORT_URL_FOR_REDIRECTING_NOT_FOUND_IN_DATABASE",
-    UNKNOWN_SERVICE_ERROR_FOR_REDIRECTING_TO_URL:
-      "UNKNOWN_SERVICE_ERROR_FOR_REDIRECTING_TO_URL",
-    UNKNOWN_ROUTE_ERROR_FOR_REDIRECTING_TO_URL:
-      "UNKNOWN_ROUTE_ERROR_FOR_REDIRECTING_TO_URL",
+  UNHANDLED_ERROR: {
+    code: "UNHANDLED_ERROR",
+    id: "00002",
+    description: "Error that is not handled by any repo, service, route",
   },
 };
 
-export const USERS = {
-  VALIDATION_MESSAGES: {
-    PASSWORD_MIN_LENGTH_REQUIREMENT: `Password must be ${PASSWORD_MIN_LENGTH} characters length`,
-    PASSWORD_PATTERN:
+const ERROR_DEFINITIONS_ENCRYPTION = {
+  ERROR_HASHING_STRING: {
+    code: "ERROR_HASHING_STRING",
+    id: "00003",
+    description: "Error during hashing string",
+    message: "Error during hashing string (hashString util function)",
+  },
+  ERROR_COMPARING_HASH: {
+    code: "ERROR_COMPARING_HASH",
+    id: "00004",
+    description: "Error during comparing plain text with hash",
+    message:
+      "Error during comparing plain text with hash (compareHash util function)",
+  },
+};
+
+const ERROR_DEFINITIONS_USERS = {
+  NAME_USER_MUST_BE_STRING: {
+    code: "NAME_USER_MUST_BE_STRING",
+    id: "00005",
+    description: "User name must be type string",
+  },
+  NAME_USER_MUST_BE_FILLED: {
+    code: "NAME_USER_MUST_BE_FILLED",
+    id: "00006",
+    description: "User name must be filled",
+  },
+  EMAIL_USER_MUST_BE_STRING: {
+    code: "EMAIL_USER_MUST_BE_STRING",
+    id: "00007",
+    description: "User email must be string",
+  },
+  EMAIL_USER_MUST_BE_FILLED: {
+    code: "EMAIL_USER_MUST_BE_FILLED",
+    id: "00008",
+    description: "User email must be filled",
+  },
+  INVALID_EMAIL: {
+    code: "INVALID_EMAIL",
+    id: "00009",
+    description: "Email is invalid",
+  },
+  PASSWORD_MUST_BE_STRING: {
+    code: "PASSWORD_MUST_BE_STRING",
+    id: "00010",
+    description: "Password must be string",
+  },
+  PASSWORD_MIN_LENGTH_REQUIREMENT: {
+    code: "PASSWORD_MIN_LENGTH_REQUIREMENT",
+    id: "00011",
+    description: `Password must be ${PASSWORD_MIN_LENGTH} characters length`,
+  },
+  PASSWORD_PATTERN: {
+    code: "PASSWORD_PATTERN",
+    id: "00012",
+    description:
       "Password must contain at least one upper letter, at least one lower letter, at least one number",
   },
-  ERROR_MESSAGES: {
-    DATABASE_ERROR_USERS: "DATABASE_ERROR_USERS",
-    SERVICE_ERROR_USERS: "SERVICE_ERROR_USERS",
+  GET_FIRST_USER_DATABASE_ERROR: {
+    code: "GET_FIRST_USER_DATABASE_ERROR",
+    id: "00013",
+    description: "Error during fetching first user from database",
+    message:
+      "Error during fetching first user from database (getFirst UserRepo)",
   },
-  ERROR_CODES: {
-    DATABASE_ERROR_GET_FIRST_USER: "DATABASE_ERROR_GET_FIRST_USER",
-    DATABASE_ERROR_CREATE_USER: "DATABASE_ERROR_CREATE_USER",
-    UNKNOWN_SERVICE_ERROR_FOR_CREATING_USER:
-      "UNKNOWN_SERVICE_ERROR_FOR_CREATING_USER",
-    USER_WITH_EMAIL_ALREADY_EXISTS: "USER_WITH_EMAIL_ALREADY_EXISTS",
-    UNKNOWN_ROUTE_ERROR_FOR_CREATING_USER:
-      "UNKNOWN_ROUTE_ERROR_FOR_CREATING_USER",
+  CREATE_USER_DATABASE_ERROR: {
+    code: "CREATE_USER_DATABASE_ERROR",
+    id: "00014",
+    description: "Error during creation user in database",
+    message: "Error during creation user in database (add UserRepo)",
+  },
+  USER_WITH_EMAIL_ALREADY_EXISTS: {
+    code: "USER_WITH_EMAIL_ALREADY_EXISTS",
+    id: "00015",
+    description: "User with provided email already exists",
+    message: "User with provided email already exists (add UserService)",
+  },
+  UNKNOWN_SERVICE_ERROR_CREATION_USER: {
+    code: "UNKNOWN_SERVICE_ERROR_CREATION_USER",
+    id: "00016",
+    description: "Unknown error in creation user service",
+    message:
+      "Unknown error in creation user service (add UserService, catch block)",
+  },
+  UNKNOWN_ROUTE_ERROR_CREATION_USER: {
+    code: "UNKNOWN_ROUTE_ERROR_CREATION_USER",
+    id: "00017",
+    description: "Unknown error in creation user route",
+  },
+  CREATE_LINK_DATABASE_ERROR: {
+    code: "CREATE_LINK_DATABASE_ERROR",
+    id: "00018",
+    description: "Error during creation link in database",
+    message: "Error during creation link in database (add LinkRepo)",
+  },
+  GET_FIRST_LINK_DATABASE_ERROR: {
+    code: "GET_FIRST_LINK_DATABASE_ERROR",
+    id: "00019",
+    description: "Error during get first link in database",
+    message: "Error during get first link in database (getFirst LinkRepo)",
   },
 };
 
-export const ENCRYPTION = {
-  ERROR_MESSAGES: {
-    ERROR_ENCRYPTION: "ERROR_ENCRYPTION",
+const ERROR_DEFINITIONS_LINKS = {
+  SHORT_URL_MUST_BE_STRING: {
+    code: "SHORT_URL_MUST_BE_STRING",
+    id: "00020",
+    description: "Short url must be string",
   },
-  ERROR_CODES: {
-    ERROR_HASHING_STRING: "ERROR_HASHING_STRING",
-    ERROR_COMPARING_HASH: "ERROR_COMPARING_HASH",
+  SHORT_URL_DEFINED_LENGTH: {
+    code: "SHORT_URL_DEFINED_LENGTH",
+    id: "00021",
+    description: `Short url must be ${DEFAULT_SHORT_URL_LENGTH} characters length`,
+  },
+  SHORT_URL_PATTERN: {
+    code: "SHORT_URL_PATTERN",
+    id: "00022",
+    description:
+      "Only capital letters or lower letters or number or dash or underscore",
+  },
+  URL_FOR_CONVERTING_NOT_PROVIDED: {
+    code: "URL_FOR_CONVERTING_NOT_PROVIDED",
+    id: "00023",
+    description: "Url was not provided for the converting",
+    message: "Url was not provided for the converting (addOne LinkService)",
+  },
+  UNKNOWN_SERVICE_ERROR_CREATION_LINK: {
+    code: "UNKNOWN_SERVICE_ERROR_CREATION_LINK",
+    id: "00024",
+    description: "Unknown error in service for creation link",
+    message:
+      "Unknown error in service for creation link (addOne LinkService catch block)",
+  },
+  SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED: {
+    code: "SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED",
+    id: "00025",
+    description: "Short url was not provided for the redirecting",
+    message:
+      "Short url was not provided for the redirecting (redirectToUrl LinkService)",
+  },
+  SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE: {
+    code: "SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE",
+    id: "00026",
+    description: "Short url was not found in database",
+    message: "Short url was not found in database (redirectToUrl LinkService)",
+  },
+  UNKNOWN_SERVICE_ERROR_REDIRECT_LINK: {
+    code: "UNKNOWN_SERVICE_ERROR_REDIRECT_LINK",
+    id: "00027",
+    description: "Unknown error in service for redirecting link",
+    message:
+      "Unknown error in service for redirecting link (redirectToUrl LinkService catch block)",
+  },
+  UNKNOWN_ROUTE_ERROR_CREATION_LINK: {
+    code: "UNKNOWN_ROUTE_ERROR_CREATION_LINK",
+    id: "00028",
+    description: "Unknown error in route for creation link",
+  },
+  UNKNOWN_ROUTE_ERROR_REDIRECT_URL: {
+    code: "UNKNOWN_ROUTE_ERROR_REDIRECT_URL",
+    id: "00029",
+    description: "Unknown error in route for redirect url",
   },
 };
 
-export const DEFAULT_ERROR_MESSAGE = "Something went wrong";
+export const ERROR_DEFINITIONS = {
+  ...ERROR_DEFINITIONS_MISC,
+  ...ERROR_DEFINITIONS_ENCRYPTION,
+  ...ERROR_DEFINITIONS_USERS,
+  ...ERROR_DEFINITIONS_LINKS,
+};

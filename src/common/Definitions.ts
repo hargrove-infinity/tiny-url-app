@@ -9,6 +9,7 @@ export const PASSWORD_REGEXP = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[\s\S]+$/;
 
 export const DEFAULT_SHORT_URL_LENGTH = 7;
 
+// Only capital letters or lower letters or number or dash or underscore
 export const SHORT_URL_REGEXP = /^[A-Za-z0-9_-]+$/;
 
 /******************************************************************************

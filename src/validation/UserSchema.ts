@@ -1,15 +1,20 @@
 import { z } from "zod";
 import { PASSWORD_MIN_LENGTH, PASSWORD_REGEXP } from "@src/common/Definitions";
-import { USERS } from "@src/common/ErrorCodes";
+import { ERROR_DEFINITIONS } from "@src/common/ErrorCodes";
 
 export const UserSchema = z.object({
-  name: z.string(),
-  username: z.string().email(),
+  name: z
+    .string({ message: ERROR_DEFINITIONS.NAME_USER_MUST_BE_STRING.code })
+    .nonempty({ message: ERROR_DEFINITIONS.NAME_USER_MUST_BE_FILLED.code }),
+  username: z
+    .string({ message: ERROR_DEFINITIONS.EMAIL_USER_MUST_BE_STRING.code })
+    .nonempty({ message: ERROR_DEFINITIONS.EMAIL_USER_MUST_BE_FILLED.code })
+    .email(ERROR_DEFINITIONS.INVALID_EMAIL.code),
   password: z
-    .string()
+    .string({ message: ERROR_DEFINITIONS.PASSWORD_MUST_BE_STRING.code })
     .min(
       PASSWORD_MIN_LENGTH,
-      USERS.VALIDATION_MESSAGES.PASSWORD_MIN_LENGTH_REQUIREMENT
+      ERROR_DEFINITIONS.PASSWORD_MIN_LENGTH_REQUIREMENT.code
     )
-    .regex(PASSWORD_REGEXP, USERS.VALIDATION_MESSAGES.PASSWORD_PATTERN),
+    .regex(PASSWORD_REGEXP, ERROR_DEFINITIONS.PASSWORD_PATTERN.code),
 });

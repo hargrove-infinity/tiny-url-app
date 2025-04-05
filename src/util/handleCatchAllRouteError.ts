@@ -1,12 +1,9 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { HttpStatusCodes } from "@src/common";
+import { ErrorHandler } from "./errorHandler";
 
-export function handleCatchAllRouteError(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export function handleCatchAllRouteError(req: Request, res: Response) {
   res
     .status(HttpStatusCodes.NOT_FOUND)
-    .send({ error: `Route ${req.originalUrl} does not exist` });
+    .send({ errors: ErrorHandler.Common.routeNotFound(req.originalUrl) });
 }

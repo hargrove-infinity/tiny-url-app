@@ -17,7 +17,10 @@ async function add(userDto: IAddUserBody): CreateUserServiceResult {
     }
 
     if (firstUser) {
-      return [null, ErrorHandler.Users.userWithEmailAlreadyExists()];
+      return [
+        null,
+        ErrorHandler.Users.userWithEmailAlreadyExists([firstUser.username]),
+      ];
     }
 
     const [hashedPassword, errorHashPassword] = await Encryption.hashString({

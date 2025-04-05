@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { HttpStatusCodes } from "@src/common";
+import { formatValidationErrors } from "@src/util";
 import { IValidateArgs } from "./types";
 
 export function validate<T>({ schema, key }: IValidateArgs) {
@@ -9,7 +10,12 @@ export function validate<T>({ schema, key }: IValidateArgs) {
       : schema.safeParse(req.body);
 
     if (!result.success) {
-      res.status(HttpStatusCodes.BAD_REQUEST).send({ error: result.error });
+      const errorsPayload = formatValidationErrors({
+        issues: result.error.issues,
+        body: req.body,
+      });
+
+      res.status(HttpStatusCodes.BAD_REQUEST).send({ errors: errorsPayload });
       return;
     }
 

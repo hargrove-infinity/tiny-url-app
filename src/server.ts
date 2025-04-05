@@ -1,14 +1,12 @@
 import helmet from "helmet";
-import express, { Request, Response, NextFunction } from "express";
-
-import "express-async-errors";
+import express from "express";
 
 import { BaseRouter } from "@src/routes";
 
-import { DEFAULT_ERROR_MESSAGE, ENV, NodeEnvs, Paths } from "@src/common";
-import { pinoLogger, pinoLoggerHttp } from "@src/logger";
-import { handleCatchAllRouteError } from "@src/util";
 import { responseFormatter } from "@src/middlewares";
+import { ENV, NodeEnvs, Paths } from "@src/common";
+import { pinoLoggerHttp } from "@src/logger";
+import { handleCatchAllRouteError, handleCatchGlobalError } from "@src/util";
 
 /******************************************************************************
                                 Setup
@@ -33,18 +31,13 @@ if (ENV.NodeEnv === NodeEnvs.Production) {
   app.use(helmet());
 }
 
-// Add APIs, must be after middleware
+// API router
 app.use(BaseRouter);
 
+// Catch all routes, not found route error
 app.all(Paths.CatchAll, handleCatchAllRouteError);
 
-// Add error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  if (ENV.NodeEnv !== NodeEnvs.Test.valueOf()) {
-    pinoLogger.error(err);
-  }
-
-  res.status(500).send({ error: err.message || DEFAULT_ERROR_MESSAGE });
-});
+// Catch global (unhandled) error
+app.use(handleCatchGlobalError);
 
 export { app };
