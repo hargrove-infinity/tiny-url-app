@@ -1,4 +1,4 @@
-import { OperationResult } from "@src/types";
+import { AsyncOperationResult } from "@src/types";
 
 export interface IHashStringArgs {
   stringToHash: string;
@@ -10,4 +10,4 @@ export interface ICompareHashArgs {
   encryptedString: string;
 }
 
-export type HashStringResult = OperationResult<string>;
+export type HashStringResult = AsyncOperationResult<string>;

@@ -1,8 +1,10 @@
 import { ApplicationError } from "@src/common";
 
-export type OperationResult<T> = Promise<[T, null] | [null, ApplicationError]>;
+export type AsyncOperationResult<T> = Promise<
+  [T, null] | [null, ApplicationError]
+>;
 
-export type NullableOperationResult<T> = Promise<
+export type NullableAsyncOperationResult<T> = Promise<
   [T, null] | [null, ApplicationError] | [null, null]
 >;
 
