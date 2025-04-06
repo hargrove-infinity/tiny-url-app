@@ -4,7 +4,7 @@ import {
   IAddUserBody,
   ILoginUserBody,
 } from "@src/types";
-import { Encryption, ErrorHandler, prisma } from "@src/util";
+import { Encryption, ErrorHandler, Jwt, prisma } from "@src/util";
 
 /**
  * Add one user.
@@ -59,7 +59,7 @@ async function add(userDto: IAddUserBody): CreateUserServiceResult {
 async function login(loginUserDto: ILoginUserBody) {
   try {
     // TODO get user by username
-    return [];
+    // TODO sign token
   } catch (error) {
     return [null, ErrorHandler.Users.unknownServiceErrorLoginUser()];
   }
