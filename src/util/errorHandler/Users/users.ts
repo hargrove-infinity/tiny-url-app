@@ -81,16 +81,30 @@ function unknownRouteErrorForLoginUser(): IErrorPayloadItem[] {
   ];
 }
 
-function unknownServiceErrorLoginUser(): IErrorPayloadItem[] {
-  return [
+function unknownServiceErrorLoginUser(): ApplicationError {
+  return new ApplicationError(
+    ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_LOGIN_USER.message,
     {
-      code: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_LOGIN_USER.code,
-      description:
+      errorCode: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_LOGIN_USER.code,
+      errorDescription:
         ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_LOGIN_USER.description,
-      id: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_LOGIN_USER.id,
-      data: [],
-    },
-  ];
+      errorId: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_LOGIN_USER.id,
+      statusCode: HttpStatusCodes.BAD_REQUEST,
+    }
+  );
+}
+
+function userWithEmailNotFound(data: string[]): ApplicationError {
+  return new ApplicationError(
+    ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.message,
+    {
+      data,
+      errorCode: ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.code,
+      errorDescription: ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.description,
+      errorId: ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.id,
+      statusCode: HttpStatusCodes.BAD_REQUEST,
+    }
+  );
 }
 
 export const Users = {
@@ -101,4 +115,5 @@ export const Users = {
   unknownRouteErrorForCreatingUser,
   unknownRouteErrorForLoginUser,
   unknownServiceErrorLoginUser,
+  userWithEmailNotFound,
 } as const;

@@ -40,9 +40,16 @@ async function add(req: AddUserRequest, res: Response): Promise<void> {
 async function login(req: LoginUserRequest, res: Response): Promise<void> {
   try {
     const { body } = req;
-    UserService.login(body);
-    // TODO change response
-    res.send("OK");
+    const [token, error] = await UserService.login(body);
+
+    if (error) {
+      res
+        .status(error.httpStatusCode)
+        .send({ errors: error.buildErrorPayload() });
+      return;
+    }
+
+    res.status(HttpStatusCodes.CREATED).send(token);
   } catch (error) {
     if (error instanceof ApplicationError) {
       res

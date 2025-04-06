@@ -3,6 +3,7 @@ import {
   CreateUserServiceResult,
   IAddUserBody,
   ILoginUserBody,
+  LoginUserServiceResult,
 } from "@src/types";
 import { Encryption, ErrorHandler, Jwt, prisma } from "@src/util";
 
@@ -56,10 +57,35 @@ async function add(userDto: IAddUserBody): CreateUserServiceResult {
 /**
  * Login user.
  */
-async function login(loginUserDto: ILoginUserBody) {
+async function login(loginUserDto: ILoginUserBody): LoginUserServiceResult {
   try {
-    // TODO get user by username
-    // TODO sign token
+    const [firstUser, errorGetUser] = await UserRepo.getFirst({
+      prisma,
+      args: { where: { username: loginUserDto.username } },
+    });
+
+    if (errorGetUser) {
+      return [null, ErrorHandler.Common.reThrowApplicationError(errorGetUser)];
+    }
+
+    if (!firstUser) {
+      return [
+        null,
+        ErrorHandler.Users.userWithEmailNotFound([loginUserDto.username]),
+      ];
+    }
+
+    const [token, errorToken] = Jwt.signToken({
+      id: firstUser.id,
+      name: firstUser.name,
+      username: firstUser.username,
+    });
+
+    if (errorToken) {
+      return [null, ErrorHandler.Common.reThrowApplicationError(errorToken)];
+    }
+
+    return [token, null];
   } catch (error) {
     return [null, ErrorHandler.Users.unknownServiceErrorLoginUser()];
   }
