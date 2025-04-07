@@ -107,6 +107,17 @@ function userWithEmailNotFound(data: string[]): ApplicationError {
   );
 }
 
+function userWithEmailNotFoundPayload(data: string[]): IErrorPayloadItem[] {
+  return [
+    {
+      code: ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.code,
+      description: ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.description,
+      id: ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.id,
+      data,
+    },
+  ];
+}
+
 export const Users = {
   getFirstUserDatabaseError,
   createUserDatabaseError,
@@ -116,4 +127,5 @@ export const Users = {
   unknownRouteErrorForLoginUser,
   unknownServiceErrorLoginUser,
   userWithEmailNotFound,
+  userWithEmailNotFoundPayload,
 } as const;

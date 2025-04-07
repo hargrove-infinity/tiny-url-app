@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { validate } from "@src/middlewares";
+import { checkAuth, validate } from "@src/middlewares";
 import {
   LinkSchema,
   ShortUrlSchema,
@@ -23,6 +23,7 @@ const linkRouter = Router();
 
 linkRouter.post(
   Paths.Links.Base,
+  checkAuth,
   validate({ schema: LinkSchema }),
   LinkRoutes.add
 );
