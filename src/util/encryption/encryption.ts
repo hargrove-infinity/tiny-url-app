@@ -1,6 +1,11 @@
 import bcrypt from "bcrypt";
 import { ErrorHandler } from "../errorHandler";
-import { HashStringResult, ICompareHashArgs, IHashStringArgs } from "./types";
+import {
+  CompareHashResult,
+  HashStringResult,
+  ICompareHashArgs,
+  IHashStringArgs,
+} from "./types";
 
 async function hashString({
   stringToHash,
@@ -14,7 +19,10 @@ async function hashString({
   }
 }
 
-async function compareHash({ plainString, encryptedString }: ICompareHashArgs) {
+async function compareHash({
+  plainString,
+  encryptedString,
+}: ICompareHashArgs): CompareHashResult {
   try {
     const result = await bcrypt.compare(plainString, encryptedString);
     return [result, null];

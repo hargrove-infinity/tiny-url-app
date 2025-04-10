@@ -11,3 +11,5 @@ export interface ICompareHashArgs {
 }
 
 export type HashStringResult = AsyncOperationResult<string>;
+
+export type CompareHashResult = AsyncOperationResult<boolean>;

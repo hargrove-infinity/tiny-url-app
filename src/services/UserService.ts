@@ -75,6 +75,19 @@ async function login(loginUserDto: ILoginUserBody): LoginUserServiceResult {
       ];
     }
 
+    const [isPasswordMatch, errorPassword] = await Encryption.compareHash({
+      plainString: loginUserDto.password,
+      encryptedString: firstUser.password,
+    });
+
+    if (errorPassword) {
+      return [null, ErrorHandler.Common.reThrowApplicationError(errorPassword)];
+    }
+
+    if (!isPasswordMatch) {
+      return [null, ErrorHandler.Users.passwordWrong()];
+    }
+
     const [token, errorToken] = Jwt.signToken({
       id: firstUser.id,
       name: firstUser.name,

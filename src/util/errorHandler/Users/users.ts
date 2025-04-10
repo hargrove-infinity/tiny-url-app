@@ -129,6 +129,15 @@ function userMissingRequestData(): IErrorPayloadItem[] {
   ];
 }
 
+function passwordWrong(): ApplicationError {
+  return new ApplicationError(ERROR_DEFINITIONS.PASSWORD_WRONG.message, {
+    errorCode: ERROR_DEFINITIONS.PASSWORD_WRONG.code,
+    errorDescription: ERROR_DEFINITIONS.PASSWORD_WRONG.description,
+    errorId: ERROR_DEFINITIONS.PASSWORD_WRONG.id,
+    statusCode: HttpStatusCodes.BAD_REQUEST,
+  });
+}
+
 export const Users = {
   getFirstUserDatabaseError,
   createUserDatabaseError,
@@ -140,4 +149,5 @@ export const Users = {
   userWithEmailNotFound,
   userWithEmailNotFoundPayload,
   userMissingRequestData,
+  passwordWrong,
 } as const;
