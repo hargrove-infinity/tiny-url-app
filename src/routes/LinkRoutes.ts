@@ -9,8 +9,17 @@ import { ErrorHandler } from "@src/util";
  */
 async function add(req: AddLinkRequest, res: Response): Promise<void> {
   try {
-    const { url } = req.body;
-    const [link, error] = await LinkService.addOne(url);
+    const { user, body } = req;
+    const { url } = body;
+
+    if (!user) {
+      res
+        .status(HttpStatusCodes.BAD_REQUEST)
+        .send({ errors: ErrorHandler.Users.userMissingRequestData() });
+      return;
+    }
+
+    const [link, error] = await LinkService.addOne({ url, userId: user.id });
 
     if (error) {
       res

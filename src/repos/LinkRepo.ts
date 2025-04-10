@@ -24,17 +24,9 @@ async function getFirst({
 /**
  * Add one link.
  */
-async function add({
-  prisma,
-  url,
-  shortener,
-}: IAddLinkArgs): AddLinkRepoResult {
+async function add({ prisma, data }: IAddLinkArgs): AddLinkRepoResult {
   try {
-    //! TMP added userId
-    const createdLink = await prisma.link.create({
-      data: { userId: 1, url, shortener },
-    });
-
+    const createdLink = await prisma.link.create({ data });
     return [createdLink, null];
   } catch (error) {
     return [null, ErrorHandler.Links.addOneLinkDatabaseError()];

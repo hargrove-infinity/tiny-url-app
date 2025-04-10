@@ -49,5 +49,7 @@ export async function checkAuth(
     return;
   }
 
+  req.user = firstUser;
+
   next();
 }

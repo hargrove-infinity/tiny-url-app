@@ -118,6 +118,17 @@ function userWithEmailNotFoundPayload(data: string[]): IErrorPayloadItem[] {
   ];
 }
 
+function userMissingRequestData(): IErrorPayloadItem[] {
+  return [
+    {
+      code: ERROR_DEFINITIONS.USER_MISSING_REQUEST_DATA.code,
+      description: ERROR_DEFINITIONS.USER_MISSING_REQUEST_DATA.description,
+      id: ERROR_DEFINITIONS.USER_MISSING_REQUEST_DATA.id,
+      data: [],
+    },
+  ];
+}
+
 export const Users = {
   getFirstUserDatabaseError,
   createUserDatabaseError,
@@ -128,4 +139,5 @@ export const Users = {
   unknownServiceErrorLoginUser,
   userWithEmailNotFound,
   userWithEmailNotFoundPayload,
+  userMissingRequestData,
 } as const;
