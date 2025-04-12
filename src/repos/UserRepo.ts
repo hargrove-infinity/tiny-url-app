@@ -14,7 +14,8 @@ async function getFirst({
   args,
 }: IGetFirstUserArgs): GetFirstUserRepoResult {
   try {
-    const firstUser = await prisma.user.findFirst(args);
+    const finalArgs = args.omit ? args : { ...args, omit: { password: true } };
+    const firstUser = await prisma.user.findFirst(finalArgs);
     return [firstUser, null];
   } catch (error) {
     return [null, ErrorHandler.Users.getFirstUserDatabaseError()];
@@ -24,9 +25,10 @@ async function getFirst({
 /**
  * Add one user.
  */
-async function add({ prisma, data }: ICreateUserArgs): CreateUserRepoResult {
+async function add({ prisma, args }: ICreateUserArgs): CreateUserRepoResult {
   try {
-    const createdUser = await prisma.user.create({ data });
+    const finalArgs = args.omit ? args : { ...args, omit: { password: true } };
+    const createdUser = await prisma.user.create(finalArgs);
     return [createdUser, null];
   } catch (error) {
     return [null, ErrorHandler.Users.createUserDatabaseError()];

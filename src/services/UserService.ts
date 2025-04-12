@@ -41,7 +41,7 @@ async function add(userDto: IAddUserBody): CreateUserServiceResult {
 
     const [createdUser, errorAddUser] = await UserRepo.add({
       prisma,
-      data: { ...userDto, password: hashedPassword },
+      args: { data: { ...userDto, password: hashedPassword } },
     });
 
     if (errorAddUser) {
@@ -61,7 +61,10 @@ async function login(loginUserDto: ILoginUserBody): LoginUserServiceResult {
   try {
     const [firstUser, errorGetUser] = await UserRepo.getFirst({
       prisma,
-      args: { where: { username: loginUserDto.username } },
+      args: {
+        where: { username: loginUserDto.username },
+        omit: { password: false },
+      },
     });
 
     if (errorGetUser) {

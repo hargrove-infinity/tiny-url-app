@@ -17,7 +17,7 @@ export interface IGetFirstUserArgs {
 
 export interface ICreateUserArgs {
   prisma: PrismaClient;
-  data: IAddUserBody;
+  args: Prisma.UserCreateArgs;
 }
 
 export type GetFirstUserRepoResult = NullableAsyncOperationResult<User>;
