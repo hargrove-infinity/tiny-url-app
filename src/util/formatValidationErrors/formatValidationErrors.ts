@@ -1,10 +1,11 @@
 import { ERROR_DEFINITIONS } from "@src/common";
+import { IErrorPayloadItem } from "@src/types";
 import { IFormatValidationErrorsArgs } from "./types";
 
 export function formatValidationErrors({
   body,
   issues,
-}: IFormatValidationErrorsArgs) {
+}: IFormatValidationErrorsArgs): IErrorPayloadItem[] {
   return issues.map((issue) => {
     const key = issue.message as keyof typeof ERROR_DEFINITIONS;
 
