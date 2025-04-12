@@ -248,6 +248,16 @@ const ERROR_DEFINITIONS_LINKS = {
     id: "00039",
     description: "Unknown error in route for redirect url",
   },
+  URL_MUST_BE_STRING: {
+    code: "URL_MUST_BE_STRING",
+    id: "00040",
+    description: "Url must be string",
+  },
+  URL_PATTERN: {
+    code: "URL_PATTERN",
+    id: "00041",
+    description: "String is not valid url",
+  },
 };
 
 export const ERROR_DEFINITIONS = {
