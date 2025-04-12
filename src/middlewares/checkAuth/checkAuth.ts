@@ -7,7 +7,7 @@ export async function checkAuth(
   req: Request,
   res: Response,
   next: NextFunction
-) {
+): Promise<void> {
   const { authorization } = req.headers;
 
   if (!authorization) {
