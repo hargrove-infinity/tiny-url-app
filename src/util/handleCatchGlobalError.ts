@@ -11,7 +11,7 @@ export function handleCatchGlobalError(
   req: Request,
   res: Response,
   next: NextFunction
-) {
+): void {
   if (ENV.NodeEnv !== NodeEnvs.Test.valueOf()) {
     pinoLogger.error(err);
   }

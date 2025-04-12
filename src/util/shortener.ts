@@ -4,7 +4,7 @@ import { DEFAULT_SHORT_URL_LENGTH } from "@src/common";
 export function generateShortId(
   url: string,
   length = DEFAULT_SHORT_URL_LENGTH
-) {
+): string {
   const randomSalt = crypto.randomBytes(8).toString("hex");
 
   const hash = crypto
