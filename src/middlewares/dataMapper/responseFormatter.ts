@@ -1,11 +1,20 @@
 import { Request, Response, NextFunction } from "express";
-import { AnyObject, BodyType, ErrorObject } from "./types";
+import {
+  AnyObject,
+  BodyType,
+  ErrorObject,
+  FormatResponseReturn,
+  IFormatResponseArgs,
+} from "./types";
 
 function checkErrorObject(data?: BodyType): data is ErrorObject {
   return !!(data && typeof data === "object" && data.errors);
 }
 
-function formatResponse({ req, body }: { req: Request; body?: BodyType }) {
+function formatResponse({
+  req,
+  body,
+}: IFormatResponseArgs): FormatResponseReturn {
   const defaultBody = { path: req.path, method: req.method };
 
   return checkErrorObject(body)
@@ -43,7 +52,7 @@ export function responseFormatter(
   req: Request,
   res: Response,
   next: NextFunction
-) {
+): void {
   const originalSend = res.send;
 
   res.send = function (body: AnyObject) {
