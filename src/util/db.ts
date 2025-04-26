@@ -1,6 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
-export const prisma = new PrismaClient();
+export const prisma = new PrismaClient({
+  omit: { user: { password: true } },
+} as Prisma.PrismaClientOptions);
 
 async function testDBConnection(): Promise<void> {
   try {
