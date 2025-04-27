@@ -126,11 +126,11 @@ function userMissingRequestData(): IErrorPayloadItem[] {
   ];
 }
 
-function passwordWrong(): ApplicationError {
-  return new ApplicationError(ERROR_DEFINITIONS.PASSWORD_WRONG.message, {
-    errorCode: ERROR_DEFINITIONS.PASSWORD_WRONG.code,
-    errorDescription: ERROR_DEFINITIONS.PASSWORD_WRONG.description,
-    errorId: ERROR_DEFINITIONS.PASSWORD_WRONG.id,
+function loginFailed(): ApplicationError {
+  return new ApplicationError(ERROR_DEFINITIONS.LOGIN_FAILED.message, {
+    errorCode: ERROR_DEFINITIONS.LOGIN_FAILED.code,
+    errorDescription: ERROR_DEFINITIONS.LOGIN_FAILED.description,
+    errorId: ERROR_DEFINITIONS.LOGIN_FAILED.id,
     statusCode: HttpStatusCodes.BAD_REQUEST,
   });
 }
@@ -146,5 +146,5 @@ export const Users = {
   userUnauthorized,
   userUnauthorizedPayload,
   userMissingRequestData,
-  passwordWrong,
+  loginFailed,
 } as const;

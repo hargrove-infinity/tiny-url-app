@@ -88,7 +88,7 @@ async function login(loginUserDto: ILoginUserBody): LoginUserServiceResult {
     }
 
     if (!isPasswordMatch) {
-      return [null, ErrorHandler.Users.passwordWrong()];
+      return [null, ErrorHandler.Users.loginFailed()];
     }
 
     const [token, errorToken] = Jwt.signToken({

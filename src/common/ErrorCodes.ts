@@ -181,11 +181,11 @@ const ERROR_DEFINITIONS_USERS = {
     id: "00028",
     description: "User field is missing in the express request object",
   },
-  PASSWORD_WRONG: {
-    code: "PASSWORD_WRONG",
+  LOGIN_FAILED: {
+    code: "LOGIN_FAILED",
     id: "00029",
-    description: "User provided wrong password",
-    message: "User provided wrong password (login UserService)",
+    description: "Login failed: Invalid username or password.",
+    message: "Login failed: Invalid username or password. (login UserService)",
   },
 };
 
