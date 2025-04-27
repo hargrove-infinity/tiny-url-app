@@ -169,11 +169,12 @@ const ERROR_DEFINITIONS_USERS = {
     message:
       "Unknown error in login user service (login UserService catch block)",
   },
-  USER_WITH_EMAIL_NOT_FOUND: {
-    code: "USER_WITH_EMAIL_NOT_FOUND",
+  USER_UNAUTHORIZED: {
+    code: "USER_UNAUTHORIZED",
     id: "00027",
-    description: "User with provided email not found",
-    message: "User with provided email not found (login UserService)",
+    description: "User is not authorized",
+    message:
+      "User is not authorized (login UserService / checkAuth middleware)",
   },
   USER_MISSING_REQUEST_DATA: {
     code: "USER_MISSING_REQUEST_DATA",

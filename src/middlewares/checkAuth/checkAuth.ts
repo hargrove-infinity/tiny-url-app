@@ -41,10 +41,8 @@ export async function checkAuth(
   }
 
   if (!firstUser) {
-    res.status(HttpStatusCodes.NOT_FOUND).send({
-      errors: ErrorHandler.Users.userWithEmailNotFoundPayload([
-        result.username,
-      ]),
+    res.status(HttpStatusCodes.UNAUTHORIZED).send({
+      errors: ErrorHandler.Users.userUnauthorizedPayload([result.username]),
     });
     return;
   }

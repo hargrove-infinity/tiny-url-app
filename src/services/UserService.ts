@@ -74,7 +74,7 @@ async function login(loginUserDto: ILoginUserBody): LoginUserServiceResult {
     if (!firstUser) {
       return [
         null,
-        ErrorHandler.Users.userWithEmailNotFound([loginUserDto.username]),
+        ErrorHandler.Users.userUnauthorized([loginUserDto.username]),
       ];
     }
 

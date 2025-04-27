@@ -94,25 +94,22 @@ function unknownServiceErrorLoginUser(): ApplicationError {
   );
 }
 
-function userWithEmailNotFound(data: string[]): ApplicationError {
-  return new ApplicationError(
-    ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.message,
-    {
-      data,
-      errorCode: ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.code,
-      errorDescription: ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.description,
-      errorId: ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.id,
-      statusCode: HttpStatusCodes.BAD_REQUEST,
-    }
-  );
+function userUnauthorized(data: string[]): ApplicationError {
+  return new ApplicationError(ERROR_DEFINITIONS.USER_UNAUTHORIZED.message, {
+    data,
+    errorCode: ERROR_DEFINITIONS.USER_UNAUTHORIZED.code,
+    errorDescription: ERROR_DEFINITIONS.USER_UNAUTHORIZED.description,
+    errorId: ERROR_DEFINITIONS.USER_UNAUTHORIZED.id,
+    statusCode: HttpStatusCodes.BAD_REQUEST,
+  });
 }
 
-function userWithEmailNotFoundPayload(data: string[]): IErrorPayloadItem[] {
+function userUnauthorizedPayload(data: string[]): IErrorPayloadItem[] {
   return [
     {
-      code: ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.code,
-      description: ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.description,
-      id: ERROR_DEFINITIONS.USER_WITH_EMAIL_NOT_FOUND.id,
+      code: ERROR_DEFINITIONS.USER_UNAUTHORIZED.code,
+      description: ERROR_DEFINITIONS.USER_UNAUTHORIZED.description,
+      id: ERROR_DEFINITIONS.USER_UNAUTHORIZED.id,
       data,
     },
   ];
@@ -146,8 +143,8 @@ export const Users = {
   unknownRouteErrorForCreatingUser,
   unknownRouteErrorForLoginUser,
   unknownServiceErrorLoginUser,
-  userWithEmailNotFound,
-  userWithEmailNotFoundPayload,
+  userUnauthorized,
+  userUnauthorizedPayload,
   userMissingRequestData,
   passwordWrong,
 } as const;
