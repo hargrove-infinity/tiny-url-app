@@ -49,7 +49,7 @@ async function login(req: LoginUserRequest, res: Response): Promise<void> {
       return;
     }
 
-    res.status(HttpStatusCodes.CREATED).send(token);
+    res.status(HttpStatusCodes.OK).send(token);
   } catch (error) {
     if (error instanceof ApplicationError) {
       res
