@@ -2,5 +2,5 @@ import { ZodIssue } from "zod";
 
 export interface IFormatValidationErrorsArgs {
   issues: ZodIssue[];
-  body: any;
+  body: Record<string, any>;
 }
