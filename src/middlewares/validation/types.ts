@@ -3,7 +3,7 @@ import { ZodObject, ZodRawShape } from "zod";
 
 export interface IValidateArgs {
   schema: ZodObject<ZodRawShape>;
-  key?: keyof Request;
+  key?: "params" | "body";
 }
 
 export type ValidateReturn<T> = (

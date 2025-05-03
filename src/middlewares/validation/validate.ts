@@ -3,11 +3,12 @@ import { HttpStatusCodes } from "@src/common";
 import { formatValidationErrors } from "@src/util";
 import { IValidateArgs, ValidateReturn } from "./types";
 
-export function validate<T>({ schema, key }: IValidateArgs): ValidateReturn<T> {
+export function validate<T>({
+  schema,
+  key = "body",
+}: IValidateArgs): ValidateReturn<T> {
   return (req: Request<T>, res: Response, next: NextFunction): void => {
-    const result = key
-      ? schema.safeParse(req[key])
-      : schema.safeParse(req.body);
+    const result = schema.safeParse(req[key]);
 
     if (!result.success) {
       const errorsPayload = formatValidationErrors({
@@ -19,6 +20,7 @@ export function validate<T>({ schema, key }: IValidateArgs): ValidateReturn<T> {
       return;
     }
 
+    req[key] = result.data;
     next();
   };
 }

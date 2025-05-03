@@ -64,4 +64,8 @@ async function login(req: LoginUserRequest, res: Response): Promise<void> {
   }
 }
 
+/******************************************************************************
+                                Export
+******************************************************************************/
+
 export const UserRoutes = { add, login } as const;

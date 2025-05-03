@@ -80,7 +80,4 @@ async function redirectToUrl(
                                 Export
 ******************************************************************************/
 
-export const LinkRoutes = {
-  add,
-  redirectToUrl,
-} as const;
+export const LinkRoutes = { add, redirectToUrl } as const;
