@@ -1,6 +1,6 @@
 import { UserRepo } from "@src/repos";
 import {
-  CreateUserServiceResult,
+  CreateUserResult,
   IAddUserBody,
   ILoginUserBody,
   LoginUserServiceResult,
@@ -10,7 +10,7 @@ import { Encryption, ErrorHandler, Jwt, prisma } from "@src/util";
 /**
  * Add one user.
  */
-async function add(userDto: IAddUserBody): CreateUserServiceResult {
+async function add(userDto: IAddUserBody): CreateUserResult {
   try {
     const [firstUser, errorGetUser] = await UserRepo.getFirst({
       prisma,

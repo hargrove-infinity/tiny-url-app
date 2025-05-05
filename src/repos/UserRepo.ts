@@ -1,7 +1,6 @@
 import {
-  CreateUserRepoResult,
-  GetFirstUserRepoResult,
-  GetUniqueUserRepoResult,
+  CreateUserResult,
+  GetUserResult,
   ICreateUserArgs,
   IGetFirstUserArgs,
   IGetUniqueUserArgs,
@@ -11,10 +10,7 @@ import { ErrorHandler } from "@src/util";
 /**
  * Get first user.
  */
-async function getFirst({
-  prisma,
-  args,
-}: IGetFirstUserArgs): GetFirstUserRepoResult {
+async function getFirst({ prisma, args }: IGetFirstUserArgs): GetUserResult {
   try {
     const firstUser = await prisma.user.findFirst(args);
     return [firstUser, null];
@@ -26,10 +22,7 @@ async function getFirst({
 /**
  * Get unique user.
  */
-async function getUnique({
-  prisma,
-  args,
-}: IGetUniqueUserArgs): GetUniqueUserRepoResult {
+async function getUnique({ prisma, args }: IGetUniqueUserArgs): GetUserResult {
   try {
     const uniqueUser = await prisma.user.findUnique(args);
     return [uniqueUser, null];
@@ -41,7 +34,7 @@ async function getUnique({
 /**
  * Add one user.
  */
-async function add({ prisma, args }: ICreateUserArgs): CreateUserRepoResult {
+async function add({ prisma, args }: ICreateUserArgs): CreateUserResult {
   try {
     const createdUser = await prisma.user.create(args);
     return [createdUser, null];

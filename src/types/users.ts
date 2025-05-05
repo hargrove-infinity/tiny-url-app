@@ -25,13 +25,9 @@ export interface ICreateUserArgs {
   args: Prisma.UserCreateArgs;
 }
 
-export type GetFirstUserRepoResult = NullableAsyncOperationResult<User>;
+export type GetUserResult = NullableAsyncOperationResult<User>;
 
-export type GetUniqueUserRepoResult = NullableAsyncOperationResult<User>;
-
-export type CreateUserRepoResult = AsyncOperationResult<User>;
-
-export type CreateUserServiceResult = AsyncOperationResult<User>;
+export type CreateUserResult = AsyncOperationResult<User>;
 
 export type LoginUserServiceResult = AsyncOperationResult<string>;
 
