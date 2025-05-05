@@ -15,12 +15,19 @@ export interface IGetFirstUserArgs {
   args: Prisma.UserFindFirstArgs;
 }
 
+export interface IGetUniqueUserArgs {
+  prisma: PrismaClient;
+  args: Prisma.UserFindUniqueArgs;
+}
+
 export interface ICreateUserArgs {
   prisma: PrismaClient;
   args: Prisma.UserCreateArgs;
 }
 
 export type GetFirstUserRepoResult = NullableAsyncOperationResult<User>;
+
+export type GetUniqueUserRepoResult = NullableAsyncOperationResult<User>;
 
 export type CreateUserRepoResult = AsyncOperationResult<User>;
 

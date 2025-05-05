@@ -18,6 +18,19 @@ function getFirstUserDatabaseError(): ApplicationError {
   );
 }
 
+function getUniqueUserDatabaseError(): ApplicationError {
+  return new ApplicationError(
+    ERROR_DEFINITIONS.GET_UNIQUE_USER_DATABASE_ERROR.message,
+    {
+      errorCode: ERROR_DEFINITIONS.GET_UNIQUE_USER_DATABASE_ERROR.code,
+      errorDescription:
+        ERROR_DEFINITIONS.GET_UNIQUE_USER_DATABASE_ERROR.description,
+      errorId: ERROR_DEFINITIONS.GET_UNIQUE_USER_DATABASE_ERROR.id,
+      statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
+    }
+  );
+}
+
 function createUserDatabaseError(): ApplicationError {
   return new ApplicationError(
     ERROR_DEFINITIONS.CREATE_USER_DATABASE_ERROR.message,
@@ -137,6 +150,7 @@ function loginFailed(): ApplicationError {
 
 export const Users = {
   getFirstUserDatabaseError,
+  getUniqueUserDatabaseError,
   createUserDatabaseError,
   userWithEmailAlreadyExists,
   unknownServiceErrorForCreatingUser,

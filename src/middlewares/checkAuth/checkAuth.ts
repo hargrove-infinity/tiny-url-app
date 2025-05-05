@@ -35,9 +35,9 @@ export async function checkAuth(
     return;
   }
 
-  const [firstUser, errorGetUser] = await UserRepo.getFirst({
+  const [uniqueUser, errorGetUser] = await UserRepo.getUnique({
     prisma,
-    args: { where: { username: result.username } },
+    args: { where: { id: result.id } },
   });
 
   if (errorGetUser) {
@@ -47,14 +47,14 @@ export async function checkAuth(
     return;
   }
 
-  if (!firstUser) {
+  if (!uniqueUser) {
     res.status(HttpStatusCodes.UNAUTHORIZED).send({
       errors: ErrorHandler.Users.userUnauthorizedPayload([result.username]),
     });
     return;
   }
 
-  req.user = firstUser;
+  req.user = uniqueUser;
 
   next();
 }

@@ -1,8 +1,10 @@
 import {
   CreateUserRepoResult,
   GetFirstUserRepoResult,
+  GetUniqueUserRepoResult,
   ICreateUserArgs,
   IGetFirstUserArgs,
+  IGetUniqueUserArgs,
 } from "@src/types";
 import { ErrorHandler } from "@src/util";
 
@@ -22,6 +24,21 @@ async function getFirst({
 }
 
 /**
+ * Get unique user.
+ */
+async function getUnique({
+  prisma,
+  args,
+}: IGetUniqueUserArgs): GetUniqueUserRepoResult {
+  try {
+    const uniqueUser = await prisma.user.findUnique(args);
+    return [uniqueUser, null];
+  } catch (error) {
+    return [null, ErrorHandler.Users.getUniqueUserDatabaseError()];
+  }
+}
+
+/**
  * Add one user.
  */
 async function add({ prisma, args }: ICreateUserArgs): CreateUserRepoResult {
@@ -33,4 +50,4 @@ async function add({ prisma, args }: ICreateUserArgs): CreateUserRepoResult {
   }
 }
 
-export const UserRepo = { add, getFirst } as const;
+export const UserRepo = { add, getFirst, getUnique } as const;
