@@ -17,6 +17,13 @@ export async function checkAuth(
     return;
   }
 
+  if (!authorization.startsWith("Bearer")) {
+    res
+      .status(HttpStatusCodes.UNAUTHORIZED)
+      .send({ errors: ErrorHandler.Token.authorizationTokenWrongFormat() });
+    return;
+  }
+
   const authorizationTokenFormatted = authorization.replace("Bearer ", "");
 
   const [result, error] = Jwt.verifyToken(authorizationTokenFormatted);
