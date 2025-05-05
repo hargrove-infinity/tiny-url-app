@@ -1,18 +1,11 @@
 import { LinkRepo } from "@src/repos";
 import { ErrorHandler, generateShortId, prisma } from "@src/util";
-import {
-  AddOneLinkServiceResult,
-  IAddLinkServiceArgs,
-  RedirectToUrlServiceResult,
-} from "@src/types";
+import { IAddLinkServiceArgs, LinkResult } from "@src/types";
 
 /**
  * Add one link.
  */
-async function addOne({
-  url,
-  userId,
-}: IAddLinkServiceArgs): AddOneLinkServiceResult {
+async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResult {
   try {
     if (!url) {
       return [null, ErrorHandler.Links.urlForConvertingNotProvided()];
@@ -68,7 +61,7 @@ async function addOne({
 /**
  * Redirect to url.
  */
-async function redirectToUrl(shortUrl: string): RedirectToUrlServiceResult {
+async function redirectToUrl(shortUrl: string): LinkResult {
   try {
     if (!shortUrl) {
       return [null, ErrorHandler.Links.shortUrlForRedirectingNotProvided()];

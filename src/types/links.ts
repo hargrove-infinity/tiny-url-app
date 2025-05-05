@@ -2,13 +2,9 @@ import { Request } from "express";
 import { Prisma, PrismaClient, Link } from "@prisma/client";
 import { NullableAsyncOperationResult, AsyncOperationResult } from "./misc";
 
-export type GetFirstLinkRepoResult = NullableAsyncOperationResult<Link>;
+export type GetLinkResult = NullableAsyncOperationResult<Link>;
 
-export type AddLinkRepoResult = AsyncOperationResult<Link>;
-
-export type AddOneLinkServiceResult = AsyncOperationResult<Link>;
-
-export type RedirectToUrlServiceResult = AsyncOperationResult<Link>;
+export type LinkResult = AsyncOperationResult<Link>;
 
 export interface IAddLinkServiceArgs {
   url: string;

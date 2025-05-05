@@ -1,18 +1,15 @@
 import {
   IAddLinkArgs,
   IGetFirstLinkArgs,
-  GetFirstLinkRepoResult,
-  AddLinkRepoResult,
+  GetLinkResult,
+  LinkResult,
 } from "@src/types";
 import { ErrorHandler } from "@src/util";
 
 /**
  * Get first link.
  */
-async function getFirst({
-  prisma,
-  args,
-}: IGetFirstLinkArgs): GetFirstLinkRepoResult {
+async function getFirst({ prisma, args }: IGetFirstLinkArgs): GetLinkResult {
   try {
     const firstLink = await prisma.link.findFirst(args);
     return [firstLink, null];
@@ -24,7 +21,7 @@ async function getFirst({
 /**
  * Add one link.
  */
-async function add({ prisma, data }: IAddLinkArgs): AddLinkRepoResult {
+async function add({ prisma, data }: IAddLinkArgs): LinkResult {
   try {
     const createdLink = await prisma.link.create({ data });
     return [createdLink, null];
