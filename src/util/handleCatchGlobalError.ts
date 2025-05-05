@@ -23,5 +23,5 @@ export function handleCatchGlobalError(
 
   res
     .status(HttpStatusCodes.INTERNAL_SERVER_ERROR)
-    .send({ errors: ErrorHandler.Common.unhandledError(errorMessage) });
+    .send({ errors: ErrorHandler.Common.internalServerError(errorMessage) });
 }

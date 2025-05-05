@@ -22,12 +22,12 @@ function routeNotFound(url: string): IErrorPayloadItem[] {
   ];
 }
 
-function unhandledError(errorMessage: string): IErrorPayloadItem[] {
+function internalServerError(errorMessage: string): IErrorPayloadItem[] {
   return [
     {
-      code: ERROR_DEFINITIONS.UNHANDLED_ERROR.code,
-      description: ERROR_DEFINITIONS.UNHANDLED_ERROR.description,
-      id: ERROR_DEFINITIONS.UNHANDLED_ERROR.id,
+      code: ERROR_DEFINITIONS.INTERNAL_SERVER_ERROR.code,
+      description: ERROR_DEFINITIONS.INTERNAL_SERVER_ERROR.description,
+      id: ERROR_DEFINITIONS.INTERNAL_SERVER_ERROR.id,
       data: [errorMessage],
     },
   ];
@@ -36,5 +36,5 @@ function unhandledError(errorMessage: string): IErrorPayloadItem[] {
 export const Common = {
   reThrowApplicationError,
   routeNotFound,
-  unhandledError,
+  internalServerError,
 } as const;

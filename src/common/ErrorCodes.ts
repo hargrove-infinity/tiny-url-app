@@ -11,10 +11,10 @@ const ERROR_DEFINITIONS_MISC = {
     id: "00001",
     description: "Url not found",
   },
-  UNHANDLED_ERROR: {
-    code: "UNHANDLED_ERROR",
+  INTERNAL_SERVER_ERROR: {
+    code: "INTERNAL_SERVER_ERROR",
     id: "00002",
-    description: "Error that is not handled by any repo, service, route",
+    description: "Internal server error",
   },
 };
 
