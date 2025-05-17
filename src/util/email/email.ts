@@ -1,5 +1,10 @@
-import { ENV } from "@src/common";
+import path from "path";
 import nodemailer from "nodemailer";
+import hbs from "nodemailer-express-handlebars";
+import { ENV } from "@src/common";
+import { ISendEmailConfirmArgs, MailOptionsWithContext } from "./types";
+
+const viewsPath = path.join("src", "views");
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -7,16 +12,38 @@ const transporter = nodemailer.createTransport({
   auth: { user: ENV.SenderEmail, pass: ENV.SenderPassword },
 });
 
-const mailOptions = {
+transporter.use(
+  "compile",
+  hbs({
+    viewEngine: {
+      partialsDir: viewsPath,
+      layoutsDir: viewsPath,
+      defaultLayout: "baseMessage",
+    },
+    viewPath: viewsPath,
+  })
+);
+
+const globalMailOptions = {
   from: { name: "Tiny url", address: ENV.SenderEmail },
-  subject: "Hello",
-  text: "Hello World!",
-  html: "<b>Hello World!</b>",
 };
 
-export async function sendEmail(toEmails: string[]) {
+const emailConfirmMailOptions = {
+  ...globalMailOptions,
+  subject: "Registration",
+  template: "emailConfirm",
+};
+
+export async function sendEmailConfirm({
+  toEmails,
+  context,
+}: ISendEmailConfirmArgs) {
   try {
-    await transporter.sendMail({ ...mailOptions, to: toEmails });
+    await transporter.sendMail({
+      ...emailConfirmMailOptions,
+      to: toEmails,
+      context,
+    } as MailOptionsWithContext);
     console.log("Email has been sent");
   } catch (error) {
     console.log("Send email error");
