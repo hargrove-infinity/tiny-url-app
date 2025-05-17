@@ -1,3 +1,4 @@
+export * from "./email";
 export * from "./db";
 export * from "./formatValidationErrors";
 export * from "./encryption";
