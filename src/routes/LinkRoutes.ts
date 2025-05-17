@@ -1,34 +1,44 @@
 import { Response } from "express";
 import { LinkService } from "@src/services";
-import { ApplicationError, HttpStatusCodes, LINKS } from "@src/common";
-import { IAddLinkBody, IRedirectLinkParams, Req } from "@src/types";
+import { ApplicationError, HttpStatusCodes } from "@src/common";
+import { AddLinkRequest, RedirectLinkRequest } from "@src/types";
+import { ErrorHandler } from "@src/util";
 
 /**
  * Add one link.
  */
-async function add(req: Req<{}, {}, IAddLinkBody>, res: Response) {
+async function add(req: AddLinkRequest, res: Response): Promise<void> {
   try {
-    const { url } = req.body;
-    const [link, error] = await LinkService.addOne(url);
+    const { user, body } = req;
+    const { url } = body;
 
-    if (link) {
-      return res.status(HttpStatusCodes.CREATED).send(link);
+    if (!user) {
+      res
+        .status(HttpStatusCodes.BAD_REQUEST)
+        .send({ errors: ErrorHandler.Users.userMissingRequestData() });
+      return;
     }
+
+    const [link, error] = await LinkService.addOne({ url, userId: user.id });
 
     if (error) {
-      return res.status(error.httpStatusCode).send({ err: error.appErrorCode });
+      res
+        .status(error.httpStatusCode)
+        .send({ errors: error.buildErrorPayload() });
+      return;
     }
 
-    return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
-      error: LINKS.ERROR_CODES.ERROR_RETURN_TYPE_ADD_LINK_SERVICE,
-    });
+    res.status(HttpStatusCodes.CREATED).send(link);
   } catch (error) {
     if (error instanceof ApplicationError) {
-      return res.status(HttpStatusCodes.BAD_REQUEST).send({ error });
+      res
+        .status(HttpStatusCodes.BAD_REQUEST)
+        .send({ errors: error.buildErrorPayload() });
+      return;
     }
 
-    return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
-      error: LINKS.ERROR_CODES.UNKNOWN_ROUTE_ERROR_FOR_CREATING_SHORT_URL,
+    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
+      errors: ErrorHandler.Links.unknownRouteErrorCreationLink(),
     });
   }
 }
@@ -37,31 +47,31 @@ async function add(req: Req<{}, {}, IAddLinkBody>, res: Response) {
  * Redirect to url.
  */
 async function redirectToUrl(
-  req: Req<IRedirectLinkParams, {}, {}>,
+  req: RedirectLinkRequest,
   res: Response
-) {
+): Promise<void> {
   try {
     const { shortUrl } = req.params;
     const [link, error] = await LinkService.redirectToUrl(shortUrl);
 
-    if (link) {
-      return res.status(HttpStatusCodes.MOVED_PERMANENTLY).redirect(link.url);
-    }
-
     if (error) {
-      return res.status(error.httpStatusCode).send({ err: error.appErrorCode });
+      res
+        .status(error.httpStatusCode)
+        .send({ error: error.buildErrorPayload() });
+      return;
     }
 
-    return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
-      error: LINKS.ERROR_CODES.ERROR_RETURN_TYPE_REDIRECT_LINK_SERVICE,
-    });
+    res.status(HttpStatusCodes.MOVED_PERMANENTLY).redirect(link.url);
   } catch (error) {
     if (error instanceof ApplicationError) {
-      return res.status(HttpStatusCodes.BAD_REQUEST).send({ error });
+      res
+        .status(HttpStatusCodes.BAD_REQUEST)
+        .send({ errors: error.buildErrorPayload() });
+      return;
     }
 
-    return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
-      error: LINKS.ERROR_CODES.UNKNOWN_ROUTE_ERROR_FOR_REDIRECTING_TO_URL,
+    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
+      errors: ErrorHandler.Links.unknownRouteErrorRedirectingToUrl(),
     });
   }
 }
@@ -70,7 +80,4 @@ async function redirectToUrl(
                                 Export
 ******************************************************************************/
 
-export const LinkRoutes = {
-  add,
-  redirectToUrl,
-} as const;
+export const LinkRoutes = { add, redirectToUrl } as const;

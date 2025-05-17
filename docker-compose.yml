@@ -1,0 +1,26 @@
+version: "3.6"
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: shortener
+    ports:
+      - 5432:5432
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge

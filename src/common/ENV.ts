@@ -5,6 +5,7 @@ import { EnvSchema } from "@src/validation";
 ******************************************************************************/
 
 export const ENV = EnvSchema.parse({
-  NodeEnv: process.env.NodeEnv,
-  Port: process.env.Port,
+  NodeEnv: process.env.NODE_ENV,
+  Port: process.env.PORT,
+  JwtSecretKey: process.env.JWT_SECRET_KEY,
 });

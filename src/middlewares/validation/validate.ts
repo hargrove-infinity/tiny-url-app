@@ -1,17 +1,26 @@
 import { Request, Response, NextFunction } from "express";
-import { IValidateArgs } from "./types";
+import { HttpStatusCodes } from "@src/common";
+import { formatValidationErrors } from "@src/util";
+import { IValidateArgs, ValidateReturn } from "./types";
 
-export function validate<T>({ schema, key }: IValidateArgs) {
-  return (req: Request<T>, res: Response, next: NextFunction) => {
-    const result = key
-      ? schema.safeParse(req[key])
-      : schema.safeParse(req.body);
+export function validate<T>({
+  schema,
+  key = "body",
+}: IValidateArgs): ValidateReturn<T> {
+  return (req: Request<T>, res: Response, next: NextFunction): void => {
+    const result = schema.safeParse(req[key]);
 
     if (!result.success) {
-      res.status(400).json({ errors: result.error });
+      const errorsPayload = formatValidationErrors({
+        issues: result.error.issues,
+        body: req.body,
+      });
+
+      res.status(HttpStatusCodes.BAD_REQUEST).send({ errors: errorsPayload });
       return;
     }
 
+    req[key] = result.data;
     next();
   };
 }

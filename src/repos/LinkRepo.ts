@@ -1,31 +1,32 @@
-import { ApplicationError, HttpStatusCodes, LINKS } from "@src/common";
-import { IAddLinkArgs, IGetFirstLinkArgs } from "@src/types";
+import {
+  IAddLinkArgs,
+  IGetFirstLinkArgs,
+  GetLinkResult,
+  LinkResult,
+} from "@src/types";
+import { ErrorHandler } from "@src/util";
 
 /**
  * Get first link.
  */
-async function getFirst({ prisma, args }: IGetFirstLinkArgs) {
+async function getFirst({ prisma, args }: IGetFirstLinkArgs): GetLinkResult {
   try {
-    return await prisma.link.findFirst(args);
+    const firstLink = await prisma.link.findFirst(args);
+    return [firstLink, null];
   } catch (error) {
-    throw new ApplicationError(LINKS.ERROR_MESSAGES.DATABASE_ERROR_LINKS, {
-      errorCode: LINKS.ERROR_CODES.DATABASE_ERROR_GET_FIRST_LINK,
-      statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-    });
+    return [null, ErrorHandler.Links.getFirstLinkDatabaseError()];
   }
 }
 
 /**
  * Add one link.
  */
-async function add({ prisma, url, shortener }: IAddLinkArgs) {
+async function add({ prisma, data }: IAddLinkArgs): LinkResult {
   try {
-    return await prisma.link.create({ data: { url, shortener } });
+    const createdLink = await prisma.link.create({ data });
+    return [createdLink, null];
   } catch (error) {
-    throw new ApplicationError(LINKS.ERROR_MESSAGES.DATABASE_ERROR_LINKS, {
-      errorCode: LINKS.ERROR_CODES.DATABASE_ERROR_ADD_ONE_LINK,
-      statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-    });
+    return [null, ErrorHandler.Links.addOneLinkDatabaseError()];
   }
 }
 

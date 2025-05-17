@@ -1,27 +1,40 @@
+import { Request } from "express";
 import { Prisma, PrismaClient, Link } from "@prisma/client";
-import { OptionalApplicationError } from "./errors";
+import { NullableAsyncOperationResult, AsyncOperationResult } from "./misc";
 
-type OptionalLink = Link | null;
+export type GetLinkResult = NullableAsyncOperationResult<Link>;
 
-export type LinkServiceResult = Promise<
-  [OptionalLink, OptionalApplicationError]
->;
+export type LinkResult = AsyncOperationResult<Link>;
+
+export interface IAddLinkServiceArgs {
+  url: string;
+  userId: number;
+}
 
 export interface IGetFirstLinkArgs {
   prisma: PrismaClient;
   args: Prisma.LinkFindFirstArgs;
 }
 
-export interface IAddLinkArgs {
-  prisma: PrismaClient;
+interface IAddLinkData {
   url: string;
   shortener: string;
+  userId: number;
 }
 
-export interface IAddLinkBody {
+export interface IAddLinkArgs {
+  prisma: PrismaClient;
+  data: IAddLinkData;
+}
+
+interface IAddLinkBody {
   url: string;
 }
 
-export interface IRedirectLinkParams {
+export type AddLinkRequest = Request<{}, {}, IAddLinkBody>;
+
+interface IRedirectLinkParams {
   shortUrl: string;
 }
+
+export type RedirectLinkRequest = Request<IRedirectLinkParams, {}, {}>;

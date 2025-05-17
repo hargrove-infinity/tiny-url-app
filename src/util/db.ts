@@ -1,8 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
-export const prisma = new PrismaClient();
+export const prisma = new PrismaClient({
+  omit: { user: { password: true } },
+} as Prisma.PrismaClientOptions);
 
-async function testDBConnection() {
+async function testDBConnection(): Promise<void> {
   try {
     await prisma.$connect();
     console.log("✅ Database connection successful");
@@ -11,7 +13,7 @@ async function testDBConnection() {
   }
 }
 
-async function testDBConnectionAndDisconnect() {
+async function testDBConnectionAndDisconnect(): Promise<void> {
   try {
     await prisma.$connect();
     console.log("✅ Database connection successful");
