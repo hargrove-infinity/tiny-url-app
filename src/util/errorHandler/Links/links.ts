@@ -3,7 +3,6 @@ import {
   ERROR_DEFINITIONS,
   HttpStatusCodes,
 } from "@src/common";
-import { IErrorPayloadItem } from "@src/types";
 
 function addOneLinkDatabaseError(): ApplicationError {
   return new ApplicationError(
@@ -44,19 +43,6 @@ function urlForConvertingNotProvided(): ApplicationError {
   );
 }
 
-function unknownServiceErrorForCreatingLink(): ApplicationError {
-  return new ApplicationError(
-    ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_CREATION_LINK.message,
-    {
-      errorCode: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_CREATION_LINK.code,
-      errorDescription:
-        ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_CREATION_LINK.description,
-      errorId: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_CREATION_LINK.id,
-      statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-    }
-  );
-}
-
 function shortUrlForRedirectingNotProvided(): ApplicationError {
   return new ApplicationError(
     ERROR_DEFINITIONS.SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED.message,
@@ -86,51 +72,10 @@ function shortUrlForRedirectingNotFoundInDatabase(): ApplicationError {
   );
 }
 
-function unknownServiceErrorForRedirectingToUrl(): ApplicationError {
-  return new ApplicationError(
-    ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_REDIRECT_LINK.message,
-    {
-      errorCode: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_REDIRECT_LINK.code,
-      errorDescription:
-        ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_REDIRECT_LINK.description,
-      errorId: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_REDIRECT_LINK.id,
-      statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-    }
-  );
-}
-
-function unknownRouteErrorCreationLink(): IErrorPayloadItem[] {
-  return [
-    {
-      code: ERROR_DEFINITIONS.UNKNOWN_ROUTE_ERROR_CREATION_LINK.code,
-      description:
-        ERROR_DEFINITIONS.UNKNOWN_ROUTE_ERROR_CREATION_LINK.description,
-      id: ERROR_DEFINITIONS.UNKNOWN_ROUTE_ERROR_CREATION_LINK.id,
-      data: [],
-    },
-  ];
-}
-
-function unknownRouteErrorRedirectingToUrl(): IErrorPayloadItem[] {
-  return [
-    {
-      code: ERROR_DEFINITIONS.UNKNOWN_ROUTE_ERROR_REDIRECT_URL.code,
-      description:
-        ERROR_DEFINITIONS.UNKNOWN_ROUTE_ERROR_REDIRECT_URL.description,
-      id: ERROR_DEFINITIONS.UNKNOWN_ROUTE_ERROR_REDIRECT_URL.id,
-      data: [],
-    },
-  ];
-}
-
 export const Links = {
   addOneLinkDatabaseError,
   getFirstLinkDatabaseError,
   urlForConvertingNotProvided,
-  unknownServiceErrorForCreatingLink,
   shortUrlForRedirectingNotProvided,
   shortUrlForRedirectingNotFoundInDatabase,
-  unknownServiceErrorForRedirectingToUrl,
-  unknownRouteErrorCreationLink,
-  unknownRouteErrorRedirectingToUrl,
 } as const;

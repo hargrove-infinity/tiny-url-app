@@ -224,51 +224,27 @@ const ERROR_DEFINITIONS_LINKS = {
     description: "Url was not provided for the converting",
     message: "Url was not provided for the converting (addOne LinkService)",
   },
-  UNKNOWN_SERVICE_ERROR_CREATION_LINK: {
-    code: "UNKNOWN_SERVICE_ERROR_CREATION_LINK",
-    id: "00036",
-    description: "Unknown error in service for creation link",
-    message:
-      "Unknown error in service for creation link (addOne LinkService catch block)",
-  },
   SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED: {
     code: "SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED",
-    id: "00037",
+    id: "00036",
     description: "Short url was not provided for the redirecting",
     message:
       "Short url was not provided for the redirecting (redirectToUrl LinkService)",
   },
   SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE: {
     code: "SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE",
-    id: "00038",
+    id: "00037",
     description: "Short url was not found in database",
     message: "Short url was not found in database (redirectToUrl LinkService)",
   },
-  UNKNOWN_SERVICE_ERROR_REDIRECT_LINK: {
-    code: "UNKNOWN_SERVICE_ERROR_REDIRECT_LINK",
-    id: "00039",
-    description: "Unknown error in service for redirecting link",
-    message:
-      "Unknown error in service for redirecting link (redirectToUrl LinkService catch block)",
-  },
-  UNKNOWN_ROUTE_ERROR_CREATION_LINK: {
-    code: "UNKNOWN_ROUTE_ERROR_CREATION_LINK",
-    id: "00040",
-    description: "Unknown error in route for creation link",
-  },
-  UNKNOWN_ROUTE_ERROR_REDIRECT_URL: {
-    code: "UNKNOWN_ROUTE_ERROR_REDIRECT_URL",
-    id: "00041",
-    description: "Unknown error in route for redirect url",
-  },
   URL_MUST_BE_STRING: {
     code: "URL_MUST_BE_STRING",
-    id: "00042",
+    id: "00038",
     description: "Url must be string",
   },
   URL_PATTERN: {
     code: "URL_PATTERN",
-    id: "00043",
+    id: "00039",
     description: "String is not valid url",
   },
 };
