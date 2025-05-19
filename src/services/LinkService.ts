@@ -1,12 +1,14 @@
 import { LinkRepo } from "@src/repos";
 import { ErrorHandler, generateShortId, prisma } from "@src/util";
 import { IAddLinkServiceArgs, LinkResultService } from "@src/types";
+import { pinoLogger } from "@src/logger";
 
 /**
  * Add one link.
  */
 async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
   if (!url) {
+    pinoLogger.error("Url for converting not provided");
     return [, ErrorHandler.Links.urlForConvertingNotProvided()];
   }
 
@@ -50,6 +52,7 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
  */
 async function redirectToUrl(shortUrl: string): LinkResultService {
   if (!shortUrl) {
+    pinoLogger.error("Short url for redirecting not provided");
     return [, ErrorHandler.Links.shortUrlForRedirectingNotProvided()];
   }
 
