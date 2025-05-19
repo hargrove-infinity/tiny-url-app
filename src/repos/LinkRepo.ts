@@ -16,6 +16,17 @@ async function getFirst({ prisma, args }: IGetFirstLinkArgs): GetLinkResult {
   } catch (error) {
     return [null, ErrorHandler.Links.getFirstLinkDatabaseError()];
   }
+
+  // TODO apply asyncTryCatch
+  // const fn = prisma.link.findFirst(args);
+  // const [data, error] = await asyncTryCatch<Nullable<Link>, PrismaError>(fn);
+
+  // // Return new ApplicationError here in each place where asyncFn is called
+  // if (error) {
+  //   return [, ErrorHandler.Links.getFirstLinkDatabaseError()];
+  // }
+
+  // return [data, undefined];
 }
 
 /**

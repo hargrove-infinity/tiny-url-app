@@ -37,6 +37,8 @@ async function add(req: AddLinkRequest, res: Response): Promise<void> {
       return;
     }
 
+    // TODO Separate ApplicationError from the IErrorPayloadItem
+    // TODO Something like  ErrorHandler.Global.unknownRouteErrorCreationLink(),
     res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
       errors: ErrorHandler.Links.unknownRouteErrorCreationLink(),
     });
