@@ -1,10 +1,19 @@
 import { Request } from "express";
 import { Prisma, PrismaClient, Link } from "@prisma/client";
-import { NullableAsyncOperationResult, AsyncOperationResult } from "./misc";
+import { Nullable } from "./misc";
+import { ApplicationError } from "@src/common";
 
-export type GetLinkResult = NullableAsyncOperationResult<Link>;
+export type AddLinkRepoResult = Promise<
+  [Link, undefined] | [undefined, ApplicationError]
+>;
 
-export type LinkResult = AsyncOperationResult<Link>;
+export type GetFirstLinkRepoResult = Promise<
+  [Nullable<Link>, undefined] | [undefined, ApplicationError]
+>;
+
+export type LinkResultService = Promise<
+  [Link, undefined] | [undefined, ApplicationError]
+>;
 
 export interface IAddLinkServiceArgs {
   url: string;
