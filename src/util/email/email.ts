@@ -18,7 +18,7 @@ transporter.use(
     viewEngine: {
       partialsDir: viewsPath,
       layoutsDir: viewsPath,
-      defaultLayout: "baseMessage",
+      defaultLayout: "baseLayout",
     },
     viewPath: viewsPath,
   })
@@ -43,6 +43,13 @@ export async function sendEmailConfirm({
       ...emailConfirmMailOptions,
       to: toEmails,
       context,
+      attachments: [
+        {
+          filename: "logo.png",
+          path: path.resolve("src", "images", "logo.png"),
+          cid: "logo",
+        },
+      ],
     } as MailOptionsWithContext);
     console.log("Email has been sent");
   } catch (error) {
