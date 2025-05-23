@@ -2,6 +2,7 @@ import { LinkRepo } from "@src/repos";
 import { ErrorHandler, generateShortId, prisma } from "@src/util";
 import { IAddLinkServiceArgs, LinkResultService } from "@src/types";
 import { pinoLogger } from "@src/logger";
+import { ApplicationError } from "@src/common";
 
 /**
  * Add one link.
@@ -9,7 +10,10 @@ import { pinoLogger } from "@src/logger";
 async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
   if (!url) {
     pinoLogger.error("Url for converting not provided");
-    return [, ErrorHandler.Links.urlForConvertingNotProvided()];
+    return [, ErrorHandler.Links.urlForConvertingNotProvided()] as [
+      never,
+      ApplicationError
+    ];
   }
 
   let shortUrl = generateShortId(url);
@@ -20,7 +24,7 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
   });
 
   if (errorFetchedLink) {
-    return [, errorFetchedLink];
+    return [, errorFetchedLink] as [never, ApplicationError];
   }
 
   while (fetchedLink) {
@@ -31,7 +35,7 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
     });
 
     if (errorFetchedLink) {
-      return [, errorFetchedLink];
+      return [, errorFetchedLink] as [never, ApplicationError];
     }
   }
 
@@ -41,10 +45,10 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
   });
 
   if (errorCreatedLink) {
-    return [, errorCreatedLink];
+    return [, errorCreatedLink] as [never, ApplicationError];
   }
 
-  return [createdLink, undefined];
+  return [createdLink];
 }
 
 /**
@@ -53,7 +57,10 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
 async function redirectToUrl(shortUrl: string): LinkResultService {
   if (!shortUrl) {
     pinoLogger.error("Short url for redirecting not provided");
-    return [, ErrorHandler.Links.shortUrlForRedirectingNotProvided()];
+    return [, ErrorHandler.Links.shortUrlForRedirectingNotProvided()] as [
+      never,
+      ApplicationError
+    ];
   }
 
   const [firstLink, error] = await LinkRepo.getFirst({
@@ -62,14 +69,17 @@ async function redirectToUrl(shortUrl: string): LinkResultService {
   });
 
   if (error) {
-    return [, error];
+    return [, error] as [never, ApplicationError];
   }
 
   if (!firstLink) {
-    return [, ErrorHandler.Links.shortUrlForRedirectingNotFoundInDatabase()];
+    return [
+      ,
+      ErrorHandler.Links.shortUrlForRedirectingNotFoundInDatabase(),
+    ] as [never, ApplicationError];
   }
 
-  return [firstLink, undefined];
+  return [firstLink];
 }
 
 /******************************************************************************

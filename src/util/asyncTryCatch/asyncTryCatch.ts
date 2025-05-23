@@ -1,12 +1,12 @@
 import { AsyncReturn, PromiseType } from "./types";
 
-export async function asyncTryCatch<R = unknown, E = unknown>(
-  promise: PromiseType
+export async function asyncTryCatch<R, E>(
+  promise: PromiseType<R>
 ): AsyncReturn<R, E> {
   try {
     const data = await promise;
-    return [data as R, undefined];
+    return [data];
   } catch (error) {
-    return [, error];
+    return [, error as E] as [never, E];
   }
 }
