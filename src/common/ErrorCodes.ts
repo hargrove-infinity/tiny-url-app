@@ -157,51 +157,51 @@ const ERROR_DEFINITIONS_USERS = {
     id: "00024",
     description: "Unknown error in creation user route",
   },
-  CREATE_LINK_DATABASE_ERROR: {
-    code: "CREATE_LINK_DATABASE_ERROR",
-    id: "00025",
-    description: "Error during creation link in database",
-    message: "Error during creation link in database (add LinkRepo)",
-  },
-  GET_FIRST_LINK_DATABASE_ERROR: {
-    code: "GET_FIRST_LINK_DATABASE_ERROR",
-    id: "00026",
-    description: "Error during get first link in database",
-    message: "Error during get first link in database (getFirst LinkRepo)",
-  },
   UNKNOWN_ROUTE_ERROR_LOGIN_USER: {
     code: "UNKNOWN_ROUTE_ERROR_LOGIN_USER",
-    id: "00027",
+    id: "00025",
     description: "Unknown error in login user route",
   },
   UNKNOWN_SERVICE_ERROR_LOGIN_USER: {
     code: "UNKNOWN_SERVICE_ERROR_LOGIN_USER",
-    id: "00028",
+    id: "00026",
     description: "Unknown error in login user service",
     message:
       "Unknown error in login user service (login UserService catch block)",
   },
   USER_UNAUTHORIZED: {
     code: "USER_UNAUTHORIZED",
-    id: "00029",
+    id: "00027",
     description: "User is not authorized",
     message:
       "User is not authorized (login UserService / checkAuth middleware)",
   },
   USER_MISSING_REQUEST_DATA: {
     code: "USER_MISSING_REQUEST_DATA",
-    id: "00030",
+    id: "00028",
     description: "User field is missing in the express request object",
   },
   LOGIN_FAILED: {
     code: "LOGIN_FAILED",
-    id: "00031",
+    id: "00029",
     description: "Login failed: Invalid username or password.",
     message: "Login failed: Invalid username or password. (login UserService)",
   },
 };
 
 const ERROR_DEFINITIONS_LINKS = {
+  CREATE_LINK_DATABASE_ERROR: {
+    code: "CREATE_LINK_DATABASE_ERROR",
+    id: "00030",
+    description: "Error during creation link in database",
+    message: "Error during creation link in database (add LinkRepo)",
+  },
+  GET_FIRST_LINK_DATABASE_ERROR: {
+    code: "GET_FIRST_LINK_DATABASE_ERROR",
+    id: "00031",
+    description: "Error during get first link in database",
+    message: "Error during get first link in database (getFirst LinkRepo)",
+  },
   SHORT_URL_MUST_BE_STRING: {
     code: "SHORT_URL_MUST_BE_STRING",
     id: "00032",
@@ -224,51 +224,27 @@ const ERROR_DEFINITIONS_LINKS = {
     description: "Url was not provided for the converting",
     message: "Url was not provided for the converting (addOne LinkService)",
   },
-  UNKNOWN_SERVICE_ERROR_CREATION_LINK: {
-    code: "UNKNOWN_SERVICE_ERROR_CREATION_LINK",
-    id: "00036",
-    description: "Unknown error in service for creation link",
-    message:
-      "Unknown error in service for creation link (addOne LinkService catch block)",
-  },
   SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED: {
     code: "SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED",
-    id: "00037",
+    id: "00036",
     description: "Short url was not provided for the redirecting",
     message:
       "Short url was not provided for the redirecting (redirectToUrl LinkService)",
   },
   SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE: {
     code: "SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE",
-    id: "00038",
+    id: "00037",
     description: "Short url was not found in database",
     message: "Short url was not found in database (redirectToUrl LinkService)",
   },
-  UNKNOWN_SERVICE_ERROR_REDIRECT_LINK: {
-    code: "UNKNOWN_SERVICE_ERROR_REDIRECT_LINK",
-    id: "00039",
-    description: "Unknown error in service for redirecting link",
-    message:
-      "Unknown error in service for redirecting link (redirectToUrl LinkService catch block)",
-  },
-  UNKNOWN_ROUTE_ERROR_CREATION_LINK: {
-    code: "UNKNOWN_ROUTE_ERROR_CREATION_LINK",
-    id: "00040",
-    description: "Unknown error in route for creation link",
-  },
-  UNKNOWN_ROUTE_ERROR_REDIRECT_URL: {
-    code: "UNKNOWN_ROUTE_ERROR_REDIRECT_URL",
-    id: "00041",
-    description: "Unknown error in route for redirect url",
-  },
   URL_MUST_BE_STRING: {
     code: "URL_MUST_BE_STRING",
-    id: "00042",
+    id: "00038",
     description: "Url must be string",
   },
   URL_PATTERN: {
     code: "URL_PATTERN",
-    id: "00043",
+    id: "00039",
     description: "String is not valid url",
   },
 };
