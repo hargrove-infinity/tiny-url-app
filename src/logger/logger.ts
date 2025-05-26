@@ -8,10 +8,6 @@ export const pinoLoggerHttp = pinoHttp({
     target: "pino-pretty",
   },
   customLogLevel: (req, res, err) => {
-    if (res.statusCode >= 500 || err) {
-      return "fatal";
-    }
-
     if (res.statusCode >= 400) {
       return "error";
     }
