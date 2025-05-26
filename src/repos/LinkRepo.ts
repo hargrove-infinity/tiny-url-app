@@ -23,7 +23,7 @@ async function getFirst({
   const [data, error] = await asyncTryCatch<Nullable<Link>, PrismaError>(res);
 
   if (error) {
-    pinoLogger.error("Error during getting first link from database");
+    pinoLogger.error(error, "Error during getting first link from database");
     return [, ErrorHandler.Common.serverFailure()] as [never, ApplicationError];
   }
 
@@ -40,7 +40,7 @@ async function add({ prisma, data }: IAddLinkArgs): AddLinkRepoResult {
   const [link, error] = await asyncTryCatch<Link, PrismaError>(res);
 
   if (error) {
-    pinoLogger.error("Error during adding link to database");
+    pinoLogger.error(error, "Error during adding link to database");
     return [, ErrorHandler.Common.serverFailure()] as [never, ApplicationError];
   }
 
