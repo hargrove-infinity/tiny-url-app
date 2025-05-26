@@ -18,6 +18,12 @@ export const UNCAUGHT_EXCEPTION_MESSAGE =
 export const UNHANDLED_REJECTION_MESSAGE =
   "Unhandled Rejection - application will exit";
 
+export const DATABASE_CONNECTED_SUCCESSFULLY_MESSAGE =
+  "✅ Database connection successful";
+
+export const DATABASE_CONNECTION_FAILED_MESSAGE =
+  "❌ Failed to connect to database. Exiting.";
+
 /******************************************************************************
                               Enums
 ******************************************************************************/
