@@ -5,45 +5,6 @@ import {
 } from "@src/common";
 import { IErrorPayloadItem } from "@src/types";
 
-function getFirstUserDatabaseError(): ApplicationError {
-  return new ApplicationError(
-    ERROR_DEFINITIONS.GET_FIRST_USER_DATABASE_ERROR.message,
-    {
-      errorCode: ERROR_DEFINITIONS.GET_FIRST_USER_DATABASE_ERROR.code,
-      errorDescription:
-        ERROR_DEFINITIONS.GET_FIRST_USER_DATABASE_ERROR.description,
-      errorId: ERROR_DEFINITIONS.GET_FIRST_USER_DATABASE_ERROR.id,
-      statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-    }
-  );
-}
-
-function getUniqueUserDatabaseError(): ApplicationError {
-  return new ApplicationError(
-    ERROR_DEFINITIONS.GET_UNIQUE_USER_DATABASE_ERROR.message,
-    {
-      errorCode: ERROR_DEFINITIONS.GET_UNIQUE_USER_DATABASE_ERROR.code,
-      errorDescription:
-        ERROR_DEFINITIONS.GET_UNIQUE_USER_DATABASE_ERROR.description,
-      errorId: ERROR_DEFINITIONS.GET_UNIQUE_USER_DATABASE_ERROR.id,
-      statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-    }
-  );
-}
-
-function createUserDatabaseError(): ApplicationError {
-  return new ApplicationError(
-    ERROR_DEFINITIONS.CREATE_USER_DATABASE_ERROR.message,
-    {
-      errorCode: ERROR_DEFINITIONS.CREATE_USER_DATABASE_ERROR.code,
-      errorDescription:
-        ERROR_DEFINITIONS.CREATE_USER_DATABASE_ERROR.description,
-      errorId: ERROR_DEFINITIONS.CREATE_USER_DATABASE_ERROR.id,
-      statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-    }
-  );
-}
-
 function userWithEmailAlreadyExists(data: string[]): ApplicationError {
   return new ApplicationError(
     ERROR_DEFINITIONS.USER_WITH_EMAIL_ALREADY_EXISTS.message,
@@ -149,9 +110,6 @@ function loginFailed(): ApplicationError {
 }
 
 export const Users = {
-  getFirstUserDatabaseError,
-  getUniqueUserDatabaseError,
-  createUserDatabaseError,
   userWithEmailAlreadyExists,
   unknownServiceErrorForCreatingUser,
   unknownRouteErrorForCreatingUser,

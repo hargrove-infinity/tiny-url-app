@@ -24,10 +24,7 @@ async function getFirst({
 
   if (error) {
     pinoLogger.error("Error during getting first link from database");
-    return [, ErrorHandler.Links.getFirstLinkDatabaseError()] as [
-      never,
-      ApplicationError
-    ];
+    return [, ErrorHandler.Common.serverFailure()] as [never, ApplicationError];
   }
 
   pinoLogger.info("First link successfully fetched from database");
@@ -44,10 +41,7 @@ async function add({ prisma, data }: IAddLinkArgs): AddLinkRepoResult {
 
   if (error) {
     pinoLogger.error("Error during adding link to database");
-    return [, ErrorHandler.Links.addOneLinkDatabaseError()] as [
-      never,
-      ApplicationError
-    ];
+    return [, ErrorHandler.Common.serverFailure()] as [never, ApplicationError];
   }
 
   pinoLogger.info("Link successfully added to database");

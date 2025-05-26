@@ -73,10 +73,7 @@ async function redirectToUrl(shortUrl: string): LinkResultService {
   }
 
   if (!firstLink) {
-    return [
-      ,
-      ErrorHandler.Links.shortUrlForRedirectingNotFoundInDatabase(),
-    ] as [never, ApplicationError];
+    return [, ErrorHandler.Common.serverFailure()] as [never, ApplicationError];
   }
 
   return [firstLink];

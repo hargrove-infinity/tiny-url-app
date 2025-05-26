@@ -15,7 +15,7 @@ async function getFirst({ prisma, args }: IGetFirstUserArgs): GetUserResult {
     const firstUser = await prisma.user.findFirst(args);
     return [firstUser, null];
   } catch (error) {
-    return [null, ErrorHandler.Users.getFirstUserDatabaseError()];
+    return [null, ErrorHandler.Common.serverFailure()];
   }
 }
 
@@ -27,7 +27,7 @@ async function getUnique({ prisma, args }: IGetUniqueUserArgs): GetUserResult {
     const uniqueUser = await prisma.user.findUnique(args);
     return [uniqueUser, null];
   } catch (error) {
-    return [null, ErrorHandler.Users.getUniqueUserDatabaseError()];
+    return [null, ErrorHandler.Common.serverFailure()];
   }
 }
 
@@ -39,7 +39,7 @@ async function add({ prisma, args }: ICreateUserArgs): CreateUserResult {
     const createdUser = await prisma.user.create(args);
     return [createdUser, null];
   } catch (error) {
-    return [null, ErrorHandler.Users.createUserDatabaseError()];
+    return [null, ErrorHandler.Common.serverFailure()];
   }
 }
 
