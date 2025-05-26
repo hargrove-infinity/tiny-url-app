@@ -6,7 +6,12 @@ import { BaseRouter } from "@src/routes";
 import { responseFormatter } from "@src/middlewares";
 import { ENV, NodeEnvs, Paths } from "@src/common";
 import { pinoLoggerHttp } from "@src/logger";
-import { handleCatchAllRouteError, handleCatchGlobalError } from "@src/util";
+import {
+  handleCatchAllRouteError,
+  handleCatchGlobalError,
+  uncaughtExceptionCatch,
+  unhandledRejectionCatch,
+} from "@src/util";
 
 /******************************************************************************
                                 Setup
@@ -39,5 +44,11 @@ app.all(Paths.CatchAll, handleCatchAllRouteError);
 
 // Catch global (unhandled) error
 app.use(handleCatchGlobalError);
+
+// Catch process uncaught exception
+process.on("uncaughtException", uncaughtExceptionCatch);
+
+// Catch process unhandled rejection
+process.on("unhandledRejection", unhandledRejectionCatch);
 
 export { app };

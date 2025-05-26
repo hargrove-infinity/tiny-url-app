@@ -6,4 +6,5 @@ export * from "./errorHandler";
 export * from "./handleCatchAllRouteError";
 export * from "./handleCatchGlobalError";
 export * from "./jwt";
+export * from "./processHandlers";
 export * from "./shortener";

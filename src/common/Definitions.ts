@@ -12,6 +12,12 @@ export const DEFAULT_SHORT_URL_LENGTH = 7;
 // Only capital letters or lower letters or number or dash or underscore
 export const SHORT_URL_REGEXP = /^[A-Za-z0-9_-]+$/;
 
+export const UNCAUGHT_EXCEPTION_MESSAGE =
+  "Uncaught Exception - application will exit";
+
+export const UNHANDLED_REJECTION_MESSAGE =
+  "Unhandled Rejection - application will exit";
+
 /******************************************************************************
                               Enums
 ******************************************************************************/
