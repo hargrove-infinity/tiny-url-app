@@ -56,17 +56,14 @@ function shortUrlForRedirectingNotProvided(): ApplicationError {
   );
 }
 
-function shortUrlForRedirectingNotFoundInDatabase(): ApplicationError {
+function shortUrlForRedirectingMissing(): ApplicationError {
   return new ApplicationError(
-    ERROR_DEFINITIONS.SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE.message,
+    ERROR_DEFINITIONS.SHORT_URL_FOR_REDIRECTING_MISSING.message,
     {
-      errorCode:
-        ERROR_DEFINITIONS.SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE.code,
+      errorCode: ERROR_DEFINITIONS.SHORT_URL_FOR_REDIRECTING_MISSING.code,
       errorDescription:
-        ERROR_DEFINITIONS.SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE
-          .description,
-      errorId:
-        ERROR_DEFINITIONS.SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE.id,
+        ERROR_DEFINITIONS.SHORT_URL_FOR_REDIRECTING_MISSING.description,
+      errorId: ERROR_DEFINITIONS.SHORT_URL_FOR_REDIRECTING_MISSING.id,
       statusCode: HttpStatusCodes.NOT_FOUND,
     }
   );
@@ -77,5 +74,5 @@ export const Links = {
   getFirstLinkDatabaseError,
   urlForConvertingNotProvided,
   shortUrlForRedirectingNotProvided,
-  shortUrlForRedirectingNotFoundInDatabase,
+  shortUrlForRedirectingMissing,
 } as const;

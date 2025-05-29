@@ -111,10 +111,10 @@ async function redirectToUrl(shortUrl: string): LinkResultService {
       "First link is not found in database during redirecting in redirectToUrl LinkService"
     );
 
-    return [
-      ,
-      AppErrorService.Links.shortUrlForRedirectingNotFoundInDatabase(),
-    ] as [never, ApplicationError];
+    return [, AppErrorService.Links.shortUrlForRedirectingMissing()] as [
+      never,
+      ApplicationError
+    ];
   }
 
   return [firstLink];

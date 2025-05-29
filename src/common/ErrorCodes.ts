@@ -232,11 +232,11 @@ const ERROR_DEFINITIONS_LINKS = {
     message:
       "Short url was not provided for the redirecting (redirectToUrl LinkService)",
   },
-  SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE: {
-    code: "SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE",
+  SHORT_URL_FOR_REDIRECTING_MISSING: {
+    code: "SHORT_URL_FOR_REDIRECTING_MISSING",
     id: "00037",
-    description: "Short url was not found in database",
-    message: "Short url was not found in database (redirectToUrl LinkService)",
+    description: "Short url for redirecting missing",
+    message: "Short url for redirecting missing (redirectToUrl LinkService)",
   },
   URL_MUST_BE_STRING: {
     code: "URL_MUST_BE_STRING",
