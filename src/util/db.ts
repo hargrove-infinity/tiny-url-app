@@ -1,4 +1,9 @@
 import { Prisma, PrismaClient } from "@prisma/client";
+import {
+  DATABASE_CONNECTED_SUCCESSFULLY_MESSAGE,
+  DATABASE_CONNECTION_FAILED_MESSAGE,
+} from "@src/common";
+import { pinoLogger } from "@src/logger";
 
 export const prisma = new PrismaClient({
   omit: { user: { password: true } },
@@ -7,20 +12,11 @@ export const prisma = new PrismaClient({
 async function testDBConnection(): Promise<void> {
   try {
     await prisma.$connect();
-    console.log("✅ Database connection successful");
+    pinoLogger.info(DATABASE_CONNECTED_SUCCESSFULLY_MESSAGE);
   } catch (error) {
-    console.error("❌ Database connection failed:", error);
+    pinoLogger.fatal(error, DATABASE_CONNECTION_FAILED_MESSAGE);
+    process.exit(1);
   }
 }
 
-async function testDBConnectionAndDisconnect(): Promise<void> {
-  try {
-    await prisma.$connect();
-    console.log("✅ Database connection successful");
-  } catch (error) {
-    console.error("❌ Database connection failed:", error);
-  } finally {
-    await prisma.$disconnect();
-    console.log("🔌 Database disconnected");
-  }
-}
+testDBConnection();

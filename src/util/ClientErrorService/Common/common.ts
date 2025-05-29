@@ -1,15 +1,5 @@
-import { ApplicationError, ERROR_DEFINITIONS } from "@src/common";
+import { ERROR_DEFINITIONS } from "@src/common";
 import { IErrorPayloadItem } from "@src/types";
-
-function reThrowApplicationError(error: ApplicationError): ApplicationError {
-  return new ApplicationError(error.message, {
-    data: error.data,
-    errorCode: error.errorCode,
-    errorDescription: error.errorDescription,
-    errorId: error.errorId,
-    statusCode: error.statusCode,
-  });
-}
 
 function routeNotFound(url: string): IErrorPayloadItem[] {
   return [
@@ -33,8 +23,4 @@ function internalServerError(errorMessage: string): IErrorPayloadItem[] {
   ];
 }
 
-export const Common = {
-  reThrowApplicationError,
-  routeNotFound,
-  internalServerError,
-} as const;
+export const Common = { routeNotFound, internalServerError } as const;

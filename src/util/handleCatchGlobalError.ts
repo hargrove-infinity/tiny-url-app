@@ -4,7 +4,7 @@ import "express-async-errors";
 
 import { ENV, HttpStatusCodes, NodeEnvs } from "@src/common";
 import { pinoLogger } from "@src/logger";
-import { ErrorHandler } from "@src/util";
+import { ClientErrorService } from "./ClientErrorService";
 
 export function handleCatchGlobalError(
   err: Error,
@@ -21,7 +21,7 @@ export function handleCatchGlobalError(
       ? err.message
       : JSON.stringify(err.message);
 
-  res
-    .status(HttpStatusCodes.INTERNAL_SERVER_ERROR)
-    .send({ errors: ErrorHandler.Common.internalServerError(errorMessage) });
+  res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
+    errors: ClientErrorService.Common.internalServerError(errorMessage),
+  });
 }

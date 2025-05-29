@@ -2,7 +2,7 @@ import { Response } from "express";
 import { UserService } from "@src/services";
 import { ApplicationError, HttpStatusCodes } from "@src/common";
 import { AddUserRequest, LoginUserRequest } from "@src/types";
-import { ErrorHandler } from "@src/util";
+import { ClientErrorService } from "@src/util";
 
 /**
  * Add one user.
@@ -29,7 +29,7 @@ async function add(req: AddUserRequest, res: Response): Promise<void> {
     }
 
     res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
-      errors: ErrorHandler.Users.unknownRouteErrorForCreatingUser(),
+      errors: ClientErrorService.Users.unknownRouteErrorForCreatingUser(),
     });
   }
 }
@@ -59,7 +59,7 @@ async function login(req: LoginUserRequest, res: Response): Promise<void> {
     }
 
     res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
-      errors: ErrorHandler.Users.unknownRouteErrorForLoginUser(),
+      errors: ClientErrorService.Users.unknownRouteErrorForLoginUser(),
     });
   }
 }
