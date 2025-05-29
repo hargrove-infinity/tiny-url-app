@@ -9,7 +9,7 @@ import {
   Nullable,
   PrismaError,
 } from "@src/types";
-import { asyncTryCatch, ErrorHandler } from "@src/util";
+import { asyncTryCatch, AppErrorService } from "@src/util";
 
 /**
  * Get first link.
@@ -23,8 +23,15 @@ async function getFirst({
   const [data, error] = await asyncTryCatch<Nullable<Link>, PrismaError>(res);
 
   if (error) {
-    pinoLogger.error(error, "Error during getting first link from database");
-    return [, ErrorHandler.Common.serverFailure()] as [never, ApplicationError];
+    pinoLogger.error(
+      { error: error.message },
+      "Error during getting first link from database"
+    );
+
+    return [, AppErrorService.Links.getFirstLinkDatabaseError()] as [
+      never,
+      ApplicationError
+    ];
   }
 
   pinoLogger.info("First link successfully fetched from database");
@@ -40,8 +47,15 @@ async function add({ prisma, data }: IAddLinkArgs): AddLinkRepoResult {
   const [link, error] = await asyncTryCatch<Link, PrismaError>(res);
 
   if (error) {
-    pinoLogger.error(error, "Error during adding link to database");
-    return [, ErrorHandler.Common.serverFailure()] as [never, ApplicationError];
+    pinoLogger.error(
+      { error: error.message },
+      "Error during adding link to database"
+    );
+
+    return [, AppErrorService.Links.addOneLinkDatabaseError()] as [
+      never,
+      ApplicationError
+    ];
   }
 
   pinoLogger.info("Link successfully added to database");

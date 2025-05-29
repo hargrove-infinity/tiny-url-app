@@ -5,7 +5,7 @@ import {
   ILoginUserBody,
   LoginUserServiceResult,
 } from "@src/types";
-import { Encryption, ErrorHandler, Jwt, prisma } from "@src/util";
+import { Encryption, AppErrorService, Jwt, prisma } from "@src/util";
 
 /**
  * Add one user.
@@ -18,13 +18,16 @@ async function add(userDto: IAddUserBody): CreateUserResult {
     });
 
     if (errorGetUser) {
-      return [null, ErrorHandler.Common.reThrowApplicationError(errorGetUser)];
+      return [
+        null,
+        AppErrorService.Common.reThrowApplicationError(errorGetUser),
+      ];
     }
 
     if (firstUser) {
       return [
         null,
-        ErrorHandler.Users.userWithEmailAlreadyExists([firstUser.username]),
+        AppErrorService.Users.userWithEmailAlreadyExists([firstUser.username]),
       ];
     }
 
@@ -35,7 +38,7 @@ async function add(userDto: IAddUserBody): CreateUserResult {
     if (errorHashPassword) {
       return [
         null,
-        ErrorHandler.Common.reThrowApplicationError(errorHashPassword),
+        AppErrorService.Common.reThrowApplicationError(errorHashPassword),
       ];
     }
 
@@ -45,12 +48,15 @@ async function add(userDto: IAddUserBody): CreateUserResult {
     });
 
     if (errorAddUser) {
-      return [null, ErrorHandler.Common.reThrowApplicationError(errorAddUser)];
+      return [
+        null,
+        AppErrorService.Common.reThrowApplicationError(errorAddUser),
+      ];
     }
 
     return [createdUser, null];
   } catch (error) {
-    return [null, ErrorHandler.Users.unknownServiceErrorForCreatingUser()];
+    return [null, AppErrorService.Users.unknownServiceErrorForCreatingUser()];
   }
 }
 
@@ -68,13 +74,16 @@ async function login(loginUserDto: ILoginUserBody): LoginUserServiceResult {
     });
 
     if (errorGetUser) {
-      return [null, ErrorHandler.Common.reThrowApplicationError(errorGetUser)];
+      return [
+        null,
+        AppErrorService.Common.reThrowApplicationError(errorGetUser),
+      ];
     }
 
     if (!firstUser) {
       return [
         null,
-        ErrorHandler.Users.userUnauthorized([loginUserDto.username]),
+        AppErrorService.Users.userUnauthorized([loginUserDto.username]),
       ];
     }
 
@@ -84,11 +93,14 @@ async function login(loginUserDto: ILoginUserBody): LoginUserServiceResult {
     });
 
     if (errorPassword) {
-      return [null, ErrorHandler.Common.reThrowApplicationError(errorPassword)];
+      return [
+        null,
+        AppErrorService.Common.reThrowApplicationError(errorPassword),
+      ];
     }
 
     if (!isPasswordMatch) {
-      return [null, ErrorHandler.Users.loginFailed()];
+      return [null, AppErrorService.Users.loginFailed()];
     }
 
     const [token, errorToken] = Jwt.signToken({
@@ -98,12 +110,12 @@ async function login(loginUserDto: ILoginUserBody): LoginUserServiceResult {
     });
 
     if (errorToken) {
-      return [null, ErrorHandler.Common.reThrowApplicationError(errorToken)];
+      return [null, AppErrorService.Common.reThrowApplicationError(errorToken)];
     }
 
     return [token, null];
   } catch (error) {
-    return [null, ErrorHandler.Users.unknownServiceErrorLoginUser()];
+    return [null, AppErrorService.Users.unknownServiceErrorLoginUser()];
   }
 }
 

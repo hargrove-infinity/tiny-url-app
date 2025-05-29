@@ -2,7 +2,7 @@ import { Response } from "express";
 import { LinkService } from "@src/services";
 import { HttpStatusCodes } from "@src/common";
 import { AddLinkRequest, RedirectLinkRequest } from "@src/types";
-import { ErrorHandler } from "@src/util";
+import { ClientErrorService } from "@src/util";
 
 /**
  * Add one link.
@@ -14,7 +14,7 @@ async function add(req: AddLinkRequest, res: Response): Promise<void> {
   if (!user) {
     res
       .status(HttpStatusCodes.BAD_REQUEST)
-      .send({ errors: ErrorHandler.Users.userMissingRequestData() });
+      .send({ errors: ClientErrorService.Users.userMissingRequestData() });
     return;
   }
 

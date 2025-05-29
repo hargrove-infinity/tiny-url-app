@@ -1,5 +1,5 @@
 import { LinkRepo } from "@src/repos";
-import { ErrorHandler, generateShortId, prisma } from "@src/util";
+import { AppErrorService, generateShortId, prisma } from "@src/util";
 import { IAddLinkServiceArgs, LinkResultService } from "@src/types";
 import { pinoLogger } from "@src/logger";
 import { ApplicationError } from "@src/common";
@@ -9,8 +9,9 @@ import { ApplicationError } from "@src/common";
  */
 async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
   if (!url) {
-    pinoLogger.error("Url for converting not provided");
-    return [, ErrorHandler.Links.urlForConvertingNotProvided()] as [
+    pinoLogger.warn("Url for converting not provided");
+
+    return [, AppErrorService.Links.urlForConvertingNotProvided()] as [
       never,
       ApplicationError
     ];
@@ -24,7 +25,15 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
   });
 
   if (errorFetchedLink) {
-    return [, errorFetchedLink] as [never, ApplicationError];
+    pinoLogger.warn(
+      { message: errorFetchedLink.message },
+      "Error during fetching first link in addOne LinkService before while loop"
+    );
+
+    return [, AppErrorService.Common.internalServerError()] as [
+      never,
+      ApplicationError
+    ];
   }
 
   while (fetchedLink) {
@@ -35,7 +44,15 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
     });
 
     if (errorFetchedLink) {
-      return [, errorFetchedLink] as [never, ApplicationError];
+      pinoLogger.warn(
+        { message: errorFetchedLink.message },
+        "Error during fetching first link in addOne LinkService inside while loop"
+      );
+
+      return [, AppErrorService.Common.internalServerError()] as [
+        never,
+        ApplicationError
+      ];
     }
   }
 
@@ -45,7 +62,15 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
   });
 
   if (errorCreatedLink) {
-    return [, errorCreatedLink] as [never, ApplicationError];
+    pinoLogger.warn(
+      { message: errorCreatedLink.message },
+      "Error during creating link in addOne LinkService"
+    );
+
+    return [, AppErrorService.Common.internalServerError()] as [
+      never,
+      ApplicationError
+    ];
   }
 
   return [createdLink];
@@ -56,8 +81,9 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
  */
 async function redirectToUrl(shortUrl: string): LinkResultService {
   if (!shortUrl) {
-    pinoLogger.error("Short url for redirecting not provided");
-    return [, ErrorHandler.Links.shortUrlForRedirectingNotProvided()] as [
+    pinoLogger.warn("Short url for redirecting not provided");
+
+    return [, AppErrorService.Links.shortUrlForRedirectingNotProvided()] as [
       never,
       ApplicationError
     ];
@@ -69,11 +95,26 @@ async function redirectToUrl(shortUrl: string): LinkResultService {
   });
 
   if (error) {
-    return [, error] as [never, ApplicationError];
+    pinoLogger.warn(
+      { message: error.message },
+      "Error during redirecting in redirectToUrl LinkService"
+    );
+
+    return [, AppErrorService.Common.internalServerError()] as [
+      never,
+      ApplicationError
+    ];
   }
 
   if (!firstLink) {
-    return [, ErrorHandler.Common.serverFailure()] as [never, ApplicationError];
+    pinoLogger.warn(
+      "First link is not found in database during redirecting in redirectToUrl LinkService"
+    );
+
+    return [
+      ,
+      AppErrorService.Links.shortUrlForRedirectingNotFoundInDatabase(),
+    ] as [never, ApplicationError];
   }
 
   return [firstLink];

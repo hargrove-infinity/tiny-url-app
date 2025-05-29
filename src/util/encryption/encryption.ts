@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { ErrorHandler } from "../errorHandler";
+import { AppErrorService } from "../AppErrorService";
 import {
   CompareHashResult,
   HashStringResult,
@@ -15,7 +15,7 @@ async function hashString({
     const hashedString = await bcrypt.hash(stringToHash, saltRounds);
     return [hashedString, null];
   } catch (error) {
-    return [null, ErrorHandler.Encryption.errorDuringHashingString()];
+    return [null, AppErrorService.Encryption.errorDuringHashingString()];
   }
 }
 
@@ -27,7 +27,7 @@ async function compareHash({
     const result = await bcrypt.compare(plainString, encryptedString);
     return [result, null];
   } catch (error) {
-    return [null, ErrorHandler.Encryption.errorDuringComparingHash()];
+    return [null, AppErrorService.Encryption.errorDuringComparingHash()];
   }
 }
 
