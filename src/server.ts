@@ -5,7 +5,6 @@ import { BaseRouter } from "@src/routes";
 
 import { responseFormatter } from "@src/middlewares";
 import { ENV, NodeEnvs, Paths } from "@src/common";
-import { pinoLoggerHttp } from "@src/logger";
 import {
   handleCatchAllRouteError,
   handleCatchGlobalError,
@@ -24,9 +23,6 @@ const app = express();
 // Basic middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Logger middleware
-app.use(pinoLoggerHttp);
 
 // Response formatter middleware
 app.use(responseFormatter);
