@@ -3,13 +3,17 @@ import { Prisma, PrismaClient, Link } from "@prisma/client";
 import { ApplicationError } from "@src/common";
 import { Nullable } from "./misc";
 
-export type AddLinkRepoResult = Promise<[Link] | [never, ApplicationError]>;
-
-export type GetFirstLinkRepoResult = Promise<
-  [Nullable<Link>] | [never, ApplicationError]
+export type AddLinkRepoResult = Promise<
+  [Link, undefined] | [undefined, ApplicationError]
 >;
 
-export type LinkResultService = Promise<[Link] | [never, ApplicationError]>;
+export type GetFirstLinkRepoResult = Promise<
+  [Nullable<Link>, undefined] | [undefined, ApplicationError]
+>;
+
+export type LinkResultService = Promise<
+  [Link, undefined] | [undefined, ApplicationError]
+>;
 
 export interface IAddLinkServiceArgs {
   url: string;

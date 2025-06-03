@@ -2,7 +2,6 @@ import { LinkRepo } from "@src/repos";
 import { AppErrorService, generateShortId, prisma } from "@src/util";
 import { IAddLinkServiceArgs, LinkResultService } from "@src/types";
 import { pinoLogger } from "@src/logger";
-import { ApplicationError } from "@src/common";
 
 /**
  * Add one link.
@@ -10,11 +9,7 @@ import { ApplicationError } from "@src/common";
 async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
   if (!url) {
     pinoLogger.warn("Url for converting not provided");
-
-    return [, AppErrorService.Links.urlForConvertingNotProvided()] as [
-      never,
-      ApplicationError
-    ];
+    return [, AppErrorService.Links.urlForConvertingNotProvided()];
   }
 
   let shortUrl = generateShortId(url);
@@ -30,10 +25,7 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
       "Error during fetching first link in addOne LinkService before while loop"
     );
 
-    return [, AppErrorService.Common.internalServerError()] as [
-      never,
-      ApplicationError
-    ];
+    return [, AppErrorService.Common.internalServerError()];
   }
 
   while (fetchedLink) {
@@ -49,10 +41,7 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
         "Error during fetching first link in addOne LinkService inside while loop"
       );
 
-      return [, AppErrorService.Common.internalServerError()] as [
-        never,
-        ApplicationError
-      ];
+      return [, AppErrorService.Common.internalServerError()];
     }
   }
 
@@ -67,13 +56,10 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
       "Error during creating link in addOne LinkService"
     );
 
-    return [, AppErrorService.Common.internalServerError()] as [
-      never,
-      ApplicationError
-    ];
+    return [, AppErrorService.Common.internalServerError()];
   }
 
-  return [createdLink];
+  return [createdLink, undefined];
 }
 
 /**
@@ -82,11 +68,7 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
 async function redirectToUrl(shortUrl: string): LinkResultService {
   if (!shortUrl) {
     pinoLogger.warn("Short url for redirecting not provided");
-
-    return [, AppErrorService.Links.shortUrlForRedirectingNotProvided()] as [
-      never,
-      ApplicationError
-    ];
+    return [, AppErrorService.Links.shortUrlForRedirectingNotProvided()];
   }
 
   const [firstLink, error] = await LinkRepo.getFirst({
@@ -100,10 +82,7 @@ async function redirectToUrl(shortUrl: string): LinkResultService {
       "Error during redirecting in redirectToUrl LinkService"
     );
 
-    return [, AppErrorService.Common.internalServerError()] as [
-      never,
-      ApplicationError
-    ];
+    return [, AppErrorService.Common.internalServerError()];
   }
 
   if (!firstLink) {
@@ -111,13 +90,10 @@ async function redirectToUrl(shortUrl: string): LinkResultService {
       "First link is not found in database during redirecting in redirectToUrl LinkService"
     );
 
-    return [, AppErrorService.Links.shortUrlForRedirectingMissing()] as [
-      never,
-      ApplicationError
-    ];
+    return [, AppErrorService.Links.shortUrlForRedirectingMissing()];
   }
 
-  return [firstLink];
+  return [firstLink, undefined];
 }
 
 /******************************************************************************

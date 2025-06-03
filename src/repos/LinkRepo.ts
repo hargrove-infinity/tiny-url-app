@@ -1,5 +1,4 @@
 import { Link } from "@prisma/client";
-import { ApplicationError } from "@src/common";
 import { pinoLogger } from "@src/logger";
 import {
   IAddLinkArgs,
@@ -28,14 +27,11 @@ async function getFirst({
       "Error during getting first link from database"
     );
 
-    return [, AppErrorService.Links.getFirstLinkDatabaseError()] as [
-      never,
-      ApplicationError
-    ];
+    return [, AppErrorService.Links.getFirstLinkDatabaseError()];
   }
 
   pinoLogger.info("First link successfully fetched from database");
-  return [data];
+  return [data, undefined];
 }
 
 /**
@@ -52,14 +48,11 @@ async function add({ prisma, data }: IAddLinkArgs): AddLinkRepoResult {
       "Error during adding link to database"
     );
 
-    return [, AppErrorService.Links.addOneLinkDatabaseError()] as [
-      never,
-      ApplicationError
-    ];
+    return [, AppErrorService.Links.addOneLinkDatabaseError()];
   }
 
   pinoLogger.info("Link successfully added to database");
-  return [link];
+  return [link, undefined];
 }
 
 /******************************************************************************
