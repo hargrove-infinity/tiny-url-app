@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
+import { pinoLogger } from "@src/logger";
 import { AppErrorService } from "../AppErrorService";
+import { asyncTryCatch } from "../asyncTryCatch";
 import {
   CompareHashResult,
   HashStringResult,
@@ -11,24 +13,37 @@ async function hashString({
   stringToHash,
   saltRounds = 10,
 }: IHashStringArgs): HashStringResult {
-  try {
-    const hashedString = await bcrypt.hash(stringToHash, saltRounds);
-    return [hashedString, null];
-  } catch (error) {
-    return [null, AppErrorService.Encryption.errorDuringHashingString()];
+  const res = bcrypt.hash(stringToHash, saltRounds);
+  pinoLogger.info("Hashing string");
+  const [data, error] = await asyncTryCatch<string, Error>(res);
+
+  if (error) {
+    pinoLogger.error({ error: error.message }, "Error during hashing string");
+    return [, AppErrorService.Encryption.errorDuringHashingString()];
   }
+
+  pinoLogger.info("String successfully hashed");
+  return [data, undefined];
 }
 
 async function compareHash({
   plainString,
   encryptedString,
 }: ICompareHashArgs): CompareHashResult {
-  try {
-    const result = await bcrypt.compare(plainString, encryptedString);
-    return [result, null];
-  } catch (error) {
-    return [null, AppErrorService.Encryption.errorDuringComparingHash()];
+  const res = bcrypt.compare(plainString, encryptedString);
+  pinoLogger.info("Comparing plain string and encrypted string");
+  const [data, error] = await asyncTryCatch<boolean, Error>(res);
+
+  if (error) {
+    pinoLogger.error(
+      { error: error.message },
+      "Error during comparing plain string and encrypted string"
+    );
+    return [, AppErrorService.Encryption.errorDuringComparingHash()];
   }
+
+  pinoLogger.info("Plain string and encrypted string successfully compared");
+  return [data, undefined];
 }
 
 export const Encryption = {
