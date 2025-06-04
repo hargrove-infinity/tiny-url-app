@@ -42,10 +42,7 @@ async function add(userDto: IAddUserBody): AddUserServiceResult {
       { message: errorHashPassword.message },
       "Error during hashing password in add UserService"
     );
-    return [
-      ,
-      AppErrorService.Common.reThrowApplicationError(errorHashPassword),
-    ];
+    return [, errorHashPassword];
   }
 
   const [createdUser, errorAddUser] = await UserRepo.add({
@@ -102,7 +99,7 @@ async function login(loginUserDto: ILoginUserBody): LoginUserServiceResult {
       "Error during comparing passwords in login UserService"
     );
 
-    return [, AppErrorService.Common.reThrowApplicationError(errorPassword)];
+    return [, errorPassword];
   }
 
   if (!isPasswordMatch) {
@@ -122,7 +119,7 @@ async function login(loginUserDto: ILoginUserBody): LoginUserServiceResult {
       "Error during signing token in login UserService"
     );
 
-    return [, AppErrorService.Common.reThrowApplicationError(errorToken)];
+    return [, errorToken];
   }
 
   return [token, undefined];
