@@ -2,6 +2,7 @@ import path from "path";
 import nodemailer from "nodemailer";
 import hbs from "nodemailer-express-handlebars";
 import { ENV } from "@src/common";
+import { pinoLogger } from "@src/logger";
 import { ISendEmailConfirmArgs, MailOptionsWithContext } from "./types";
 
 const viewsPath = path.join("src", "views");
@@ -44,9 +45,8 @@ export async function sendEmailConfirm({
       to: toEmails,
       context,
     } as MailOptionsWithContext);
-    console.log("Email has been sent");
+    pinoLogger.info("Email has been sent");
   } catch (error) {
-    console.log("Send email error");
-    console.log(error);
+    pinoLogger.info({ error: error.message }, "Send email error");
   }
 }
