@@ -140,7 +140,6 @@ const ERROR_DEFINITIONS_USERS = {
     description: "Error during creation user in database",
     message: "Error during creation user in database (add UserRepo)",
   },
-  // TODO Replace it with more generic
   USER_WITH_EMAIL_ALREADY_EXISTS: {
     code: "USER_WITH_EMAIL_ALREADY_EXISTS",
     id: "00022",
