@@ -140,11 +140,11 @@ const ERROR_DEFINITIONS_USERS = {
     description: "Error during creation user in database",
     message: "Error during creation user in database (add UserRepo)",
   },
-  USER_WITH_EMAIL_ALREADY_EXISTS: {
-    code: "USER_WITH_EMAIL_ALREADY_EXISTS",
+  REGISTRATION_FAILED: {
+    code: "REGISTRATION_FAILED",
     id: "00022",
-    description: "User with provided email already exists",
-    message: "User with provided email already exists (add UserService)",
+    description: "Registration could not be completed",
+    message: "Please check your information and try again",
   },
   CREATE_LINK_DATABASE_ERROR: {
     code: "CREATE_LINK_DATABASE_ERROR",

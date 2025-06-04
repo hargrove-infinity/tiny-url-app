@@ -43,18 +43,13 @@ function createUserDatabaseError(): ApplicationError {
   );
 }
 
-function userWithEmailAlreadyExists(data: string[]): ApplicationError {
-  return new ApplicationError(
-    ERROR_DEFINITIONS.USER_WITH_EMAIL_ALREADY_EXISTS.message,
-    {
-      data,
-      errorCode: ERROR_DEFINITIONS.USER_WITH_EMAIL_ALREADY_EXISTS.code,
-      errorDescription:
-        ERROR_DEFINITIONS.USER_WITH_EMAIL_ALREADY_EXISTS.description,
-      errorId: ERROR_DEFINITIONS.USER_WITH_EMAIL_ALREADY_EXISTS.id,
-      statusCode: HttpStatusCodes.BAD_REQUEST,
-    }
-  );
+function registrationFailed(): ApplicationError {
+  return new ApplicationError(ERROR_DEFINITIONS.REGISTRATION_FAILED.message, {
+    errorCode: ERROR_DEFINITIONS.REGISTRATION_FAILED.code,
+    errorDescription: ERROR_DEFINITIONS.REGISTRATION_FAILED.description,
+    errorId: ERROR_DEFINITIONS.REGISTRATION_FAILED.id,
+    statusCode: HttpStatusCodes.BAD_REQUEST,
+  });
 }
 
 function userUnauthorized(data: string[]): ApplicationError {
@@ -77,7 +72,7 @@ function loginFailed(): ApplicationError {
 }
 
 export const Users = {
-  userWithEmailAlreadyExists,
+  registrationFailed,
   userUnauthorized,
   loginFailed,
   getFirstUserDatabaseError,

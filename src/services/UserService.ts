@@ -27,10 +27,7 @@ async function add(userDto: IAddUserBody): AddUserServiceResult {
 
   if (firstUser) {
     pinoLogger.warn("User with email already exists (add UserService)");
-    return [
-      ,
-      AppErrorService.Users.userWithEmailAlreadyExists([firstUser.username]),
-    ];
+    return [, AppErrorService.Users.registrationFailed()];
   }
 
   const [hashedPassword, errorHashPassword] = await Encryption.hashString({
@@ -42,7 +39,7 @@ async function add(userDto: IAddUserBody): AddUserServiceResult {
       { message: errorHashPassword.message },
       "Error during hashing password in add UserService"
     );
-    return [, errorHashPassword];
+    return [, AppErrorService.Common.internalServerError()];
   }
 
   const [createdUser, errorAddUser] = await UserRepo.add({
@@ -99,7 +96,7 @@ async function login(loginUserDto: ILoginUserBody): LoginUserServiceResult {
       "Error during comparing passwords in login UserService"
     );
 
-    return [, errorPassword];
+    return [, AppErrorService.Common.internalServerError()];
   }
 
   if (!isPasswordMatch) {
