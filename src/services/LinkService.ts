@@ -1,12 +1,17 @@
+import { Link } from "@prisma/client";
 import { LinkRepo } from "@src/repos";
 import { AppErrorService, generateShortId, prisma } from "@src/util";
-import { IAddLinkServiceArgs, LinkResultService } from "@src/types";
+import { AsyncTryCatchReturn, IAddLinkServiceArgs } from "@src/types";
 import { pinoLogger } from "@src/logger";
+import { ApplicationError } from "@src/common";
 
 /**
  * Add one link.
  */
-async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
+async function addOne({
+  url,
+  userId,
+}: IAddLinkServiceArgs): AsyncTryCatchReturn<Link, ApplicationError> {
   if (!url) {
     pinoLogger.warn("Url for converting not provided");
     return [, AppErrorService.Links.urlForConvertingNotProvided()];
@@ -65,7 +70,9 @@ async function addOne({ url, userId }: IAddLinkServiceArgs): LinkResultService {
 /**
  * Redirect to url.
  */
-async function redirectToUrl(shortUrl: string): LinkResultService {
+async function redirectToUrl(
+  shortUrl: string
+): AsyncTryCatchReturn<Link, ApplicationError> {
   if (!shortUrl) {
     pinoLogger.warn("Short url for redirecting not provided");
     return [, AppErrorService.Links.shortUrlForRedirectingNotProvided()];

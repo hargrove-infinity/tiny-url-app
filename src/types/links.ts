@@ -1,19 +1,5 @@
 import { Request } from "express";
-import { Prisma, PrismaClient, Link } from "@prisma/client";
-import { ApplicationError } from "@src/common";
-import { Nullable } from "./misc";
-
-export type AddLinkRepoResult = Promise<
-  [Link, undefined] | [undefined, ApplicationError]
->;
-
-export type GetFirstLinkRepoResult = Promise<
-  [Nullable<Link>, undefined] | [undefined, ApplicationError]
->;
-
-export type LinkResultService = Promise<
-  [Link, undefined] | [undefined, ApplicationError]
->;
+import { Prisma, PrismaClient } from "@prisma/client";
 
 export interface IAddLinkServiceArgs {
   url: string;

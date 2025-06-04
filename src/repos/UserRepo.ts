@@ -1,9 +1,8 @@
 import { User } from "@prisma/client";
+import { ApplicationError } from "@src/common";
 import { pinoLogger } from "@src/logger";
 import {
-  AddUserRepoResult,
-  GetFirstUserRepoResult,
-  GetUniqueUserRepoResult,
+  AsyncTryCatchReturn,
   ICreateUserArgs,
   IGetFirstUserArgs,
   IGetUniqueUserArgs,
@@ -18,7 +17,7 @@ import { AppErrorService, asyncTryCatch } from "@src/util";
 async function getFirst({
   prisma,
   args,
-}: IGetFirstUserArgs): GetFirstUserRepoResult {
+}: IGetFirstUserArgs): AsyncTryCatchReturn<Nullable<User>, ApplicationError> {
   const res = prisma.user.findFirst(args);
   pinoLogger.info("Fetching first user from database");
   const [data, error] = await asyncTryCatch<Nullable<User>, PrismaError>(res);
@@ -41,7 +40,7 @@ async function getFirst({
 async function getUnique({
   prisma,
   args,
-}: IGetUniqueUserArgs): GetUniqueUserRepoResult {
+}: IGetUniqueUserArgs): AsyncTryCatchReturn<Nullable<User>, ApplicationError> {
   const res = prisma.user.findUnique(args);
   pinoLogger.info("Fetching unique user from database");
   const [data, error] = await asyncTryCatch<Nullable<User>, PrismaError>(res);
@@ -61,7 +60,10 @@ async function getUnique({
 /**
  * Add one user.
  */
-async function add({ prisma, args }: ICreateUserArgs): AddUserRepoResult {
+async function add({
+  prisma,
+  args,
+}: ICreateUserArgs): AsyncTryCatchReturn<User, ApplicationError> {
   const res = prisma.user.create(args);
   pinoLogger.info("Adding user to database");
   const [data, error] = await asyncTryCatch<User, PrismaError>(res);

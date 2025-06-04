@@ -1,12 +1,12 @@
 import { Link } from "@prisma/client";
+import { ApplicationError } from "@src/common";
 import { pinoLogger } from "@src/logger";
 import {
   IAddLinkArgs,
   IGetFirstLinkArgs,
-  GetFirstLinkRepoResult,
-  AddLinkRepoResult,
   Nullable,
   PrismaError,
+  AsyncTryCatchReturn,
 } from "@src/types";
 import { asyncTryCatch, AppErrorService } from "@src/util";
 
@@ -16,7 +16,7 @@ import { asyncTryCatch, AppErrorService } from "@src/util";
 async function getFirst({
   prisma,
   args,
-}: IGetFirstLinkArgs): GetFirstLinkRepoResult {
+}: IGetFirstLinkArgs): AsyncTryCatchReturn<Nullable<Link>, ApplicationError> {
   const res = prisma.link.findFirst(args);
   pinoLogger.info("Getting first link from database");
   const [data, error] = await asyncTryCatch<Nullable<Link>, PrismaError>(res);
@@ -37,7 +37,10 @@ async function getFirst({
 /**
  * Add one link.
  */
-async function add({ prisma, data }: IAddLinkArgs): AddLinkRepoResult {
+async function add({
+  prisma,
+  data,
+}: IAddLinkArgs): AsyncTryCatchReturn<Link, ApplicationError> {
   const res = prisma.link.create({ data });
   pinoLogger.info("Adding link to database");
   const [link, error] = await asyncTryCatch<Link, PrismaError>(res);

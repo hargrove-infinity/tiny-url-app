@@ -1,7 +1,5 @@
 import { Request } from "express";
-import { PrismaClient, Prisma, User } from "@prisma/client";
-import { Nullable } from "./misc";
-import { ApplicationError } from "@src/common";
+import { PrismaClient, Prisma } from "@prisma/client";
 
 export interface IAddUserBody {
   name: string;
@@ -25,26 +23,6 @@ export interface ICreateUserArgs {
   prisma: PrismaClient;
   args: Prisma.UserCreateArgs;
 }
-
-export type GetFirstUserRepoResult = Promise<
-  [Nullable<User>, undefined] | [undefined, ApplicationError]
->;
-
-export type GetUniqueUserRepoResult = Promise<
-  [Nullable<User>, undefined] | [undefined, ApplicationError]
->;
-
-export type AddUserRepoResult = Promise<
-  [User, undefined] | [undefined, ApplicationError]
->;
-
-export type AddUserServiceResult = Promise<
-  [User, undefined] | [undefined, ApplicationError]
->;
-
-export type LoginUserServiceResult = Promise<
-  [string, undefined] | [undefined, ApplicationError]
->;
 
 export interface ILoginUserBody {
   username: string;

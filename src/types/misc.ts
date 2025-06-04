@@ -5,6 +5,10 @@ export type Nullable<T> = T | null;
 
 export type SyncOperationResult<T> = [T, null] | [null, ApplicationError];
 
+export type AsyncTryCatchReturn<R, E> = Promise<
+  [R, undefined] | [undefined, E]
+>;
+
 export interface IErrorPayloadItem {
   code: string;
   description: string;

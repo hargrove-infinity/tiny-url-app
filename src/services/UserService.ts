@@ -1,17 +1,16 @@
+import { User } from "@prisma/client";
 import { UserRepo } from "@src/repos";
-import {
-  AddUserServiceResult,
-  IAddUserBody,
-  ILoginUserBody,
-  LoginUserServiceResult,
-} from "@src/types";
+import { AsyncTryCatchReturn, IAddUserBody, ILoginUserBody } from "@src/types";
 import { Encryption, AppErrorService, Jwt, prisma } from "@src/util";
 import { pinoLogger } from "@src/logger";
+import { ApplicationError } from "@src/common";
 
 /**
  * Add one user.
  */
-async function add(userDto: IAddUserBody): AddUserServiceResult {
+async function add(
+  userDto: IAddUserBody
+): AsyncTryCatchReturn<User, ApplicationError> {
   const [firstUser, errorGetUser] = await UserRepo.getFirst({
     prisma,
     args: { where: { username: userDto.username } },
@@ -62,7 +61,9 @@ async function add(userDto: IAddUserBody): AddUserServiceResult {
 /**
  * Login user.
  */
-async function login(loginUserDto: ILoginUserBody): LoginUserServiceResult {
+async function login(
+  loginUserDto: ILoginUserBody
+): AsyncTryCatchReturn<string, ApplicationError> {
   const [firstUser, errorGetUser] = await UserRepo.getFirst({
     prisma,
     args: {
