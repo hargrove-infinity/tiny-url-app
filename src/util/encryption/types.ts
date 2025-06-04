@@ -1,4 +1,4 @@
-import { AsyncOperationResult } from "@src/types";
+import { ApplicationError } from "@src/common";
 
 export interface IHashStringArgs {
   stringToHash: string;
@@ -10,6 +10,10 @@ export interface ICompareHashArgs {
   encryptedString: string;
 }
 
-export type HashStringResult = AsyncOperationResult<string>;
+export type HashStringResult = Promise<
+  [string, undefined] | [undefined, ApplicationError]
+>;
 
-export type CompareHashResult = AsyncOperationResult<boolean>;
+export type CompareHashResult = Promise<
+  [boolean, undefined] | [undefined, ApplicationError]
+>;

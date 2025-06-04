@@ -1,67 +1,47 @@
 import { Response } from "express";
 import { UserService } from "@src/services";
-import { ApplicationError, HttpStatusCodes } from "@src/common";
+import { HttpStatusCodes } from "@src/common";
 import { AddUserRequest, LoginUserRequest } from "@src/types";
-import { ErrorHandler } from "@src/util";
+import { pinoLogger } from "@src/logger";
 
 /**
  * Add one user.
  */
 async function add(req: AddUserRequest, res: Response): Promise<void> {
-  try {
-    const { body } = req;
-    const [user, error] = await UserService.add(body);
+  const { body } = req;
+  const [user, error] = await UserService.add(body);
 
-    if (error) {
-      res
-        .status(error.httpStatusCode)
-        .send({ errors: error.buildErrorPayload() });
-      return;
-    }
+  if (error) {
+    pinoLogger.warn({ error: error.message }, "Error in add user route");
 
-    res.status(HttpStatusCodes.CREATED).send(user);
-  } catch (error) {
-    if (error instanceof ApplicationError) {
-      res
-        .status(HttpStatusCodes.BAD_REQUEST)
-        .send({ errors: error.buildErrorPayload() });
-      return;
-    }
-
-    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
-      errors: ErrorHandler.Users.unknownRouteErrorForCreatingUser(),
-    });
+    res
+      .status(error.httpStatusCode)
+      .send({ errors: error.buildErrorPayload() });
+    return;
   }
+
+  pinoLogger.info("Created user is sending to the client");
+  res.status(HttpStatusCodes.CREATED).send(user);
 }
 
 /**
  * Login user.
  */
 async function login(req: LoginUserRequest, res: Response): Promise<void> {
-  try {
-    const { body } = req;
-    const [token, error] = await UserService.login(body);
+  const { body } = req;
+  const [token, error] = await UserService.login(body);
 
-    if (error) {
-      res
-        .status(error.httpStatusCode)
-        .send({ errors: error.buildErrorPayload() });
-      return;
-    }
+  if (error) {
+    pinoLogger.warn({ error: error.message }, "Error in login user route");
 
-    res.status(HttpStatusCodes.OK).send(token);
-  } catch (error) {
-    if (error instanceof ApplicationError) {
-      res
-        .status(HttpStatusCodes.BAD_REQUEST)
-        .send({ errors: error.buildErrorPayload() });
-      return;
-    }
-
-    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send({
-      errors: ErrorHandler.Users.unknownRouteErrorForLoginUser(),
-    });
+    res
+      .status(error.httpStatusCode)
+      .send({ errors: error.buildErrorPayload() });
+    return;
   }
+
+  pinoLogger.info("Token is sending to the client");
+  res.status(HttpStatusCodes.OK).send(token);
 }
 
 /******************************************************************************

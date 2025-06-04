@@ -15,6 +15,7 @@ const ERROR_DEFINITIONS_MISC = {
     code: "INTERNAL_SERVER_ERROR",
     id: "00002",
     description: "Internal server error",
+    message: "Error happened during request processing",
   },
 };
 
@@ -139,63 +140,39 @@ const ERROR_DEFINITIONS_USERS = {
     description: "Error during creation user in database",
     message: "Error during creation user in database (add UserRepo)",
   },
-  USER_WITH_EMAIL_ALREADY_EXISTS: {
-    code: "USER_WITH_EMAIL_ALREADY_EXISTS",
+  REGISTRATION_FAILED: {
+    code: "REGISTRATION_FAILED",
     id: "00022",
-    description: "User with provided email already exists",
-    message: "User with provided email already exists (add UserService)",
-  },
-  UNKNOWN_SERVICE_ERROR_CREATION_USER: {
-    code: "UNKNOWN_SERVICE_ERROR_CREATION_USER",
-    id: "00023",
-    description: "Unknown error in creation user service",
-    message:
-      "Unknown error in creation user service (add UserService, catch block)",
-  },
-  UNKNOWN_ROUTE_ERROR_CREATION_USER: {
-    code: "UNKNOWN_ROUTE_ERROR_CREATION_USER",
-    id: "00024",
-    description: "Unknown error in creation user route",
+    description: "Registration could not be completed",
+    message: "Please check your information and try again",
   },
   CREATE_LINK_DATABASE_ERROR: {
     code: "CREATE_LINK_DATABASE_ERROR",
-    id: "00025",
+    id: "00023",
     description: "Error during creation link in database",
     message: "Error during creation link in database (add LinkRepo)",
   },
   GET_FIRST_LINK_DATABASE_ERROR: {
     code: "GET_FIRST_LINK_DATABASE_ERROR",
-    id: "00026",
+    id: "00024",
     description: "Error during get first link in database",
     message: "Error during get first link in database (getFirst LinkRepo)",
   },
-  UNKNOWN_ROUTE_ERROR_LOGIN_USER: {
-    code: "UNKNOWN_ROUTE_ERROR_LOGIN_USER",
-    id: "00027",
-    description: "Unknown error in login user route",
-  },
-  UNKNOWN_SERVICE_ERROR_LOGIN_USER: {
-    code: "UNKNOWN_SERVICE_ERROR_LOGIN_USER",
-    id: "00028",
-    description: "Unknown error in login user service",
-    message:
-      "Unknown error in login user service (login UserService catch block)",
-  },
   USER_UNAUTHORIZED: {
     code: "USER_UNAUTHORIZED",
-    id: "00029",
+    id: "00025",
     description: "User is not authorized",
     message:
       "User is not authorized (login UserService / checkAuth middleware)",
   },
   USER_MISSING_REQUEST_DATA: {
     code: "USER_MISSING_REQUEST_DATA",
-    id: "00030",
+    id: "00026",
     description: "User field is missing in the express request object",
   },
   LOGIN_FAILED: {
     code: "LOGIN_FAILED",
-    id: "00031",
+    id: "00027",
     description: "Login failed: Invalid username or password.",
     message: "Login failed: Invalid username or password. (login UserService)",
   },
@@ -204,71 +181,47 @@ const ERROR_DEFINITIONS_USERS = {
 const ERROR_DEFINITIONS_LINKS = {
   SHORT_URL_MUST_BE_STRING: {
     code: "SHORT_URL_MUST_BE_STRING",
-    id: "00032",
+    id: "00028",
     description: "Short url must be string",
   },
   SHORT_URL_DEFINED_LENGTH: {
     code: "SHORT_URL_DEFINED_LENGTH",
-    id: "00033",
+    id: "00029",
     description: `Short url must be ${DEFAULT_SHORT_URL_LENGTH} characters length`,
   },
   SHORT_URL_PATTERN: {
     code: "SHORT_URL_PATTERN",
-    id: "00034",
+    id: "00030",
     description:
       "Only capital letters or lower letters or number or dash or underscore",
   },
   URL_FOR_CONVERTING_NOT_PROVIDED: {
     code: "URL_FOR_CONVERTING_NOT_PROVIDED",
-    id: "00035",
+    id: "00031",
     description: "Url was not provided for the converting",
     message: "Url was not provided for the converting (addOne LinkService)",
   },
-  UNKNOWN_SERVICE_ERROR_CREATION_LINK: {
-    code: "UNKNOWN_SERVICE_ERROR_CREATION_LINK",
-    id: "00036",
-    description: "Unknown error in service for creation link",
-    message:
-      "Unknown error in service for creation link (addOne LinkService catch block)",
-  },
   SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED: {
     code: "SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED",
-    id: "00037",
+    id: "00032",
     description: "Short url was not provided for the redirecting",
     message:
       "Short url was not provided for the redirecting (redirectToUrl LinkService)",
   },
-  SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE: {
-    code: "SHORT_URL_FOR_REDIRECTING_NOT_FOUND_DATABASE",
-    id: "00038",
-    description: "Short url was not found in database",
-    message: "Short url was not found in database (redirectToUrl LinkService)",
-  },
-  UNKNOWN_SERVICE_ERROR_REDIRECT_LINK: {
-    code: "UNKNOWN_SERVICE_ERROR_REDIRECT_LINK",
-    id: "00039",
-    description: "Unknown error in service for redirecting link",
-    message:
-      "Unknown error in service for redirecting link (redirectToUrl LinkService catch block)",
-  },
-  UNKNOWN_ROUTE_ERROR_CREATION_LINK: {
-    code: "UNKNOWN_ROUTE_ERROR_CREATION_LINK",
-    id: "00040",
-    description: "Unknown error in route for creation link",
-  },
-  UNKNOWN_ROUTE_ERROR_REDIRECT_URL: {
-    code: "UNKNOWN_ROUTE_ERROR_REDIRECT_URL",
-    id: "00041",
-    description: "Unknown error in route for redirect url",
+  SHORT_URL_FOR_REDIRECTING_MISSING: {
+    code: "SHORT_URL_FOR_REDIRECTING_MISSING",
+    id: "00033",
+    description: "Short url for redirecting missing",
+    message: "Short url for redirecting missing (redirectToUrl LinkService)",
   },
   URL_MUST_BE_STRING: {
     code: "URL_MUST_BE_STRING",
-    id: "00042",
+    id: "00034",
     description: "Url must be string",
   },
   URL_PATTERN: {
     code: "URL_PATTERN",
-    id: "00043",
+    id: "00035",
     description: "String is not valid url",
   },
 };
