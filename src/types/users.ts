@@ -1,10 +1,6 @@
 import { Request } from "express";
 import { PrismaClient, Prisma, User } from "@prisma/client";
-import {
-  NullableAsyncOperationResult,
-  AsyncOperationResult,
-  Nullable,
-} from "./misc";
+import { Nullable } from "./misc";
 import { ApplicationError } from "@src/common";
 
 export interface IAddUserBody {
@@ -49,10 +45,6 @@ export type AddUserServiceResult = Promise<
 export type LoginUserServiceResult = Promise<
   [string, undefined] | [undefined, ApplicationError]
 >;
-
-export type GetUserResult = NullableAsyncOperationResult<User>;
-
-export type CreateUserResult = AsyncOperationResult<User>;
 
 export interface ILoginUserBody {
   username: string;
