@@ -57,32 +57,6 @@ function userWithEmailAlreadyExists(data: string[]): ApplicationError {
   );
 }
 
-function unknownServiceErrorForCreatingUser(): ApplicationError {
-  return new ApplicationError(
-    ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_CREATION_USER.message,
-    {
-      errorCode: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_CREATION_USER.code,
-      errorDescription:
-        ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_CREATION_USER.description,
-      errorId: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_CREATION_USER.id,
-      statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
-    }
-  );
-}
-
-function unknownServiceErrorLoginUser(): ApplicationError {
-  return new ApplicationError(
-    ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_LOGIN_USER.message,
-    {
-      errorCode: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_LOGIN_USER.code,
-      errorDescription:
-        ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_LOGIN_USER.description,
-      errorId: ERROR_DEFINITIONS.UNKNOWN_SERVICE_ERROR_LOGIN_USER.id,
-      statusCode: HttpStatusCodes.BAD_REQUEST,
-    }
-  );
-}
-
 function userUnauthorized(data: string[]): ApplicationError {
   return new ApplicationError(ERROR_DEFINITIONS.USER_UNAUTHORIZED.message, {
     data,
@@ -104,8 +78,6 @@ function loginFailed(): ApplicationError {
 
 export const Users = {
   userWithEmailAlreadyExists,
-  unknownServiceErrorForCreatingUser,
-  unknownServiceErrorLoginUser,
   userUnauthorized,
   loginFailed,
   getFirstUserDatabaseError,
