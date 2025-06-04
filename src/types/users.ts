@@ -1,6 +1,5 @@
 import { Request } from "express";
-import { PrismaClient, Prisma, User } from "@prisma/client";
-import { NullableAsyncOperationResult, AsyncOperationResult } from "./misc";
+import { PrismaClient, Prisma } from "@prisma/client";
 
 export interface IAddUserBody {
   name: string;
@@ -24,12 +23,6 @@ export interface ICreateUserArgs {
   prisma: PrismaClient;
   args: Prisma.UserCreateArgs;
 }
-
-export type GetUserResult = NullableAsyncOperationResult<User>;
-
-export type CreateUserResult = AsyncOperationResult<User>;
-
-export type LoginUserServiceResult = AsyncOperationResult<string>;
 
 export interface ILoginUserBody {
   username: string;

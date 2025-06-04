@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { HttpStatusCodes } from "@src/common";
 import { UserRepo } from "@src/repos";
-import { ErrorHandler, Jwt, prisma } from "@src/util";
+import { ClientErrorService, Jwt, prisma } from "@src/util";
 
 export async function checkAuth(
   req: Request,
@@ -13,14 +13,14 @@ export async function checkAuth(
   if (!authorization) {
     res
       .status(HttpStatusCodes.UNAUTHORIZED)
-      .send({ errors: ErrorHandler.Token.authorizationTokenMissing() });
+      .send({ errors: ClientErrorService.Token.authorizationTokenMissing() });
     return;
   }
 
   if (!authorization.startsWith("Bearer")) {
-    res
-      .status(HttpStatusCodes.UNAUTHORIZED)
-      .send({ errors: ErrorHandler.Token.authorizationTokenWrongFormat() });
+    res.status(HttpStatusCodes.UNAUTHORIZED).send({
+      errors: ClientErrorService.Token.authorizationTokenWrongFormat(),
+    });
     return;
   }
 
@@ -49,7 +49,9 @@ export async function checkAuth(
 
   if (!uniqueUser) {
     res.status(HttpStatusCodes.UNAUTHORIZED).send({
-      errors: ErrorHandler.Users.userUnauthorizedPayload([result.username]),
+      errors: ClientErrorService.Users.userUnauthorizedPayload([
+        result.username,
+      ]),
     });
     return;
   }

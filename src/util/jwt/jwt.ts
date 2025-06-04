@@ -1,6 +1,6 @@
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { ENV } from "@src/common";
-import { ErrorHandler } from "../errorHandler";
+import { AppErrorService } from "../AppErrorService";
 import { ISignTokenPayload, SignTokenResult, VerifyTokenResult } from "./types";
 import { verifyDecodedToken } from "./helpers";
 
@@ -13,7 +13,7 @@ function signToken(payload: ISignTokenPayload): SignTokenResult {
 
     return [token, null];
   } catch (error) {
-    return [null, ErrorHandler.Jwt.errorDuringSigningToken()];
+    return [null, AppErrorService.Jwt.errorDuringSigningToken()];
   }
 }
 
@@ -23,16 +23,16 @@ function verifyToken(token: string): VerifyTokenResult {
     const checkResult = verifyDecodedToken(decodedToken);
 
     if (!checkResult) {
-      return [null, ErrorHandler.Jwt.verifiedTokenWrongShape()];
+      return [null, AppErrorService.Jwt.verifiedTokenWrongShape()];
     }
 
     return [decodedToken, null];
   } catch (error) {
     if (error instanceof TokenExpiredError) {
-      return [null, ErrorHandler.Jwt.tokenExpired()];
+      return [null, AppErrorService.Jwt.tokenExpired()];
     }
 
-    return [null, ErrorHandler.Jwt.errorDuringVerificationToken()];
+    return [null, AppErrorService.Jwt.errorDuringVerificationToken()];
   }
 }
 

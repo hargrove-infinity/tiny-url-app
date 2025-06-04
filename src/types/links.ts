@@ -1,10 +1,5 @@
 import { Request } from "express";
-import { Prisma, PrismaClient, Link } from "@prisma/client";
-import { NullableAsyncOperationResult, AsyncOperationResult } from "./misc";
-
-export type GetLinkResult = NullableAsyncOperationResult<Link>;
-
-export type LinkResult = AsyncOperationResult<Link>;
+import { Prisma, PrismaClient } from "@prisma/client";
 
 export interface IAddLinkServiceArgs {
   url: string;
