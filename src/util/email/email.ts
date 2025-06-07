@@ -1,6 +1,13 @@
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { ENV } from "@src/common";
 import { pinoLogger } from "@src/logger";
-import { ISendEmailConfirmArgs, MailOptionsWithContext } from "./types";
+import { asyncTryCatch } from "../asyncTryCatch";
+import { AppErrorService } from "../AppErrorService";
+import {
+  ISendEmailConfirmArgs,
+  MailOptionsWithContext,
+  SendEmailConfirmResult,
+} from "./types";
 
 const globalMailOptions = {
   from: { name: "Tiny url", address: ENV.SenderEmail },
@@ -16,15 +23,23 @@ export async function sendEmailConfirm({
   transporter,
   toEmails,
   context,
-}: ISendEmailConfirmArgs) {
-  try {
-    await transporter.sendMail({
-      ...emailConfirmMailOptions,
-      to: toEmails,
-      context,
-    } as MailOptionsWithContext);
-    pinoLogger.info("Email has been sent");
-  } catch (error) {
+}: ISendEmailConfirmArgs): SendEmailConfirmResult {
+  const res = transporter.sendMail({
+    ...emailConfirmMailOptions,
+    to: toEmails,
+    context,
+  } as MailOptionsWithContext);
+
+  pinoLogger.info("Sending email confirm template");
+
+  const [, error] = await asyncTryCatch<SMTPTransport.SentMessageInfo, Error>(
+    res
+  );
+
+  if (error) {
     pinoLogger.info({ error: error.message }, "Send email error");
+    return [, AppErrorService.Email.emailConfirmationError()];
   }
+
+  pinoLogger.info("Email has been sent");
 }

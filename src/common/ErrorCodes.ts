@@ -226,6 +226,16 @@ const ERROR_DEFINITIONS_LINKS = {
   },
 };
 
+const ERROR_DEFINITIONS_EMAIL_TRANSPORT = {
+  ERROR_EMAIL_CONFIRMATION: {
+    code: "ERROR_EMAIL_CONFIRMATION",
+    id: "00036",
+    description: "Error during user email confirmation",
+    message:
+      "Error during user email confirmation (sendEmailConfirm util function)",
+  },
+};
+
 export const ERROR_DEFINITIONS = {
   ...ERROR_DEFINITIONS_MISC,
   ...ERROR_DEFINITIONS_ENCRYPTION,
@@ -233,4 +243,5 @@ export const ERROR_DEFINITIONS = {
   ...ERROR_DEFINITIONS_TOKEN,
   ...ERROR_DEFINITIONS_USERS,
   ...ERROR_DEFINITIONS_LINKS,
+  ...ERROR_DEFINITIONS_EMAIL_TRANSPORT,
 };
