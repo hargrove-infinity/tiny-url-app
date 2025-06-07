@@ -176,52 +176,67 @@ const ERROR_DEFINITIONS_USERS = {
     description: "Login failed: Invalid username or password.",
     message: "Login failed: Invalid username or password. (login UserService)",
   },
+  EMAIL_VERIFICATION_HASH_MUST_BE_STRING: {
+    code: "EMAIL_VERIFICATION_HASH_MUST_BE_STRING",
+    id: "00028",
+    description: "User email verification hash must be string.",
+  },
+  EMAIL_VERIFICATION_HASH_MUST_BE_FILLED: {
+    code: "EMAIL_VERIFICATION_HASH_MUST_BE_FILLED",
+    id: "00029",
+    description: "User email verification hash must be filled.",
+  },
+  EMAIL_VERIFICATION_HASH_MUST_BE_JWT: {
+    code: "EMAIL_VERIFICATION_HASH_MUST_BE_JWT",
+    id: "00030",
+    description: "User email verification hash must be jwt.",
+  },
 };
 
 const ERROR_DEFINITIONS_LINKS = {
   SHORT_URL_MUST_BE_STRING: {
     code: "SHORT_URL_MUST_BE_STRING",
-    id: "00028",
+    id: "00031",
     description: "Short url must be string",
   },
   SHORT_URL_DEFINED_LENGTH: {
     code: "SHORT_URL_DEFINED_LENGTH",
-    id: "00029",
+    id: "00032",
     description: `Short url must be ${DEFAULT_SHORT_URL_LENGTH} characters length`,
   },
   SHORT_URL_PATTERN: {
     code: "SHORT_URL_PATTERN",
-    id: "00030",
+    id: "00033",
     description:
       "Only capital letters or lower letters or number or dash or underscore",
   },
   URL_FOR_CONVERTING_NOT_PROVIDED: {
     code: "URL_FOR_CONVERTING_NOT_PROVIDED",
-    id: "00031",
+    id: "00034",
     description: "Url was not provided for the converting",
     message: "Url was not provided for the converting (addOne LinkService)",
   },
   SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED: {
     code: "SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED",
-    id: "00032",
+    id: "00035",
     description: "Short url was not provided for the redirecting",
     message:
       "Short url was not provided for the redirecting (redirectToUrl LinkService)",
   },
   SHORT_URL_FOR_REDIRECTING_MISSING: {
     code: "SHORT_URL_FOR_REDIRECTING_MISSING",
-    id: "00033",
+    id: "00036",
     description: "Short url for redirecting missing",
     message: "Short url for redirecting missing (redirectToUrl LinkService)",
   },
   URL_MUST_BE_STRING: {
     code: "URL_MUST_BE_STRING",
-    id: "00034",
+    id: "00037",
     description: "Url must be string",
   },
   URL_PATTERN: {
     code: "URL_PATTERN",
-    id: "00035",
+    id: "00038",
     description: "String is not valid url",
   },
 };
@@ -229,7 +244,7 @@ const ERROR_DEFINITIONS_LINKS = {
 const ERROR_DEFINITIONS_EMAIL_TRANSPORT = {
   ERROR_EMAIL_CONFIRMATION: {
     code: "ERROR_EMAIL_CONFIRMATION",
-    id: "00036",
+    id: "00039",
     description: "Error during user email confirmation",
     message:
       "Error during user email confirmation (sendEmailConfirm util function)",
