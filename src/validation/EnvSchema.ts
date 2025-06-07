@@ -7,5 +7,7 @@ export const EnvSchema = z.object({
     .string()
     .default("3000")
     .transform((val) => parseInt(val, 10)),
-  JwtSecretKey: z.string(),
+  JwtSecretKey: z.string().nonempty(),
+  SenderEmail: z.string().nonempty(),
+  SenderPassword: z.string().nonempty(),
 });
