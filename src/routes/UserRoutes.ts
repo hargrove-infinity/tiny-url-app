@@ -1,7 +1,11 @@
-import { Response, Request } from "express";
+import { Response } from "express";
 import { UserService } from "@src/services";
 import { HttpStatusCodes } from "@src/common";
-import { AddUserRequest, LoginUserRequest } from "@src/types";
+import {
+  AddUserRequest,
+  LoginUserRequest,
+  EmailVerificationRequest,
+} from "@src/types";
 import { pinoLogger } from "@src/logger";
 
 /**
@@ -27,7 +31,25 @@ async function add(req: AddUserRequest, res: Response): Promise<void> {
 /**
  * User email verification.
  */
-async function emailVerification(req: Request, res: Response) {
+async function emailVerification(
+  req: EmailVerificationRequest,
+  res: Response
+): Promise<void> {
+  const { hash } = req.query;
+  const [data, error] = await UserService.emailVerification(hash);
+
+  if (error) {
+    pinoLogger.warn(
+      { error: error.message },
+      "Error in emailVerification route"
+    );
+    res
+      .status(error.httpStatusCode)
+      .send({ errors: error.buildErrorPayload() });
+    return;
+  }
+
+  pinoLogger.info("Email successfully verified");
   res.send("OK");
 }
 

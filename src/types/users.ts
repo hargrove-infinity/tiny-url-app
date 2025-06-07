@@ -1,4 +1,5 @@
 import { Request } from "express";
+import { ParsedQs } from "qs";
 import { PrismaClient, Prisma } from "@prisma/client";
 
 export interface IAddUserBody {
@@ -30,3 +31,14 @@ export interface ILoginUserBody {
 }
 
 export type LoginUserRequest = Request<{}, {}, ILoginUserBody>;
+
+interface IEmailVerificationQueryParams extends ParsedQs {
+  hash: string;
+}
+
+export type EmailVerificationRequest = Request<
+  {},
+  {},
+  {},
+  IEmailVerificationQueryParams
+>;

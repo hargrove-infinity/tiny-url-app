@@ -59,6 +59,15 @@ async function add(
 }
 
 /**
+ * Email verification.
+ */
+async function emailVerification(
+  hash: string
+): AsyncTryCatchReturn<any, ApplicationError> {
+  return ["OK", undefined];
+}
+
+/**
  * Login user.
  */
 async function login(
@@ -123,4 +132,4 @@ async function login(
   return [token, undefined];
 }
 
-export const UserService = { add, login } as const;
+export const UserService = { add, emailVerification, login } as const;
