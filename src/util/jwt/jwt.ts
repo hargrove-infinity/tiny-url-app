@@ -1,14 +1,14 @@
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { ENV } from "@src/common";
 import { AppErrorService } from "../AppErrorService";
-import { ISignTokenPayload, SignTokenResult, VerifyTokenResult } from "./types";
+import { ISignTokenArgs, SignTokenResult, VerifyTokenResult } from "./types";
 import { verifyDecodedToken } from "./helpers";
 
-function signToken(payload: ISignTokenPayload): SignTokenResult {
+function signToken({ payload, expiresIn }: ISignTokenArgs): SignTokenResult {
   try {
     const token = jwt.sign(payload, ENV.JwtSecretKey, {
       algorithm: "HS256",
-      expiresIn: "3h",
+      expiresIn,
     });
 
     return [token, null];

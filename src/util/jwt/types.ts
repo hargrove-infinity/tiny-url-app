@@ -1,9 +1,23 @@
+import { StringValue } from "ms";
 import { SyncOperationResult } from "@src/types";
 
-export interface ISignTokenPayload {
+interface ISignAuthTokenPayload {
   id: number;
   name: string;
   username: string;
+}
+
+interface ISignEmailVerificationTokenPayload {
+  username: string;
+}
+
+type SignTokenPayload =
+  | ISignAuthTokenPayload
+  | ISignEmailVerificationTokenPayload;
+
+export interface ISignTokenArgs {
+  payload: SignTokenPayload;
+  expiresIn: StringValue;
 }
 
 export interface ITokenPayload {

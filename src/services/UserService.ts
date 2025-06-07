@@ -115,9 +115,12 @@ async function login(
   }
 
   const [token, errorToken] = Jwt.signToken({
-    id: firstUser.id,
-    name: firstUser.name,
-    username: firstUser.username,
+    payload: {
+      id: firstUser.id,
+      name: firstUser.name,
+      username: firstUser.username,
+    },
+    expiresIn: "3h",
   });
 
   if (errorToken) {
