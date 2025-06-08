@@ -28,6 +28,15 @@ export interface IAuthTokenPayload {
   exp: number;
 }
 
+export interface IEmailVerificationTokenPayload {
+  username: string;
+  iat: number;
+  exp: number;
+}
+
 export type SignTokenResult = SyncOperationResult<string>;
 
 export type VerifyAuthTokenResult = SyncOperationResult<IAuthTokenPayload>;
+
+export type VerifyEmailVerificationTokenResult =
+  SyncOperationResult<IEmailVerificationTokenPayload>;

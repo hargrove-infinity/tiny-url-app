@@ -5,8 +5,12 @@ import {
   ISignTokenArgs,
   SignTokenResult,
   VerifyAuthTokenResult,
+  VerifyEmailVerificationTokenResult,
 } from "./types";
-import { verifyDecodedAuthToken } from "./helpers";
+import {
+  verifyDecodedAuthToken,
+  verifyDecodedEmailVerificationToken,
+} from "./helpers";
 
 function signToken({ payload, expiresIn }: ISignTokenArgs): SignTokenResult {
   try {
@@ -40,7 +44,35 @@ function verifyAuthToken(token: string): VerifyAuthTokenResult {
   }
 }
 
+function verifyEmailVerificationToken(
+  token: string
+): VerifyEmailVerificationTokenResult {
+  try {
+    const decodedToken = jwt.verify(token, ENV.JwtSecretKey);
+    const checkResult = verifyDecodedEmailVerificationToken(decodedToken);
+
+    if (!checkResult) {
+      return [
+        null,
+        AppErrorService.Jwt.verifiedEmailVerificationTokenWrongShape(),
+      ];
+    }
+
+    return [decodedToken, null];
+  } catch (error) {
+    if (error instanceof TokenExpiredError) {
+      return [null, AppErrorService.Jwt.emailVerificationTokenExpired()];
+    }
+
+    return [
+      null,
+      AppErrorService.Jwt.errorDuringVerificationEmailVerificationToken(),
+    ];
+  }
+}
+
 export const Jwt = {
   signToken,
   verifyAuthToken,
+  verifyEmailVerificationToken,
 } as const;
