@@ -32,9 +32,10 @@ export async function sendEmailConfirm({
 
   pinoLogger.info("Sending email confirm template");
 
-  const [, error] = await asyncTryCatch<SMTPTransport.SentMessageInfo, Error>(
-    res
-  );
+  const [data, error] = await asyncTryCatch<
+    SMTPTransport.SentMessageInfo,
+    Error
+  >(res);
 
   if (error) {
     pinoLogger.info({ error: error.message }, "Send email error");
@@ -42,4 +43,5 @@ export async function sendEmailConfirm({
   }
 
   pinoLogger.info("Email has been sent");
+  return [data, undefined];
 }
