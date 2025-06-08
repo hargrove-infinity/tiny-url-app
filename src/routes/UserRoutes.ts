@@ -13,10 +13,10 @@ import { pinoLogger } from "@src/logger";
  */
 async function add(req: AddUserRequest, res: Response): Promise<void> {
   const { body } = req;
-  const [user, error] = await UserService.add(body);
+  const [data, error] = await UserService.add(body);
 
   if (error) {
-    pinoLogger.warn({ error: error.message }, "Error in add user route");
+    pinoLogger.warn({ error: error.message }, "Error in add UserRoutes");
 
     res
       .status(error.httpStatusCode)
@@ -24,8 +24,8 @@ async function add(req: AddUserRequest, res: Response): Promise<void> {
     return;
   }
 
-  pinoLogger.info("Created user is sending to the client");
-  res.status(HttpStatusCodes.CREATED).send(user);
+  pinoLogger.info("Data is sending to the client add UserRoutes");
+  res.status(HttpStatusCodes.CREATED).send(data);
 }
 
 /**
@@ -36,7 +36,7 @@ async function emailVerification(
   res: Response
 ): Promise<void> {
   const { hash } = req.query;
-  const [data, error] = await UserService.emailVerification(hash);
+  const [, error] = await UserService.emailVerification(hash);
 
   if (error) {
     pinoLogger.warn(
@@ -50,7 +50,7 @@ async function emailVerification(
   }
 
   pinoLogger.info("Email successfully verified");
-  res.send("OK");
+  res.status(HttpStatusCodes.OK).send("OK");
 }
 
 /**

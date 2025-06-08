@@ -1,7 +1,14 @@
-import { User } from "@prisma/client";
 import { UserRepo } from "@src/repos";
 import { AsyncTryCatchReturn, IAddUserBody, ILoginUserBody } from "@src/types";
-import { Encryption, AppErrorService, Jwt, prisma } from "@src/util";
+import {
+  transporter,
+  Encryption,
+  AppErrorService,
+  Jwt,
+  prisma,
+  sendEmailConfirm,
+  buildActivationLink,
+} from "@src/util";
 import { pinoLogger } from "@src/logger";
 import { ApplicationError } from "@src/common";
 
@@ -10,7 +17,7 @@ import { ApplicationError } from "@src/common";
  */
 async function add(
   userDto: IAddUserBody
-): AsyncTryCatchReturn<User, ApplicationError> {
+): AsyncTryCatchReturn<Record<string, never>, ApplicationError> {
   const [firstUser, errorGetUser] = await UserRepo.getFirst({
     prisma,
     args: { where: { username: userDto.username } },
@@ -41,21 +48,37 @@ async function add(
     return [, AppErrorService.Common.internalServerError()];
   }
 
-  const [createdUser, errorAddUser] = await UserRepo.add({
-    prisma,
-    args: { data: { ...userDto, password: hashedPassword } },
+  const [emailVerificationToken, errorToken] = Jwt.signToken({
+    payload: { ...userDto, password: hashedPassword },
+    expiresIn: "30Minutes",
   });
 
-  if (errorAddUser) {
+  if (errorToken) {
     pinoLogger.warn(
-      { message: errorAddUser.message },
-      "Error during creating user in add UserService"
+      { message: errorToken.message },
+      "Error during creating email verification token in add UserService"
     );
 
+    return [, errorToken];
+  }
+
+  const activationLink = buildActivationLink(emailVerificationToken);
+
+  const [, errorSendEmailConfirm] = await sendEmailConfirm({
+    transporter,
+    toEmails: [userDto.username],
+    context: { userName: `${userDto.name}`, activationLink },
+  });
+
+  if (errorSendEmailConfirm) {
+    pinoLogger.warn(
+      { message: errorSendEmailConfirm.message },
+      "Error during sending email confirmation template in add UserService"
+    );
     return [, AppErrorService.Common.internalServerError()];
   }
 
-  return [createdUser, undefined];
+  return [{}, undefined];
 }
 
 /**
@@ -63,8 +86,55 @@ async function add(
  */
 async function emailVerification(
   hash: string
-): AsyncTryCatchReturn<any, ApplicationError> {
-  return ["OK", undefined];
+): AsyncTryCatchReturn<Record<string, never>, ApplicationError> {
+  const [result, errorEmailVerificationToken] =
+    Jwt.verifyEmailVerificationToken(hash);
+
+  if (errorEmailVerificationToken) {
+    pinoLogger.warn(
+      { message: errorEmailVerificationToken.message },
+      "Error during decoding hash in emailVerification UserService"
+    );
+    return [, AppErrorService.Common.internalServerError()];
+  }
+
+  const { iat, exp, ...user } = result;
+
+  const [firstUser, errorGetUser] = await UserRepo.getFirst({
+    prisma,
+    args: { where: { username: user.username } },
+  });
+
+  if (errorGetUser) {
+    pinoLogger.warn(
+      { message: errorGetUser.message },
+      "Error during fetching first user in emailVerification UserService"
+    );
+    return [, AppErrorService.Common.internalServerError()];
+  }
+
+  if (firstUser) {
+    pinoLogger.warn(
+      "User with email already exists (emailVerification UserService)"
+    );
+    return [, AppErrorService.Users.registrationFailed()];
+  }
+
+  const [, errorAddUser] = await UserRepo.add({
+    prisma,
+    args: { data: user },
+  });
+
+  if (errorAddUser) {
+    pinoLogger.warn(
+      { message: errorAddUser.message },
+      "Error during creating user in emailVerification UserService"
+    );
+
+    return [, AppErrorService.Common.internalServerError()];
+  }
+
+  return [{}, undefined];
 }
 
 /**

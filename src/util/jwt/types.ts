@@ -8,7 +8,9 @@ interface ISignAuthTokenPayload {
 }
 
 interface ISignEmailVerificationTokenPayload {
+  name: string;
   username: string;
+  password: string;
 }
 
 type SignTokenPayload =
@@ -29,7 +31,9 @@ export interface IAuthTokenPayload {
 }
 
 export interface IEmailVerificationTokenPayload {
+  name: string;
   username: string;
+  password: string;
   iat: number;
   exp: number;
 }
