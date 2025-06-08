@@ -20,7 +20,7 @@ export interface ISignTokenArgs {
   expiresIn: StringValue;
 }
 
-export interface ITokenPayload {
+export interface IAuthTokenPayload {
   id: number;
   name: string;
   username: string;
@@ -30,4 +30,4 @@ export interface ITokenPayload {
 
 export type SignTokenResult = SyncOperationResult<string>;
 
-export type VerifyTokenResult = SyncOperationResult<ITokenPayload>;
+export type VerifyAuthTokenResult = SyncOperationResult<IAuthTokenPayload>;

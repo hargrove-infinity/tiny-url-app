@@ -42,26 +42,27 @@ const ERROR_DEFINITIONS_JWT = {
     description: "Error during signing token",
     message: "Error during signing token (signToken util function)",
   },
-  ERROR_VERIFICATION_TOKEN: {
-    code: "ERROR_VERIFICATION_TOKEN",
+  ERROR_VERIFICATION_AUTH_TOKEN: {
+    code: "ERROR_VERIFICATION_AUTH_TOKEN",
     id: "00006",
-    description: "Error during verification token",
-    message: "Error during verification token (verifyToken util function)",
-  },
-  TOKEN_EXPIRED: {
-    code: "TOKEN_EXPIRED",
-    id: "00007",
-    description: "Token is expired",
+    description: "Error during verification auth token",
     message:
-      "Token is expired (verifyToken util function; error instanceof TokenExpiredError)",
+      "Error during verification auth token (verifyAuthToken util function)",
   },
-  VERIFIED_TOKEN_WRONG_SHAPE: {
-    code: "VERIFIED_TOKEN_WRONG_SHAPE",
+  AUTH_TOKEN_EXPIRED: {
+    code: "AUTH_TOKEN_EXPIRED",
+    id: "00007",
+    description: "Auth token is expired",
+    message:
+      "Auth token is expired (verifyAuthToken util function; error instanceof TokenExpiredError)",
+  },
+  VERIFIED_AUTH_TOKEN_WRONG_SHAPE: {
+    code: "VERIFIED_AUTH_TOKEN_WRONG_SHAPE",
     id: "00008",
     description:
-      "Verified token is not an object or does not have needed fields or fields are wrong type",
+      "Verified auth token is not an object or does not have needed fields or fields are wrong type",
     message:
-      "Verified token is not an object or does not have needed fields or fields are wrong type (verifyToken util function; try block)",
+      "Verified auth token is not an object or does not have needed fields or fields are wrong type (verifyToken util function; try block)",
   },
 };
 

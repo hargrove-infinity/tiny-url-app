@@ -1,6 +1,8 @@
-import { ITokenPayload } from "./types";
+import { IAuthTokenPayload } from "./types";
 
-export function verifyDecodedToken(data: unknown): data is ITokenPayload {
+export function verifyDecodedAuthToken(
+  data: unknown
+): data is IAuthTokenPayload {
   return !!(
     data instanceof Object &&
     "id" in data &&
