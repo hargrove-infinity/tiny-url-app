@@ -16,7 +16,10 @@ async function add(req: AddUserRequest, res: Response): Promise<void> {
   const [data, error] = await UserService.add(body);
 
   if (error) {
-    pinoLogger.warn({ error: error.message }, "Error in add UserRoutes");
+    pinoLogger.warn(
+      { error: error.message },
+      "Failed to initiate user registration process."
+    );
 
     res
       .status(error.httpStatusCode)
@@ -24,7 +27,7 @@ async function add(req: AddUserRequest, res: Response): Promise<void> {
     return;
   }
 
-  pinoLogger.info("Data is sending to the client add UserRoutes");
+  pinoLogger.info("User registration initiated. Verification email sent.");
   res.status(HttpStatusCodes.CREATED).send(data);
 }
 
