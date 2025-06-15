@@ -53,7 +53,9 @@ async function emailVerification(
   }
 
   pinoLogger.info("Email successfully verified");
-  res.status(HttpStatusCodes.OK).send("OK");
+  res
+    .status(HttpStatusCodes.OK)
+    .send({ message: "Email successfully verified", success: true });
 }
 
 /**
