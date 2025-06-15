@@ -1,5 +1,10 @@
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { ENV } from "@src/common";
+import {
+  DecodedAuthTokenSchema,
+  safeParseValidationSchema,
+  DecodedEmailVerificationTokenSchema,
+} from "@src/validation";
 import { AppErrorService } from "../AppErrorService";
 import {
   ISignTokenArgs,
@@ -7,11 +12,6 @@ import {
   VerifyAuthTokenResult,
   VerifyEmailVerificationTokenResult,
 } from "./types";
-import { verifyDecodedEmailVerificationToken } from "./helpers";
-import {
-  DecodedAuthTokenSchema,
-  safeParseValidationSchema,
-} from "@src/validation";
 
 function signToken({ payload, expiresIn }: ISignTokenArgs): SignTokenResult {
   try {
@@ -54,16 +54,20 @@ function verifyEmailVerificationToken(
 ): VerifyEmailVerificationTokenResult {
   try {
     const decodedToken = jwt.verify(token, ENV.JwtSecretKey);
-    const checkResult = verifyDecodedEmailVerificationToken(decodedToken);
 
-    if (!checkResult) {
+    const validationResult = safeParseValidationSchema({
+      schema: DecodedEmailVerificationTokenSchema,
+      data: decodedToken,
+    });
+
+    if (!validationResult) {
       return [
         null,
         AppErrorService.Jwt.verifiedEmailVerificationTokenWrongShape(),
       ];
     }
 
-    return [decodedToken, null];
+    return [validationResult, null];
   } catch (error) {
     if (error instanceof TokenExpiredError) {
       return [null, AppErrorService.Jwt.emailVerificationTokenExpired()];

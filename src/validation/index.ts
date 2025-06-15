@@ -1,4 +1,5 @@
 export * from "./DecodedAuthTokenSchema";
+export * from "./DecodedEmailVerificationTokenSchema";
 export * from "./EmailVerificationSchema";
 export * from "./EnvSchema";
 export * from "./LinkSchema";
