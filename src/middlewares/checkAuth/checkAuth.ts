@@ -26,7 +26,7 @@ export async function checkAuth(
 
   const authorizationTokenFormatted = authorization.replace("Bearer ", "");
 
-  const [result, error] = Jwt.verifyToken(authorizationTokenFormatted);
+  const [result, error] = Jwt.verifyAuthToken(authorizationTokenFormatted);
 
   if (error) {
     res

@@ -24,5 +24,5 @@ export interface ISendEmailConfirmArgs {
 }
 
 export type SendEmailConfirmResult = Promise<
-  undefined | [undefined, ApplicationError]
+  [SMTPTransport.SentMessageInfo, undefined] | [undefined, ApplicationError]
 >;
