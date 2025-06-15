@@ -190,7 +190,7 @@ async function login(
       name: firstUser.name,
       username: firstUser.username,
     },
-    expiresIn: "3h",
+    expiresIn: "1h",
   });
 
   if (errorToken) {
