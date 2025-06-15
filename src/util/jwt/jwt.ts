@@ -7,10 +7,11 @@ import {
   VerifyAuthTokenResult,
   VerifyEmailVerificationTokenResult,
 } from "./types";
+import { verifyDecodedEmailVerificationToken } from "./helpers";
 import {
-  verifyDecodedAuthToken,
-  verifyDecodedEmailVerificationToken,
-} from "./helpers";
+  DecodedAuthTokenSchema,
+  safeParseValidationSchema,
+} from "@src/validation";
 
 function signToken({ payload, expiresIn }: ISignTokenArgs): SignTokenResult {
   try {
@@ -28,13 +29,17 @@ function signToken({ payload, expiresIn }: ISignTokenArgs): SignTokenResult {
 function verifyAuthToken(token: string): VerifyAuthTokenResult {
   try {
     const decodedToken = jwt.verify(token, ENV.JwtSecretKey);
-    const checkResult = verifyDecodedAuthToken(decodedToken);
 
-    if (!checkResult) {
+    const validationResult = safeParseValidationSchema({
+      schema: DecodedAuthTokenSchema,
+      data: decodedToken,
+    });
+
+    if (!validationResult) {
       return [null, AppErrorService.Jwt.verifiedAuthTokenWrongShape()];
     }
 
-    return [decodedToken, null];
+    return [validationResult, null];
   } catch (error) {
     if (error instanceof TokenExpiredError) {
       return [null, AppErrorService.Jwt.authTokenExpired()];
