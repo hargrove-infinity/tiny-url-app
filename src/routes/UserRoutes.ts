@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { UserService } from "@src/services";
 import { HttpStatusCodes } from "@src/common";
 import {
@@ -59,6 +59,13 @@ async function emailVerification(
 }
 
 /**
+ * Complete sign up.
+ */
+async function completeSignUp(req: Request, res: Response): Promise<void> {
+  res.send("OK");
+}
+
+/**
  * Login user.
  */
 async function login(req: LoginUserRequest, res: Response): Promise<void> {
@@ -82,4 +89,9 @@ async function login(req: LoginUserRequest, res: Response): Promise<void> {
                                 Export
 ******************************************************************************/
 
-export const UserRoutes = { add, emailVerification, login } as const;
+export const UserRoutes = {
+  add,
+  emailVerification,
+  completeSignUp,
+  login,
+} as const;

@@ -46,6 +46,8 @@ userRouter.post(
   UserRoutes.add
 );
 
+userRouter.post(Paths.Users.CompleteSignUp, UserRoutes.completeSignUp);
+
 userRouter.get(
   Paths.Users.EmailVerification,
   validate({ schema: EmailVerificationSchema, key: "query" }),
