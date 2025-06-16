@@ -17,6 +17,7 @@ export const CompleteSignUpSchema = z.object({
   password: z
     .string({ message: ERROR_DEFINITIONS.PASSWORD_MUST_BE_STRING.code })
     .trim()
+    .nonempty({ message: ERROR_DEFINITIONS.PASSWORD_MUST_BE_FILLED.code })
     .min(
       PASSWORD_MIN_LENGTH,
       ERROR_DEFINITIONS.PASSWORD_MIN_LENGTH_REQUIREMENT.code

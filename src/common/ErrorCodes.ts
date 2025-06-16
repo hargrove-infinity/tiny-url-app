@@ -132,86 +132,91 @@ const ERROR_DEFINITIONS_USERS = {
     id: "00019",
     description: "Password must be string",
   },
+  PASSWORD_MUST_BE_FILLED: {
+    code: "PASSWORD_MUST_BE_FILLED",
+    id: "00020",
+    description: "Password must be filled",
+  },
   PASSWORD_MIN_LENGTH_REQUIREMENT: {
     code: "PASSWORD_MIN_LENGTH_REQUIREMENT",
-    id: "00020",
+    id: "00021",
     description: `Password must be ${PASSWORD_MIN_LENGTH} characters length`,
   },
   PASSWORD_PATTERN: {
     code: "PASSWORD_PATTERN",
-    id: "00021",
+    id: "00022",
     description:
       "Password must contain at least one upper letter, at least one lower letter, at least one number",
   },
   GET_FIRST_USER_DATABASE_ERROR: {
     code: "GET_FIRST_USER_DATABASE_ERROR",
-    id: "00022",
+    id: "00023",
     description: "Error during fetching first user from database",
     message:
       "Error during fetching first user from database (getFirst UserRepo)",
   },
   GET_UNIQUE_USER_DATABASE_ERROR: {
     code: "GET_UNIQUE_USER_DATABASE_ERROR",
-    id: "00023",
+    id: "00024",
     description: "Error during fetching unique user from database",
     message:
       "Error during fetching unique user from database (getUnique UserRepo)",
   },
   CREATE_USER_DATABASE_ERROR: {
     code: "CREATE_USER_DATABASE_ERROR",
-    id: "00024",
+    id: "00025",
     description: "Error during creation user in database",
     message: "Error during creation user in database (add UserRepo)",
   },
   REGISTRATION_FAILED: {
     code: "REGISTRATION_FAILED",
-    id: "00025",
+    id: "00026",
     description: "Registration could not be completed",
     message: "Please check your information and try again",
   },
   CREATE_LINK_DATABASE_ERROR: {
     code: "CREATE_LINK_DATABASE_ERROR",
-    id: "00026",
+    id: "00027",
     description: "Error during creation link in database",
     message: "Error during creation link in database (add LinkRepo)",
   },
   GET_FIRST_LINK_DATABASE_ERROR: {
     code: "GET_FIRST_LINK_DATABASE_ERROR",
-    id: "00027",
+    id: "00028",
     description: "Error during get first link in database",
     message: "Error during get first link in database (getFirst LinkRepo)",
   },
   USER_UNAUTHORIZED: {
     code: "USER_UNAUTHORIZED",
-    id: "00028",
+    id: "00029",
     description: "User is not authorized",
     message:
       "User is not authorized (login UserService / checkAuth middleware)",
   },
   USER_MISSING_REQUEST_DATA: {
     code: "USER_MISSING_REQUEST_DATA",
-    id: "00029",
+    id: "00030",
     description: "User field is missing in the express request object",
   },
   LOGIN_FAILED: {
     code: "LOGIN_FAILED",
-    id: "00030",
+    id: "00031",
     description: "Login failed: Invalid username or password.",
     message: "Login failed: Invalid username or password. (login UserService)",
   },
   EMAIL_VERIFICATION_HASH_MUST_BE_STRING: {
     code: "EMAIL_VERIFICATION_HASH_MUST_BE_STRING",
-    id: "00031",
+    id: "00032",
     description: "User email verification hash must be string.",
   },
   EMAIL_VERIFICATION_HASH_MUST_BE_FILLED: {
     code: "EMAIL_VERIFICATION_HASH_MUST_BE_FILLED",
-    id: "00032",
+    id: "00033",
     description: "User email verification hash must be filled.",
   },
   EMAIL_VERIFICATION_HASH_MUST_BE_JWT: {
     code: "EMAIL_VERIFICATION_HASH_MUST_BE_JWT",
-    id: "00033",
+    id: "00034",
     description: "User email verification hash must be jwt.",
   },
 };
@@ -219,47 +224,47 @@ const ERROR_DEFINITIONS_USERS = {
 const ERROR_DEFINITIONS_LINKS = {
   SHORT_URL_MUST_BE_STRING: {
     code: "SHORT_URL_MUST_BE_STRING",
-    id: "00034",
+    id: "00035",
     description: "Short url must be string",
   },
   SHORT_URL_DEFINED_LENGTH: {
     code: "SHORT_URL_DEFINED_LENGTH",
-    id: "00035",
+    id: "00036",
     description: `Short url must be ${DEFAULT_SHORT_URL_LENGTH} characters length`,
   },
   SHORT_URL_PATTERN: {
     code: "SHORT_URL_PATTERN",
-    id: "00036",
+    id: "00037",
     description:
       "Only capital letters or lower letters or number or dash or underscore",
   },
   URL_FOR_CONVERTING_NOT_PROVIDED: {
     code: "URL_FOR_CONVERTING_NOT_PROVIDED",
-    id: "00037",
+    id: "00038",
     description: "Url was not provided for the converting",
     message: "Url was not provided for the converting (addOne LinkService)",
   },
   SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED: {
     code: "SHORT_URL_FOR_REDIRECTING_NOT_PROVIDED",
-    id: "00038",
+    id: "00039",
     description: "Short url was not provided for the redirecting",
     message:
       "Short url was not provided for the redirecting (redirectToUrl LinkService)",
   },
   SHORT_URL_FOR_REDIRECTING_MISSING: {
     code: "SHORT_URL_FOR_REDIRECTING_MISSING",
-    id: "00039",
+    id: "00040",
     description: "Short url for redirecting missing",
     message: "Short url for redirecting missing (redirectToUrl LinkService)",
   },
   URL_MUST_BE_STRING: {
     code: "URL_MUST_BE_STRING",
-    id: "00040",
+    id: "00041",
     description: "Url must be string",
   },
   URL_PATTERN: {
     code: "URL_PATTERN",
-    id: "00041",
+    id: "00042",
     description: "String is not valid url",
   },
 };
@@ -267,7 +272,7 @@ const ERROR_DEFINITIONS_LINKS = {
 const ERROR_DEFINITIONS_EMAIL_TRANSPORT = {
   ERROR_EMAIL_CONFIRMATION: {
     code: "ERROR_EMAIL_CONFIRMATION",
-    id: "00042",
+    id: "00043",
     description: "Error during user email confirmation",
     message:
       "Error during user email confirmation (sendEmailConfirm util function)",
