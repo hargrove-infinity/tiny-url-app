@@ -5,6 +5,7 @@ import {
   ShortUrlSchema,
   UserSchema,
   LoginUserSchema,
+  EmailVerificationSchema,
 } from "@src/validation";
 import { Paths } from "@src/common";
 import { LinkRoutes } from "./LinkRoutes";
@@ -43,6 +44,12 @@ userRouter.post(
   Paths.Users.Base,
   validate({ schema: UserSchema }),
   UserRoutes.add
+);
+
+userRouter.get(
+  Paths.Users.EmailVerification,
+  validate({ schema: EmailVerificationSchema, key: "query" }),
+  UserRoutes.emailVerification
 );
 
 userRouter.post(
