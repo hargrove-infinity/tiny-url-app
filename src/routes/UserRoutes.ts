@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { UserService } from "@src/services";
 import { HttpStatusCodes } from "@src/common";
 import {
   AddUserRequest,
   LoginUserRequest,
   EmailVerificationRequest,
+  CompleteSignUpRequest,
 } from "@src/types";
 import { pinoLogger } from "@src/logger";
 
@@ -61,7 +62,10 @@ async function emailVerification(
 /**
  * Complete sign up.
  */
-async function completeSignUp(req: Request, res: Response): Promise<void> {
+async function completeSignUp(
+  req: CompleteSignUpRequest,
+  res: Response
+): Promise<void> {
   res.send("OK");
 }
 

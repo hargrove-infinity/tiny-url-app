@@ -6,6 +6,7 @@ import {
   UserSchema,
   LoginUserSchema,
   EmailVerificationSchema,
+  CompleteSignUpSchema,
 } from "@src/validation";
 import { Paths } from "@src/common";
 import { LinkRoutes } from "./LinkRoutes";
@@ -46,7 +47,11 @@ userRouter.post(
   UserRoutes.add
 );
 
-userRouter.post(Paths.Users.CompleteSignUp, UserRoutes.completeSignUp);
+userRouter.post(
+  Paths.Users.CompleteSignUp,
+  validate({ schema: CompleteSignUpSchema }),
+  UserRoutes.completeSignUp
+);
 
 userRouter.get(
   Paths.Users.EmailVerification,

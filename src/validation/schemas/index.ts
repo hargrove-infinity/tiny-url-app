@@ -1,3 +1,4 @@
+export * from "./CompleteSignUpSchema";
 export * from "./DecodedAuthTokenSchema";
 export * from "./DecodedEmailVerificationTokenSchema";
 export * from "./EmailVerificationSchema";

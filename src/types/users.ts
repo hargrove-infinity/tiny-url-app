@@ -42,3 +42,10 @@ export type EmailVerificationRequest = Request<
   {},
   IEmailVerificationQueryParams
 >;
+
+export interface ICompleteSignUpBody {
+  signUpToken: string;
+  password: string;
+}
+
+export type CompleteSignUpRequest = Request<{}, {}, IAddUserBody>;
