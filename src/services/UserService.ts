@@ -31,17 +31,19 @@ async function requestSignUp(
   if (errorGetUser) {
     pinoLogger.warn(
       { message: errorGetUser.message },
-      "Error during fetching first user in add UserService"
+      "Error during fetching first user in requestSignUp UserService"
     );
     return [, AppErrorService.Common.internalServerError()];
   }
 
   if (firstUser) {
-    pinoLogger.warn("User with email already exists (add UserService)");
+    pinoLogger.warn(
+      "User with email already exists (requestSignUp UserService)"
+    );
     return [, AppErrorService.Users.registrationFailed()];
   }
 
-  const [emailVerificationToken, errorToken] = Jwt.signToken({
+  const [signUpToken, errorToken] = Jwt.signToken({
     payload: requestSignUpDto,
     expiresIn: "30Minutes",
   });
@@ -49,13 +51,13 @@ async function requestSignUp(
   if (errorToken) {
     pinoLogger.warn(
       { message: errorToken.message },
-      "Error during creating email verification token in add UserService"
+      "Error during creating sign up token in requestSignUp UserService"
     );
 
     return [, errorToken];
   }
 
-  const activationLink = buildActivationLink(emailVerificationToken);
+  const activationLink = buildActivationLink(signUpToken);
 
   const [, errorSendEmailConfirm] = await sendEmailConfirm({
     transporter,
@@ -66,7 +68,7 @@ async function requestSignUp(
   if (errorSendEmailConfirm) {
     pinoLogger.warn(
       { message: errorSendEmailConfirm.message },
-      "Error during sending email confirmation template in add UserService"
+      "Error during sending email confirmation template in requestSignUp UserService"
     );
     return [, AppErrorService.Common.internalServerError()];
   }
