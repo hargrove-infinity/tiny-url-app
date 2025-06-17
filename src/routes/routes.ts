@@ -3,7 +3,7 @@ import { checkAuth, validate } from "@src/middlewares";
 import {
   LinkSchema,
   ShortUrlSchema,
-  UserSchema,
+  RequestSignUpSchema,
   LoginUserSchema,
   CompleteSignUpSchema,
 } from "@src/validation";
@@ -42,7 +42,7 @@ const userRouter = Router();
 
 userRouter.post(
   Paths.Users.RequestSignUp,
-  validate({ schema: UserSchema }),
+  validate({ schema: RequestSignUpSchema }),
   UserRoutes.requestSignUp
 );
 

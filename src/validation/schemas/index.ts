@@ -4,5 +4,5 @@ export * from "./DecodedSignUpTokenSchema";
 export * from "./EnvSchema";
 export * from "./LinkSchema";
 export * from "./LoginUserSchema";
+export * from "./RequestSignUpSchema";
 export * from "./ShortUrlSchema";
-export * from "./UserSchema";
