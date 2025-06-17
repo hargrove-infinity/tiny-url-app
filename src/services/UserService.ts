@@ -87,62 +87,6 @@ async function add(
 }
 
 /**
- * Email verification.
- */
-async function emailVerification(
-  hash: string
-): AsyncTryCatchReturn<Record<string, never>, ApplicationError> {
-  const [result, errorEmailVerificationToken] =
-    Jwt.verifyEmailVerificationToken(hash);
-
-  if (errorEmailVerificationToken) {
-    pinoLogger.warn(
-      { message: errorEmailVerificationToken.message },
-      "Error during decoding hash in emailVerification UserService"
-    );
-    return [, AppErrorService.Common.internalServerError()];
-  }
-
-  const { iat, exp, ...user } = result;
-
-  const [firstUser, errorGetUser] = await UserRepo.getFirst({
-    prisma,
-    args: { where: { username: user.username } },
-  });
-
-  if (errorGetUser) {
-    pinoLogger.warn(
-      { message: errorGetUser.message },
-      "Error during fetching first user in emailVerification UserService"
-    );
-    return [, AppErrorService.Common.internalServerError()];
-  }
-
-  if (firstUser) {
-    pinoLogger.warn(
-      "User with email already exists (emailVerification UserService)"
-    );
-    return [, AppErrorService.Users.registrationFailed()];
-  }
-
-  const [, errorAddUser] = await UserRepo.add({
-    prisma,
-    args: { data: user },
-  });
-
-  if (errorAddUser) {
-    pinoLogger.warn(
-      { message: errorAddUser.message },
-      "Error during creating user in emailVerification UserService"
-    );
-
-    return [, AppErrorService.Common.internalServerError()];
-  }
-
-  return [{}, undefined];
-}
-
-/**
  * Complete sign up.
  */
 async function completeSignUp(completeSignUpDto: ICompleteSignUpBody) {
@@ -278,7 +222,6 @@ async function login(
 
 export const UserService = {
   add,
-  emailVerification,
   completeSignUp,
   login,
 } as const;

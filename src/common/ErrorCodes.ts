@@ -64,28 +64,6 @@ const ERROR_DEFINITIONS_JWT = {
     message:
       "Verified auth token is not an object or does not have needed fields or fields are wrong type (verifyToken util function; try block)",
   },
-  ERROR_VERIFICATION_EMAIL_VERIFICATION_TOKEN: {
-    code: "ERROR_VERIFICATION_EMAIL_VERIFICATION_TOKEN",
-    id: "00009",
-    description: "Error during verification email verification token",
-    message:
-      "Error during verification email verification token (verifyEmailVerificationToken util function)",
-  },
-  EMAIL_VERIFICATION_TOKEN_EXPIRED: {
-    code: "EMAIL_VERIFICATION_TOKEN_EXPIRED",
-    id: "00010",
-    description: "Email verification token is expired",
-    message:
-      "Email verification token is expired (verifyEmailVerificationToken util function; error instanceof TokenExpiredError)",
-  },
-  VERIFIED_EMAIL_VERIFICATION_TOKEN_WRONG_SHAPE: {
-    code: "VERIFIED_EMAIL_VERIFICATION_TOKEN_WRONG_SHAPE",
-    id: "00011",
-    description:
-      "Verified email verification token is not an object or does not have needed fields or fields are wrong type",
-    message:
-      "Verified email verification token is not an object or does not have needed fields or fields are wrong type (verifyToken util function; try block)",
-  },
   ERROR_VERIFICATION_SIGN_UP_TOKEN: {
     code: "ERROR_VERIFICATION_SIGN_UP_TOKEN",
     id: "00012",
@@ -225,20 +203,20 @@ const ERROR_DEFINITIONS_USERS = {
     description: "Login failed: Invalid username or password.",
     message: "Login failed: Invalid username or password. (login UserService)",
   },
-  EMAIL_VERIFICATION_HASH_MUST_BE_STRING: {
-    code: "EMAIL_VERIFICATION_HASH_MUST_BE_STRING",
+  SIGN_UP_TOKEN_MUST_BE_STRING: {
+    code: "SIGN_UP_TOKEN_MUST_BE_STRING",
     id: "00032",
-    description: "User email verification hash must be string.",
+    description: "Sign up token must be string.",
   },
-  EMAIL_VERIFICATION_HASH_MUST_BE_FILLED: {
-    code: "EMAIL_VERIFICATION_HASH_MUST_BE_FILLED",
+  SIGN_UP_TOKEN_MUST_BE_FILLED: {
+    code: "SIGN_UP_TOKEN_MUST_BE_FILLED",
     id: "00033",
-    description: "User email verification hash must be filled.",
+    description: "Sign up token must be filled.",
   },
-  EMAIL_VERIFICATION_HASH_MUST_BE_JWT: {
-    code: "EMAIL_VERIFICATION_HASH_MUST_BE_JWT",
+  SIGN_UP_TOKEN_MUST_BE_JWT: {
+    code: "SIGN_UP_TOKEN_MUST_BE_JWT",
     id: "00034",
-    description: "User email verification hash must be jwt.",
+    description: "Sign up token must be jwt.",
   },
 };
 

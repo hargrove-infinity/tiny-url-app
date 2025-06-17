@@ -5,14 +5,14 @@ import { ERROR_DEFINITIONS } from "@src/common/ErrorCodes";
 export const CompleteSignUpSchema = z.object({
   signUpToken: z
     .string({
-      message: ERROR_DEFINITIONS.EMAIL_VERIFICATION_HASH_MUST_BE_STRING.code,
+      message: ERROR_DEFINITIONS.SIGN_UP_TOKEN_MUST_BE_STRING.code,
     })
     .trim()
     .nonempty({
-      message: ERROR_DEFINITIONS.EMAIL_VERIFICATION_HASH_MUST_BE_FILLED.code,
+      message: ERROR_DEFINITIONS.SIGN_UP_TOKEN_MUST_BE_FILLED.code,
     })
     .jwt({
-      message: ERROR_DEFINITIONS.EMAIL_VERIFICATION_HASH_MUST_BE_JWT.code,
+      message: ERROR_DEFINITIONS.SIGN_UP_TOKEN_MUST_BE_JWT.code,
     }),
   password: z
     .string({ message: ERROR_DEFINITIONS.PASSWORD_MUST_BE_STRING.code })

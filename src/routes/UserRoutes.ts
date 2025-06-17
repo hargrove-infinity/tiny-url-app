@@ -4,7 +4,6 @@ import { HttpStatusCodes } from "@src/common";
 import {
   AddUserRequest,
   LoginUserRequest,
-  EmailVerificationRequest,
   CompleteSignUpRequest,
 } from "@src/types";
 import { pinoLogger } from "@src/logger";
@@ -30,33 +29,6 @@ async function add(req: AddUserRequest, res: Response): Promise<void> {
 
   pinoLogger.info("User registration initiated. Verification email sent.");
   res.status(HttpStatusCodes.CREATED).send(data);
-}
-
-/**
- * User email verification.
- */
-async function emailVerification(
-  req: EmailVerificationRequest,
-  res: Response
-): Promise<void> {
-  const { hash } = req.query;
-  const [, error] = await UserService.emailVerification(hash);
-
-  if (error) {
-    pinoLogger.warn(
-      { error: error.message },
-      "Error in emailVerification route"
-    );
-    res
-      .status(error.httpStatusCode)
-      .send({ errors: error.buildErrorPayload() });
-    return;
-  }
-
-  pinoLogger.info("Email successfully verified");
-  res
-    .status(HttpStatusCodes.OK)
-    .send({ message: "Email successfully verified", success: true });
 }
 
 /**
@@ -95,7 +67,6 @@ async function login(req: LoginUserRequest, res: Response): Promise<void> {
 
 export const UserRoutes = {
   add,
-  emailVerification,
   completeSignUp,
   login,
 } as const;
