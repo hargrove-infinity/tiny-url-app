@@ -11,7 +11,7 @@ import {
   AppErrorService,
   Jwt,
   prisma,
-  sendEmailConfirm,
+  sendSignUpLinkEmail,
   buildSignUpLink,
 } from "@src/util";
 import { pinoLogger } from "@src/logger";
@@ -57,18 +57,18 @@ async function requestSignUp(
     return [, errorToken];
   }
 
-  const activationLink = buildSignUpLink(signUpToken);
+  const signUpLink = buildSignUpLink(signUpToken);
 
-  const [, errorSendEmailConfirm] = await sendEmailConfirm({
+  const [, errorSendSignUpLinkEmail] = await sendSignUpLinkEmail({
     transporter,
     toEmails: [requestSignUpDto.username],
-    context: { userName: `${requestSignUpDto.name}`, activationLink },
+    context: { userName: `${requestSignUpDto.name}`, signUpLink },
   });
 
-  if (errorSendEmailConfirm) {
+  if (errorSendSignUpLinkEmail) {
     pinoLogger.warn(
-      { message: errorSendEmailConfirm.message },
-      "Error during sending email confirmation template in requestSignUp UserService"
+      { message: errorSendSignUpLinkEmail.message },
+      "Error during sending sign up link email template in requestSignUp UserService"
     );
     return [, AppErrorService.Common.internalServerError()];
   }
@@ -79,7 +79,9 @@ async function requestSignUp(
 /**
  * Complete sign up.
  */
-async function completeSignUp(completeSignUpDto: ICompleteSignUpBody) {
+async function completeSignUp(
+  completeSignUpDto: ICompleteSignUpBody
+): AsyncTryCatchReturn<Record<string, never>, ApplicationError> {
   const { password, signUpToken } = completeSignUpDto;
   const [result, errorSignUpToken] = Jwt.verifySignUpToken(signUpToken);
 
