@@ -1,6 +1,7 @@
 export * from "./CompleteSignUpSchema";
 export * from "./DecodedAuthTokenSchema";
 export * from "./DecodedEmailVerificationTokenSchema";
+export * from "./DecodedSignUpTokenSchema";
 export * from "./EmailVerificationSchema";
 export * from "./EnvSchema";
 export * from "./LinkSchema";

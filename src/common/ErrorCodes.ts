@@ -86,6 +86,27 @@ const ERROR_DEFINITIONS_JWT = {
     message:
       "Verified email verification token is not an object or does not have needed fields or fields are wrong type (verifyToken util function; try block)",
   },
+  ERROR_VERIFICATION_SIGN_UP_TOKEN: {
+    code: "ERROR_VERIFICATION_SIGN_UP_TOKEN",
+    id: "00012",
+    description: "Error during verification sign up token",
+    message:
+      "Error during verification sign up token (verifySignUpToken util function)",
+  },
+  SIGN_UP_TOKEN_EXPIRED: {
+    code: "SIGN_UP_TOKEN_EXPIRED",
+    id: "00013",
+    description: "Sign up token is expired",
+    message:
+      "Sign up token is expired (verifySignUpToken util function; error instanceof TokenExpiredError)",
+  },
+  VERIFIED_SIGN_UP_TOKEN_WRONG_SHAPE: {
+    code: "VERIFIED_SIGN_UP_TOKEN_WRONG_SHAPE",
+    id: "00014",
+    description: "Sign up token is expired",
+    message:
+      "Sign up token is expired (verifySignUpToken util function; error instanceof TokenExpiredError)",
+  },
 };
 
 const ERROR_DEFINITIONS_TOKEN = {

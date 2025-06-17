@@ -1,5 +1,10 @@
 import { UserRepo } from "@src/repos";
-import { AsyncTryCatchReturn, IAddUserBody, ILoginUserBody } from "@src/types";
+import {
+  AsyncTryCatchReturn,
+  IAddUserBody,
+  ICompleteSignUpBody,
+  ILoginUserBody,
+} from "@src/types";
 import {
   transporter,
   Encryption,
@@ -138,6 +143,72 @@ async function emailVerification(
 }
 
 /**
+ * Complete sign up.
+ */
+async function completeSignUp(completeSignUpDto: ICompleteSignUpBody) {
+  const { password, signUpToken } = completeSignUpDto;
+  const [result, errorSignUpToken] = Jwt.verifySignUpToken(signUpToken);
+
+  if (errorSignUpToken) {
+    pinoLogger.warn(
+      { message: errorSignUpToken.message },
+      "Error during decoding sign up token in completeSignUp UserService"
+    );
+    return [, AppErrorService.Common.internalServerError()];
+  }
+
+  const { iat, exp, ...user } = result;
+
+  const [firstUser, errorGetUser] = await UserRepo.getFirst({
+    prisma,
+    args: { where: { username: user.username } },
+  });
+
+  if (errorGetUser) {
+    pinoLogger.warn(
+      { message: errorGetUser.message },
+      "Error during fetching first user in completeSignUp UserService"
+    );
+    return [, AppErrorService.Common.internalServerError()];
+  }
+
+  if (firstUser) {
+    pinoLogger.warn(
+      "User with email already exists (completeSignUp UserService)"
+    );
+    return [, AppErrorService.Users.registrationFailed()];
+  }
+
+  const [hashedPassword, errorHashPassword] = await Encryption.hashString({
+    stringToHash: password,
+  });
+
+  if (errorHashPassword) {
+    pinoLogger.warn(
+      { message: errorHashPassword.message },
+      "Error during hashing password in completeSignUp UserService"
+    );
+    return [, AppErrorService.Common.internalServerError()];
+  }
+
+  const [, errorAddUser] = await UserRepo.add({
+    prisma,
+    args: { data: { ...user, password: hashedPassword } },
+  });
+
+  if (errorAddUser) {
+    pinoLogger.warn(
+      { message: errorAddUser.message },
+      "Error during creating user in completeSignUp UserService"
+    );
+
+    return [, AppErrorService.Common.internalServerError()];
+  }
+
+  return [{}, undefined];
+}
+
+/**
  * Login user.
  */
 async function login(
@@ -205,4 +276,9 @@ async function login(
   return [token, undefined];
 }
 
-export const UserService = { add, emailVerification, login } as const;
+export const UserService = {
+  add,
+  emailVerification,
+  completeSignUp,
+  login,
+} as const;

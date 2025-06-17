@@ -38,9 +38,18 @@ export interface IEmailVerificationTokenPayload {
   exp: number;
 }
 
+export interface ISignUpTokenPayload {
+  name: string;
+  username: string;
+  iat: number;
+  exp: number;
+}
+
 export type SignTokenResult = SyncOperationResult<string>;
 
 export type VerifyAuthTokenResult = SyncOperationResult<IAuthTokenPayload>;
 
 export type VerifyEmailVerificationTokenResult =
   SyncOperationResult<IEmailVerificationTokenPayload>;
+
+export type VerifySignUpTokenResult = SyncOperationResult<ISignUpTokenPayload>;
