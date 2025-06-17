@@ -66,21 +66,21 @@ const ERROR_DEFINITIONS_JWT = {
   },
   ERROR_VERIFICATION_SIGN_UP_TOKEN: {
     code: "ERROR_VERIFICATION_SIGN_UP_TOKEN",
-    id: "00012",
+    id: "00009",
     description: "Error during verification sign up token",
     message:
       "Error during verification sign up token (verifySignUpToken util function)",
   },
   SIGN_UP_TOKEN_EXPIRED: {
     code: "SIGN_UP_TOKEN_EXPIRED",
-    id: "00013",
+    id: "00010",
     description: "Sign up token is expired",
     message:
       "Sign up token is expired (verifySignUpToken util function; error instanceof TokenExpiredError)",
   },
   VERIFIED_SIGN_UP_TOKEN_WRONG_SHAPE: {
     code: "VERIFIED_SIGN_UP_TOKEN_WRONG_SHAPE",
-    id: "00014",
+    id: "00011",
     description: "Sign up token is expired",
     message:
       "Sign up token is expired (verifySignUpToken util function; error instanceof TokenExpiredError)",
