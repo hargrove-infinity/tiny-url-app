@@ -16,7 +16,7 @@ const globalMailOptions = {
 const emailConfirmMailOptions = {
   ...globalMailOptions,
   subject: "Registration",
-  template: "emailConfirm",
+  template: "signUpLinkEmail",
 };
 
 export async function sendSignUpLinkEmail({
