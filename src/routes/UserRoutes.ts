@@ -31,7 +31,7 @@ async function requestSignUp(
   }
 
   pinoLogger.info("User registration initiated. Set password email sent.");
-  res.status(HttpStatusCodes.CREATED).send(data);
+  res.status(HttpStatusCodes.OK).send(data);
 }
 
 /**
@@ -59,7 +59,7 @@ async function completeSignUp(
   pinoLogger.info(
     "User registration completed successfully. Token is sending to the client."
   );
-  res.status(HttpStatusCodes.OK).send(token);
+  res.status(HttpStatusCodes.CREATED).send(token);
 }
 
 /**
