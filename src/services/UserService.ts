@@ -1,7 +1,7 @@
 import { UserRepo } from "@src/repos";
 import {
   AsyncTryCatchReturn,
-  IAddUserBody,
+  IRequestSignUpBody,
   ICompleteSignUpBody,
   ILoginUserBody,
 } from "@src/types";
@@ -21,11 +21,11 @@ import { ApplicationError } from "@src/common";
  * Request sign up.
  */
 async function requestSignUp(
-  userDto: IAddUserBody
+  requestSignUpDto: IRequestSignUpBody
 ): AsyncTryCatchReturn<Record<string, never>, ApplicationError> {
   const [firstUser, errorGetUser] = await UserRepo.getFirst({
     prisma,
-    args: { where: { username: userDto.username } },
+    args: { where: { username: requestSignUpDto.username } },
   });
 
   if (errorGetUser) {
@@ -41,20 +41,8 @@ async function requestSignUp(
     return [, AppErrorService.Users.registrationFailed()];
   }
 
-  const [hashedPassword, errorHashPassword] = await Encryption.hashString({
-    stringToHash: userDto.password,
-  });
-
-  if (errorHashPassword) {
-    pinoLogger.warn(
-      { message: errorHashPassword.message },
-      "Error during hashing password in add UserService"
-    );
-    return [, AppErrorService.Common.internalServerError()];
-  }
-
   const [emailVerificationToken, errorToken] = Jwt.signToken({
-    payload: { ...userDto, password: hashedPassword },
+    payload: requestSignUpDto,
     expiresIn: "30Minutes",
   });
 
@@ -71,8 +59,8 @@ async function requestSignUp(
 
   const [, errorSendEmailConfirm] = await sendEmailConfirm({
     transporter,
-    toEmails: [userDto.username],
-    context: { userName: `${userDto.name}`, activationLink },
+    toEmails: [requestSignUpDto.username],
+    context: { userName: `${requestSignUpDto.name}`, activationLink },
   });
 
   if (errorSendEmailConfirm) {

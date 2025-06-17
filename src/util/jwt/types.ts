@@ -1,5 +1,5 @@
 import { StringValue } from "ms";
-import { SyncOperationResult } from "@src/types";
+import { IRequestSignUpBody, SyncOperationResult } from "@src/types";
 
 interface ISignAuthTokenPayload {
   id: number;
@@ -7,15 +7,7 @@ interface ISignAuthTokenPayload {
   username: string;
 }
 
-interface ISignEmailVerificationTokenPayload {
-  name: string;
-  username: string;
-  password: string;
-}
-
-type SignTokenPayload =
-  | ISignAuthTokenPayload
-  | ISignEmailVerificationTokenPayload;
+type SignTokenPayload = ISignAuthTokenPayload | IRequestSignUpBody;
 
 export interface ISignTokenArgs {
   payload: SignTokenPayload;

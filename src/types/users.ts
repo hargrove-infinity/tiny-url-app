@@ -1,13 +1,12 @@
 import { Request } from "express";
 import { PrismaClient, Prisma } from "@prisma/client";
 
-export interface IAddUserBody {
+export interface IRequestSignUpBody {
   name: string;
   username: string;
-  password: string;
 }
 
-export type AddUserRequest = Request<{}, {}, IAddUserBody>;
+export type RequestSignUpReq = Request<{}, {}, IRequestSignUpBody>;
 
 export interface IGetFirstUserArgs {
   prisma: PrismaClient;
@@ -36,4 +35,4 @@ export interface ICompleteSignUpBody {
   password: string;
 }
 
-export type CompleteSignUpRequest = Request<{}, {}, IAddUserBody>;
+export type CompleteSignUpRequest = Request<{}, {}, ICompleteSignUpBody>;

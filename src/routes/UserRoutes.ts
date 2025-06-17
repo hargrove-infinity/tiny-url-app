@@ -2,7 +2,7 @@ import { Response } from "express";
 import { UserService } from "@src/services";
 import { HttpStatusCodes } from "@src/common";
 import {
-  AddUserRequest,
+  RequestSignUpReq,
   LoginUserRequest,
   CompleteSignUpRequest,
 } from "@src/types";
@@ -12,7 +12,7 @@ import { pinoLogger } from "@src/logger";
  * Request sign up.
  */
 async function requestSignUp(
-  req: AddUserRequest,
+  req: RequestSignUpReq,
   res: Response
 ): Promise<void> {
   const { body } = req;
