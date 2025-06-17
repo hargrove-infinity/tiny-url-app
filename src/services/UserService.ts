@@ -12,7 +12,7 @@ import {
   Jwt,
   prisma,
   sendEmailConfirm,
-  buildActivationLink,
+  buildSingUpLink,
 } from "@src/util";
 import { pinoLogger } from "@src/logger";
 import { ApplicationError } from "@src/common";
@@ -57,7 +57,7 @@ async function requestSignUp(
     return [, errorToken];
   }
 
-  const activationLink = buildActivationLink(signUpToken);
+  const activationLink = buildSingUpLink(signUpToken);
 
   const [, errorSendEmailConfirm] = await sendEmailConfirm({
     transporter,
