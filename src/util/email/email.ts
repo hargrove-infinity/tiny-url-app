@@ -13,7 +13,7 @@ const globalMailOptions = {
   from: { name: "Tiny url", address: ENV.SenderEmail },
 };
 
-const emailConfirmMailOptions = {
+const sendSignUpLinkEmailOptions = {
   ...globalMailOptions,
   subject: "Registration",
   template: "signUpLinkEmail",
@@ -25,7 +25,7 @@ export async function sendSignUpLinkEmail({
   context,
 }: ISendSignUpLinkEmailArgs): SendSignUpLinkEmailResult {
   const res = transporter.sendMail({
-    ...emailConfirmMailOptions,
+    ...sendSignUpLinkEmailOptions,
     to: toEmails,
     context,
   } as MailOptionsWithContext);
