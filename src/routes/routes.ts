@@ -41,9 +41,9 @@ linkRouter.get(
 const userRouter = Router();
 
 userRouter.post(
-  Paths.Users.Base,
+  Paths.Users.RequestSignUp,
   validate({ schema: UserSchema }),
-  UserRoutes.add
+  UserRoutes.requestSignUp
 );
 
 userRouter.post(

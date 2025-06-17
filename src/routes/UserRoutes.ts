@@ -9,11 +9,14 @@ import {
 import { pinoLogger } from "@src/logger";
 
 /**
- * Add one user.
+ * Request sign up.
  */
-async function add(req: AddUserRequest, res: Response): Promise<void> {
+async function requestSignUp(
+  req: AddUserRequest,
+  res: Response
+): Promise<void> {
   const { body } = req;
-  const [data, error] = await UserService.add(body);
+  const [data, error] = await UserService.requestSignUp(body);
 
   if (error) {
     pinoLogger.warn(
@@ -66,7 +69,7 @@ async function login(req: LoginUserRequest, res: Response): Promise<void> {
 ******************************************************************************/
 
 export const UserRoutes = {
-  add,
+  requestSignUp,
   completeSignUp,
   login,
 } as const;

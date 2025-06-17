@@ -18,9 +18,9 @@ import { pinoLogger } from "@src/logger";
 import { ApplicationError } from "@src/common";
 
 /**
- * Add one user.
+ * Request sign up.
  */
-async function add(
+async function requestSignUp(
   userDto: IAddUserBody
 ): AsyncTryCatchReturn<Record<string, never>, ApplicationError> {
   const [firstUser, errorGetUser] = await UserRepo.getFirst({
@@ -221,7 +221,7 @@ async function login(
 }
 
 export const UserService = {
-  add,
+  requestSignUp,
   completeSignUp,
   login,
 } as const;
