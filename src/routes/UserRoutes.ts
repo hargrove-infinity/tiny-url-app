@@ -30,7 +30,7 @@ async function requestSignUp(
     return;
   }
 
-  pinoLogger.info("User registration initiated. Verification email sent.");
+  pinoLogger.info("User registration initiated. Set password email sent.");
   res.status(HttpStatusCodes.CREATED).send(data);
 }
 
