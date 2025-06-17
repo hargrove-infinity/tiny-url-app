@@ -81,7 +81,7 @@ async function requestSignUp(
  */
 async function completeSignUp(
   completeSignUpDto: ICompleteSignUpBody
-): AsyncTryCatchReturn<Record<string, never>, ApplicationError> {
+): AsyncTryCatchReturn<string, ApplicationError> {
   const { password, signUpToken } = completeSignUpDto;
   const [result, errorSignUpToken] = Jwt.verifySignUpToken(signUpToken);
 
@@ -127,7 +127,7 @@ async function completeSignUp(
     return [, AppErrorService.Common.internalServerError()];
   }
 
-  const [, errorAddUser] = await UserRepo.add({
+  const [createdUser, errorAddUser] = await UserRepo.add({
     prisma,
     args: { data: { ...user, password: hashedPassword } },
   });
@@ -141,7 +141,25 @@ async function completeSignUp(
     return [, AppErrorService.Common.internalServerError()];
   }
 
-  return [{}, undefined];
+  const [token, errorToken] = Jwt.signToken({
+    payload: {
+      id: createdUser.id,
+      name: createdUser.name,
+      username: createdUser.username,
+    },
+    expiresIn: "1h",
+  });
+
+  if (errorToken) {
+    pinoLogger.warn(
+      { message: errorToken.message },
+      "Error during signing token in completeSignUp UserService"
+    );
+
+    return [, errorToken];
+  }
+
+  return [token, undefined];
 }
 
 /**
