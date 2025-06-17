@@ -6,7 +6,6 @@ export const Paths = {
   },
   Users: {
     Base: "/users",
-    EmailVerification: "/users/email-verification",
     CompleteSignUp: "/complete-signup",
     Login: "/login",
   },
