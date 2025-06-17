@@ -1,3 +1,3 @@
-export function buildSingUpLink(signUpToken: string): string {
+export function buildSignUpLink(signUpToken: string): string {
   return ` http://localhost:5173/complete-signup?token=${signUpToken}`;
 }
