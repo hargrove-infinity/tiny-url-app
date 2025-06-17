@@ -41,7 +41,25 @@ async function completeSignUp(
   req: CompleteSignUpRequest,
   res: Response
 ): Promise<void> {
-  res.send("OK");
+  const { body } = req;
+  const [token, error] = await UserService.completeSignUp(body);
+
+  if (error) {
+    pinoLogger.warn(
+      { error: error.message },
+      "Error in completeSignUp user route"
+    );
+
+    res
+      .status(error.httpStatusCode)
+      .send({ errors: error.buildErrorPayload() });
+    return;
+  }
+
+  pinoLogger.info(
+    "User registration completed successfully. Token is sending to the client."
+  );
+  res.status(HttpStatusCodes.OK).send(token);
 }
 
 /**
