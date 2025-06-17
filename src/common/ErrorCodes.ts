@@ -269,12 +269,12 @@ const ERROR_DEFINITIONS_LINKS = {
 };
 
 const ERROR_DEFINITIONS_EMAIL_TRANSPORT = {
-  ERROR_EMAIL_CONFIRMATION: {
-    code: "ERROR_EMAIL_CONFIRMATION",
+  ERROR_SIGN_UP_LINK_EMAIL: {
+    code: "ERROR_SIGN_UP_LINK_EMAIL",
     id: "00043",
-    description: "Error during user email confirmation",
+    description: "Error during sending sign up link email",
     message:
-      "Error during user email confirmation (sendEmailConfirm util function)",
+      "Error during sending sign up link email (sendSignUpLinkEmail util function)",
   },
 };
 

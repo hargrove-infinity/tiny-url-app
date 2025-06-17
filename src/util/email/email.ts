@@ -39,7 +39,7 @@ export async function sendSignUpLinkEmail({
 
   if (error) {
     pinoLogger.info({ error: error.message }, "Send sign up link email error");
-    return [, AppErrorService.Email.emailConfirmationError()];
+    return [, AppErrorService.Email.signUpLinkEmailError()];
   }
 
   pinoLogger.info("Sign up link email has been sent");
