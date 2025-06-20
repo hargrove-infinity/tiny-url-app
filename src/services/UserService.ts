@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 import { UserRepo } from "@src/repos";
 import {
   AsyncTryCatchReturn,
@@ -95,50 +96,59 @@ async function completeSignUp(
 
   const { iat, exp, ...user } = result;
 
-  const [firstUser, errorGetUser] = await UserRepo.getFirst({
-    prisma,
-    args: { where: { username: user.username } },
+  const [createdUser, errorCreatedUser]:
+    | [User, undefined]
+    | [undefined, ApplicationError] = await prisma.$transaction(async (db) => {
+    const [firstUser, errorGetUser] = await UserRepo.getFirst({
+      prisma: db,
+      args: { where: { username: user.username } },
+    });
+
+    if (errorGetUser) {
+      pinoLogger.warn(
+        { message: errorGetUser.message },
+        "Error during fetching first user in completeSignUp UserService"
+      );
+      return [, AppErrorService.Common.internalServerError()];
+    }
+
+    if (firstUser) {
+      pinoLogger.warn(
+        "User with email already exists (completeSignUp UserService)"
+      );
+      return [, AppErrorService.Users.registrationFailed()];
+    }
+
+    const [hashedPassword, errorHashPassword] = await Encryption.hashString({
+      stringToHash: password,
+    });
+
+    if (errorHashPassword) {
+      pinoLogger.warn(
+        { message: errorHashPassword.message },
+        "Error during hashing password in completeSignUp UserService"
+      );
+      return [, AppErrorService.Common.internalServerError()];
+    }
+
+    const [createdUser, errorAddUser] = await UserRepo.add({
+      prisma: db,
+      args: { data: { ...user, password: hashedPassword } },
+    });
+
+    if (errorAddUser) {
+      pinoLogger.warn(
+        { message: errorAddUser.message },
+        "Error during creating user in completeSignUp UserService"
+      );
+      return [, AppErrorService.Common.internalServerError()];
+    }
+
+    return [createdUser, undefined];
   });
 
-  if (errorGetUser) {
-    pinoLogger.warn(
-      { message: errorGetUser.message },
-      "Error during fetching first user in completeSignUp UserService"
-    );
-    return [, AppErrorService.Common.internalServerError()];
-  }
-
-  if (firstUser) {
-    pinoLogger.warn(
-      "User with email already exists (completeSignUp UserService)"
-    );
-    return [, AppErrorService.Users.registrationFailed()];
-  }
-
-  const [hashedPassword, errorHashPassword] = await Encryption.hashString({
-    stringToHash: password,
-  });
-
-  if (errorHashPassword) {
-    pinoLogger.warn(
-      { message: errorHashPassword.message },
-      "Error during hashing password in completeSignUp UserService"
-    );
-    return [, AppErrorService.Common.internalServerError()];
-  }
-
-  const [createdUser, errorAddUser] = await UserRepo.add({
-    prisma,
-    args: { data: { ...user, password: hashedPassword } },
-  });
-
-  if (errorAddUser) {
-    pinoLogger.warn(
-      { message: errorAddUser.message },
-      "Error during creating user in completeSignUp UserService"
-    );
-
-    return [, AppErrorService.Common.internalServerError()];
+  if (errorCreatedUser) {
+    return [, errorCreatedUser];
   }
 
   const [token, errorToken] = Jwt.signToken({

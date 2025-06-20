@@ -1,4 +1,5 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
+import { DefaultArgs } from "@prisma/client/runtime/library";
 import { ApplicationError } from "@src/common";
 
 export type Nullable<T> = T | null;
@@ -23,3 +24,10 @@ export type PrismaError =
   | Prisma.PrismaClientInitializationError
   | Prisma.PrismaClientValidationError
   | Error;
+
+export type PrismaClientInstance =
+  | PrismaClient
+  | Omit<
+      PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
+      "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends"
+    >;
