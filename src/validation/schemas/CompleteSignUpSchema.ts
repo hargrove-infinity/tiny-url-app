@@ -2,12 +2,18 @@ import { z } from "zod";
 import { PASSWORD_MIN_LENGTH, PASSWORD_REGEXP } from "@src/common/Definitions";
 import { ERROR_DEFINITIONS } from "@src/common/ErrorCodes";
 
-export const LoginUserSchema = z.object({
-  username: z
-    .string({ message: ERROR_DEFINITIONS.EMAIL_USER_MUST_BE_STRING.code })
+export const CompleteSignUpSchema = z.object({
+  signUpToken: z
+    .string({
+      message: ERROR_DEFINITIONS.SIGN_UP_TOKEN_MUST_BE_STRING.code,
+    })
     .trim()
-    .nonempty({ message: ERROR_DEFINITIONS.EMAIL_USER_MUST_BE_FILLED.code })
-    .email(ERROR_DEFINITIONS.INVALID_EMAIL.code),
+    .nonempty({
+      message: ERROR_DEFINITIONS.SIGN_UP_TOKEN_MUST_BE_FILLED.code,
+    })
+    .jwt({
+      message: ERROR_DEFINITIONS.SIGN_UP_TOKEN_MUST_BE_JWT.code,
+    }),
   password: z
     .string({ message: ERROR_DEFINITIONS.PASSWORD_MUST_BE_STRING.code })
     .trim()

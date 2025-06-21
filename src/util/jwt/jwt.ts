@@ -3,14 +3,14 @@ import { ENV } from "@src/common";
 import {
   DecodedAuthTokenSchema,
   safeParseValidationSchema,
-  DecodedEmailVerificationTokenSchema,
+  DecodedSignUpTokenSchema,
 } from "@src/validation";
 import { AppErrorService } from "../AppErrorService";
 import {
   ISignTokenArgs,
   SignTokenResult,
   VerifyAuthTokenResult,
-  VerifyEmailVerificationTokenResult,
+  VerifySignUpTokenResult,
 } from "./types";
 
 function signToken({ payload, expiresIn }: ISignTokenArgs): SignTokenResult {
@@ -49,39 +49,31 @@ function verifyAuthToken(token: string): VerifyAuthTokenResult {
   }
 }
 
-function verifyEmailVerificationToken(
-  token: string
-): VerifyEmailVerificationTokenResult {
+function verifySignUpToken(token: string): VerifySignUpTokenResult {
   try {
     const decodedToken = jwt.verify(token, ENV.JwtSecretKey);
 
     const validationResult = safeParseValidationSchema({
-      schema: DecodedEmailVerificationTokenSchema,
+      schema: DecodedSignUpTokenSchema,
       data: decodedToken,
     });
 
     if (!validationResult) {
-      return [
-        null,
-        AppErrorService.Jwt.verifiedEmailVerificationTokenWrongShape(),
-      ];
+      return [null, AppErrorService.Jwt.verifiedSignUpTokenWrongShape()];
     }
 
     return [validationResult, null];
   } catch (error) {
     if (error instanceof TokenExpiredError) {
-      return [null, AppErrorService.Jwt.emailVerificationTokenExpired()];
+      return [null, AppErrorService.Jwt.signUpTokenExpired()];
     }
 
-    return [
-      null,
-      AppErrorService.Jwt.errorDuringVerificationEmailVerificationToken(),
-    ];
+    return [null, AppErrorService.Jwt.errorDuringVerificationSignUpToken()];
   }
 }
 
 export const Jwt = {
   signToken,
   verifyAuthToken,
-  verifyEmailVerificationToken,
+  verifySignUpToken,
 } as const;

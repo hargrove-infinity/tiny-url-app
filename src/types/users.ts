@@ -1,14 +1,12 @@
 import { Request } from "express";
-import { ParsedQs } from "qs";
 import { PrismaClient, Prisma } from "@prisma/client";
 
-export interface IAddUserBody {
+export interface IRequestSignUpBody {
   name: string;
   username: string;
-  password: string;
 }
 
-export type AddUserRequest = Request<{}, {}, IAddUserBody>;
+export type RequestSignUpReq = Request<{}, {}, IRequestSignUpBody>;
 
 export interface IGetFirstUserArgs {
   prisma: PrismaClient;
@@ -32,13 +30,9 @@ export interface ILoginUserBody {
 
 export type LoginUserRequest = Request<{}, {}, ILoginUserBody>;
 
-interface IEmailVerificationQueryParams extends ParsedQs {
-  hash: string;
+export interface ICompleteSignUpBody {
+  signUpToken: string;
+  password: string;
 }
 
-export type EmailVerificationRequest = Request<
-  {},
-  {},
-  {},
-  IEmailVerificationQueryParams
->;
+export type CompleteSignUpRequest = Request<{}, {}, ICompleteSignUpBody>;

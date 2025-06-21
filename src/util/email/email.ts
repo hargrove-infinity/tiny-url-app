@@ -4,33 +4,33 @@ import { pinoLogger } from "@src/logger";
 import { asyncTryCatch } from "../asyncTryCatch";
 import { AppErrorService } from "../AppErrorService";
 import {
-  ISendEmailConfirmArgs,
+  ISendSignUpLinkEmailArgs,
   MailOptionsWithContext,
-  SendEmailConfirmResult,
+  SendSignUpLinkEmailResult,
 } from "./types";
 
 const globalMailOptions = {
   from: { name: "Tiny url", address: ENV.SenderEmail },
 };
 
-const emailConfirmMailOptions = {
+const sendSignUpLinkEmailOptions = {
   ...globalMailOptions,
   subject: "Registration",
-  template: "emailConfirm",
+  template: "signUpLinkEmail",
 };
 
-export async function sendEmailConfirm({
+export async function sendSignUpLinkEmail({
   transporter,
   toEmails,
   context,
-}: ISendEmailConfirmArgs): SendEmailConfirmResult {
+}: ISendSignUpLinkEmailArgs): SendSignUpLinkEmailResult {
   const res = transporter.sendMail({
-    ...emailConfirmMailOptions,
+    ...sendSignUpLinkEmailOptions,
     to: toEmails,
     context,
   } as MailOptionsWithContext);
 
-  pinoLogger.info("Sending email confirm template");
+  pinoLogger.info("Sending sign up link email template");
 
   const [data, error] = await asyncTryCatch<
     SMTPTransport.SentMessageInfo,
@@ -38,10 +38,10 @@ export async function sendEmailConfirm({
   >(res);
 
   if (error) {
-    pinoLogger.info({ error: error.message }, "Send email error");
-    return [, AppErrorService.Email.emailConfirmationError()];
+    pinoLogger.info({ error: error.message }, "Send sign up link email error");
+    return [, AppErrorService.Email.signUpLinkEmailError()];
   }
 
-  pinoLogger.info("Email has been sent");
+  pinoLogger.info("Sign up link email has been sent");
   return [data, undefined];
 }

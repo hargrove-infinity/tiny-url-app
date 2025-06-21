@@ -4,18 +4,18 @@ import {
   HttpStatusCodes,
 } from "@src/common";
 
-function emailConfirmationError(): ApplicationError {
+function signUpLinkEmailError(): ApplicationError {
   return new ApplicationError(
-    ERROR_DEFINITIONS.ERROR_EMAIL_CONFIRMATION.message,
+    ERROR_DEFINITIONS.ERROR_SIGN_UP_LINK_EMAIL.message,
     {
-      errorCode: ERROR_DEFINITIONS.ERROR_EMAIL_CONFIRMATION.code,
-      errorDescription: ERROR_DEFINITIONS.ERROR_EMAIL_CONFIRMATION.description,
-      errorId: ERROR_DEFINITIONS.ERROR_EMAIL_CONFIRMATION.id,
+      errorCode: ERROR_DEFINITIONS.ERROR_SIGN_UP_LINK_EMAIL.code,
+      errorDescription: ERROR_DEFINITIONS.ERROR_SIGN_UP_LINK_EMAIL.description,
+      errorId: ERROR_DEFINITIONS.ERROR_SIGN_UP_LINK_EMAIL.id,
       statusCode: HttpStatusCodes.INTERNAL_SERVER_ERROR,
     }
   );
 }
 
 export const Email = {
-  emailConfirmationError,
+  signUpLinkEmailError,
 } as const;

@@ -3,26 +3,23 @@ import { SendMailOptions, Transporter } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 export interface MailOptionsWithContext extends SendMailOptions {
-  context: {
-    userName: string;
-    activationLink: string;
-  };
+  context: ISendSignUpLinkEmailContext;
 }
 
-interface ISendEmailConfirmContext {
+interface ISendSignUpLinkEmailContext {
   userName: string;
-  activationLink: string;
+  signUpLink: string;
 }
 
-export interface ISendEmailConfirmArgs {
+export interface ISendSignUpLinkEmailArgs {
   transporter: Transporter<
     SMTPTransport.SentMessageInfo,
     SMTPTransport.Options
   >;
   toEmails: string[];
-  context: ISendEmailConfirmContext;
+  context: ISendSignUpLinkEmailContext;
 }
 
-export type SendEmailConfirmResult = Promise<
+export type SendSignUpLinkEmailResult = Promise<
   [SMTPTransport.SentMessageInfo, undefined] | [undefined, ApplicationError]
 >;

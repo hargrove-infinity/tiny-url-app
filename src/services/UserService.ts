@@ -1,79 +1,75 @@
+import { StringValue } from "ms";
 import { UserRepo } from "@src/repos";
-import { AsyncTryCatchReturn, IAddUserBody, ILoginUserBody } from "@src/types";
+import {
+  AsyncTryCatchReturn,
+  IRequestSignUpBody,
+  ICompleteSignUpBody,
+  ILoginUserBody,
+} from "@src/types";
 import {
   transporter,
   Encryption,
   AppErrorService,
   Jwt,
   prisma,
-  sendEmailConfirm,
-  buildActivationLink,
+  sendSignUpLinkEmail,
+  buildSignUpLink,
 } from "@src/util";
 import { pinoLogger } from "@src/logger";
-import { ApplicationError } from "@src/common";
+import { ApplicationError, ENV } from "@src/common";
 
 /**
- * Add one user.
+ * Request sign up.
  */
-async function add(
-  userDto: IAddUserBody
+async function requestSignUp(
+  requestSignUpDto: IRequestSignUpBody
 ): AsyncTryCatchReturn<Record<string, never>, ApplicationError> {
   const [firstUser, errorGetUser] = await UserRepo.getFirst({
     prisma,
-    args: { where: { username: userDto.username } },
+    args: { where: { username: requestSignUpDto.username } },
   });
 
   if (errorGetUser) {
     pinoLogger.warn(
       { message: errorGetUser.message },
-      "Error during fetching first user in add UserService"
+      "Error during fetching first user in requestSignUp UserService"
     );
     return [, AppErrorService.Common.internalServerError()];
   }
 
   if (firstUser) {
-    pinoLogger.warn("User with email already exists (add UserService)");
+    pinoLogger.warn(
+      "User with email already exists (requestSignUp UserService)"
+    );
     return [, AppErrorService.Users.registrationFailed()];
   }
 
-  const [hashedPassword, errorHashPassword] = await Encryption.hashString({
-    stringToHash: userDto.password,
-  });
-
-  if (errorHashPassword) {
-    pinoLogger.warn(
-      { message: errorHashPassword.message },
-      "Error during hashing password in add UserService"
-    );
-    return [, AppErrorService.Common.internalServerError()];
-  }
-
-  const [emailVerificationToken, errorToken] = Jwt.signToken({
-    payload: { ...userDto, password: hashedPassword },
-    expiresIn: "30Minutes",
+  const [signUpToken, errorToken] = Jwt.signToken({
+    payload: requestSignUpDto,
+    expiresIn: ENV.EXPIRATION_TIME_SIGN_UP_TOKEN as StringValue,
   });
 
   if (errorToken) {
     pinoLogger.warn(
       { message: errorToken.message },
-      "Error during creating email verification token in add UserService"
+      "Error during creating sign up token in requestSignUp UserService"
     );
 
     return [, errorToken];
   }
 
-  const activationLink = buildActivationLink(emailVerificationToken);
+  const signUpLink = buildSignUpLink(signUpToken);
 
-  const [, errorSendEmailConfirm] = await sendEmailConfirm({
+  const [, errorSendSignUpLinkEmail] = await sendSignUpLinkEmail({
     transporter,
-    toEmails: [userDto.username],
-    context: { userName: `${userDto.name}`, activationLink },
+    toEmails: [requestSignUpDto.username],
+    context: { userName: `${requestSignUpDto.name}`, signUpLink },
   });
 
-  if (errorSendEmailConfirm) {
+  if (errorSendSignUpLinkEmail) {
     pinoLogger.warn(
-      { message: errorSendEmailConfirm.message },
-      "Error during sending email confirmation template in add UserService"
+      { message: errorSendSignUpLinkEmail.message },
+      "Error during sending sign up link email template in requestSignUp UserService"
     );
     return [, AppErrorService.Common.internalServerError()];
   }
@@ -82,18 +78,18 @@ async function add(
 }
 
 /**
- * Email verification.
+ * Complete sign up.
  */
-async function emailVerification(
-  hash: string
-): AsyncTryCatchReturn<Record<string, never>, ApplicationError> {
-  const [result, errorEmailVerificationToken] =
-    Jwt.verifyEmailVerificationToken(hash);
+async function completeSignUp(
+  completeSignUpDto: ICompleteSignUpBody
+): AsyncTryCatchReturn<string, ApplicationError> {
+  const { password, signUpToken } = completeSignUpDto;
+  const [result, errorSignUpToken] = Jwt.verifySignUpToken(signUpToken);
 
-  if (errorEmailVerificationToken) {
+  if (errorSignUpToken) {
     pinoLogger.warn(
-      { message: errorEmailVerificationToken.message },
-      "Error during decoding hash in emailVerification UserService"
+      { message: errorSignUpToken.message },
+      "Error during decoding sign up token in completeSignUp UserService"
     );
     return [, AppErrorService.Common.internalServerError()];
   }
@@ -108,33 +104,63 @@ async function emailVerification(
   if (errorGetUser) {
     pinoLogger.warn(
       { message: errorGetUser.message },
-      "Error during fetching first user in emailVerification UserService"
+      "Error during fetching first user in completeSignUp UserService"
     );
     return [, AppErrorService.Common.internalServerError()];
   }
 
   if (firstUser) {
     pinoLogger.warn(
-      "User with email already exists (emailVerification UserService)"
+      "User with email already exists (completeSignUp UserService)"
     );
     return [, AppErrorService.Users.registrationFailed()];
   }
 
-  const [, errorAddUser] = await UserRepo.add({
+  const [hashedPassword, errorHashPassword] = await Encryption.hashString({
+    stringToHash: password,
+  });
+
+  if (errorHashPassword) {
+    pinoLogger.warn(
+      { message: errorHashPassword.message },
+      "Error during hashing password in completeSignUp UserService"
+    );
+    return [, AppErrorService.Common.internalServerError()];
+  }
+
+  const [createdUser, errorAddUser] = await UserRepo.add({
     prisma,
-    args: { data: user },
+    args: { data: { ...user, password: hashedPassword } },
   });
 
   if (errorAddUser) {
     pinoLogger.warn(
       { message: errorAddUser.message },
-      "Error during creating user in emailVerification UserService"
+      "Error during creating user in completeSignUp UserService"
     );
 
     return [, AppErrorService.Common.internalServerError()];
   }
 
-  return [{}, undefined];
+  const [token, errorToken] = Jwt.signToken({
+    payload: {
+      id: createdUser.id,
+      name: createdUser.name,
+      username: createdUser.username,
+    },
+    expiresIn: ENV.EXPIRATION_TIME_AUTH_TOKEN as StringValue,
+  });
+
+  if (errorToken) {
+    pinoLogger.warn(
+      { message: errorToken.message },
+      "Error during signing token in completeSignUp UserService"
+    );
+
+    return [, errorToken];
+  }
+
+  return [token, undefined];
 }
 
 /**
@@ -190,7 +216,7 @@ async function login(
       name: firstUser.name,
       username: firstUser.username,
     },
-    expiresIn: "1h",
+    expiresIn: ENV.EXPIRATION_TIME_AUTH_TOKEN as StringValue,
   });
 
   if (errorToken) {
@@ -205,4 +231,8 @@ async function login(
   return [token, undefined];
 }
 
-export const UserService = { add, emailVerification, login } as const;
+export const UserService = {
+  requestSignUp,
+  completeSignUp,
+  login,
+} as const;
