@@ -1,3 +1,4 @@
+import { StringValue } from "ms";
 import { UserRepo } from "@src/repos";
 import {
   AsyncTryCatchReturn,
@@ -15,7 +16,7 @@ import {
   buildSignUpLink,
 } from "@src/util";
 import { pinoLogger } from "@src/logger";
-import { ApplicationError } from "@src/common";
+import { ApplicationError, ENV } from "@src/common";
 
 /**
  * Request sign up.
@@ -45,7 +46,7 @@ async function requestSignUp(
 
   const [signUpToken, errorToken] = Jwt.signToken({
     payload: requestSignUpDto,
-    expiresIn: "30Minutes",
+    expiresIn: ENV.EXPIRATION_TIME_SIGN_UP_TOKEN as StringValue,
   });
 
   if (errorToken) {
@@ -147,7 +148,7 @@ async function completeSignUp(
       name: createdUser.name,
       username: createdUser.username,
     },
-    expiresIn: "1h",
+    expiresIn: ENV.EXPIRATION_TIME_AUTH_TOKEN as StringValue,
   });
 
   if (errorToken) {
@@ -215,7 +216,7 @@ async function login(
       name: firstUser.name,
       username: firstUser.username,
     },
-    expiresIn: "1h",
+    expiresIn: ENV.EXPIRATION_TIME_AUTH_TOKEN as StringValue,
   });
 
   if (errorToken) {
