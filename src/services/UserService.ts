@@ -96,6 +96,18 @@ async function completeSignUp(
 
   const { iat, exp, ...user } = result;
 
+  const [hashedPassword, errorHashPassword] = await Encryption.hashString({
+    stringToHash: password,
+  });
+
+  if (errorHashPassword) {
+    pinoLogger.warn(
+      { message: errorHashPassword.message },
+      "Error during hashing password in completeSignUp UserService"
+    );
+    return [, AppErrorService.Common.internalServerError()];
+  }
+
   const [createdUser, errorCreatedUser]:
     | [User, undefined]
     | [undefined, ApplicationError] = await prisma.$transaction(async (db) => {
@@ -117,18 +129,6 @@ async function completeSignUp(
         "User with email already exists (completeSignUp UserService)"
       );
       return [, AppErrorService.Users.registrationFailed()];
-    }
-
-    const [hashedPassword, errorHashPassword] = await Encryption.hashString({
-      stringToHash: password,
-    });
-
-    if (errorHashPassword) {
-      pinoLogger.warn(
-        { message: errorHashPassword.message },
-        "Error during hashing password in completeSignUp UserService"
-      );
-      return [, AppErrorService.Common.internalServerError()];
     }
 
     const [createdUser, errorAddUser] = await UserRepo.add({
