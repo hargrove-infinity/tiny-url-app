@@ -13,4 +13,5 @@ export const EnvSchema = z.object({
   SenderPassword: z.string().nonempty(),
   EXPIRATION_TIME_SIGN_UP_TOKEN: z.string().nonempty().refine(isValidMsFormat),
   EXPIRATION_TIME_AUTH_TOKEN: z.string().nonempty().refine(isValidMsFormat),
+  FRONTEND_SIGN_UP_URL: z.string().nonempty().url(),
 });
