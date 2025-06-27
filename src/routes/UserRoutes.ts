@@ -2,18 +2,21 @@ import { Response } from "express";
 import { UserService } from "@src/services";
 import { HttpStatusCodes } from "@src/common";
 import {
-  AddUserRequest,
+  RequestSignUpReq,
   LoginUserRequest,
-  EmailVerificationRequest,
+  CompleteSignUpRequest,
 } from "@src/types";
 import { pinoLogger } from "@src/logger";
 
 /**
- * Add one user.
+ * Request sign up.
  */
-async function add(req: AddUserRequest, res: Response): Promise<void> {
+async function requestSignUp(
+  req: RequestSignUpReq,
+  res: Response
+): Promise<void> {
   const { body } = req;
-  const [data, error] = await UserService.add(body);
+  const [data, error] = await UserService.requestSignUp(body);
 
   if (error) {
     pinoLogger.warn(
@@ -27,35 +30,36 @@ async function add(req: AddUserRequest, res: Response): Promise<void> {
     return;
   }
 
-  pinoLogger.info("User registration initiated. Verification email sent.");
-  res.status(HttpStatusCodes.CREATED).send(data);
+  pinoLogger.info("User registration initiated. Set password email sent.");
+  res.status(HttpStatusCodes.OK).send(data);
 }
 
 /**
- * User email verification.
+ * Complete sign up.
  */
-async function emailVerification(
-  req: EmailVerificationRequest,
+async function completeSignUp(
+  req: CompleteSignUpRequest,
   res: Response
 ): Promise<void> {
-  const { hash } = req.query;
-  const [, error] = await UserService.emailVerification(hash);
+  const { body } = req;
+  const [token, error] = await UserService.completeSignUp(body);
 
   if (error) {
     pinoLogger.warn(
       { error: error.message },
-      "Error in emailVerification route"
+      "Error in completeSignUp user route"
     );
+
     res
       .status(error.httpStatusCode)
       .send({ errors: error.buildErrorPayload() });
     return;
   }
 
-  pinoLogger.info("Email successfully verified");
-  res
-    .status(HttpStatusCodes.OK)
-    .send({ message: "Email successfully verified", success: true });
+  pinoLogger.info(
+    "User registration completed successfully. Token is sending to the client."
+  );
+  res.status(HttpStatusCodes.CREATED).send(token);
 }
 
 /**
@@ -82,4 +86,8 @@ async function login(req: LoginUserRequest, res: Response): Promise<void> {
                                 Export
 ******************************************************************************/
 
-export const UserRoutes = { add, emailVerification, login } as const;
+export const UserRoutes = {
+  requestSignUp,
+  completeSignUp,
+  login,
+} as const;

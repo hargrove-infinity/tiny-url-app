@@ -3,9 +3,9 @@ import { checkAuth, validate } from "@src/middlewares";
 import {
   LinkSchema,
   ShortUrlSchema,
-  UserSchema,
+  RequestSignUpSchema,
   LoginUserSchema,
-  EmailVerificationSchema,
+  CompleteSignUpSchema,
 } from "@src/validation";
 import { Paths } from "@src/common";
 import { LinkRoutes } from "./LinkRoutes";
@@ -41,15 +41,15 @@ linkRouter.get(
 const userRouter = Router();
 
 userRouter.post(
-  Paths.Users.Base,
-  validate({ schema: UserSchema }),
-  UserRoutes.add
+  Paths.Users.RequestSignUp,
+  validate({ schema: RequestSignUpSchema }),
+  UserRoutes.requestSignUp
 );
 
-userRouter.get(
-  Paths.Users.EmailVerification,
-  validate({ schema: EmailVerificationSchema, key: "query" }),
-  UserRoutes.emailVerification
+userRouter.post(
+  Paths.Users.CompleteSignUp,
+  validate({ schema: CompleteSignUpSchema }),
+  UserRoutes.completeSignUp
 );
 
 userRouter.post(

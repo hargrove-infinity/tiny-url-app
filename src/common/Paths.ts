@@ -5,8 +5,8 @@ export const Paths = {
     RedirectToUrl: "/links/:shortUrl",
   },
   Users: {
-    Base: "/users",
-    EmailVerification: "/users/email-verification",
+    RequestSignUp: "/request-signup",
+    CompleteSignUp: "/complete-signup",
     Login: "/login",
   },
 } as const;
