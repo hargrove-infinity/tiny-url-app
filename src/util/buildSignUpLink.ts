@@ -1,3 +1,5 @@
+import { ENV } from "@src/common";
+
 export function buildSignUpLink(signUpToken: string): string {
-  return ` http://localhost:5173/complete-signup?token=${signUpToken}`;
+  return `${ENV.FRONTEND_SIGN_UP_URL}?token=${signUpToken}`;
 }
