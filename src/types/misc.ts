@@ -25,9 +25,6 @@ export type PrismaError =
   | Prisma.PrismaClientValidationError
   | Error;
 
-export type PrismaClientInstance =
-  | PrismaClient
-  | Omit<
-      PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
-      "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends"
-    >;
+export type PrismaDbClient = Parameters<
+  Parameters<PrismaClient["$transaction"]>[0]
+>[0];
