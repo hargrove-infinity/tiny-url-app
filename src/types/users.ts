@@ -1,4 +1,5 @@
 import { Request } from "express";
+import { PrismaDbClient } from "./misc";
 import { PrismaClient, Prisma } from "@prisma/client";
 
 export interface IRequestSignUpBody {
@@ -9,7 +10,7 @@ export interface IRequestSignUpBody {
 export type RequestSignUpReq = Request<{}, {}, IRequestSignUpBody>;
 
 export interface IGetFirstUserArgs {
-  prisma: PrismaClient;
+  prisma: PrismaDbClient;
   args: Prisma.UserFindFirstArgs;
 }
 
@@ -19,7 +20,7 @@ export interface IGetUniqueUserArgs {
 }
 
 export interface ICreateUserArgs {
-  prisma: PrismaClient;
+  prisma: PrismaDbClient;
   args: Prisma.UserCreateArgs;
 }
 
