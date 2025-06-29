@@ -1,5 +1,4 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import { DefaultArgs } from "@prisma/client/runtime/library";
 import { ApplicationError } from "@src/common";
 
 export type Nullable<T> = T | null;
