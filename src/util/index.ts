@@ -5,6 +5,7 @@ export * from "./email";
 export * from "./encryption";
 export * from "./formatValidationErrors";
 export * from "./jwt";
+export * from "./retry";
 export * from "./buildSignUpLink";
 export * from "./db";
 export * from "./handleCatchAllRouteError";
