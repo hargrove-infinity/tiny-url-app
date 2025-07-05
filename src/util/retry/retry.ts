@@ -1,18 +1,32 @@
+import { BackoffStrategy } from "@src/types";
 import { pinoLogger } from "@src/logger";
 import { sleep } from "../sleep";
 import { Action, IRetryOptions, RetryReturnType } from "./types";
+import { calculateDelay } from "./helpers";
 
 export function retry<R, E>(
   action: Action<R, E>,
   options?: IRetryOptions
 ): RetryReturnType<R, E> {
-  const { maxRetries = 3, delay = 1000 } = options || {};
+  const {
+    maxRetries = 3,
+    baseDelay = 1000,
+    maxDelay = 10000,
+    backoffStrategy = BackoffStrategy.FIXED,
+  } = options || {};
 
   return async function () {
     let lastError: E | undefined;
 
-    for (let i = 1; i <= maxRetries; i++) {
-      if (i > 1) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      if (attempt > 1) {
+        const delay = calculateDelay({
+          attempt,
+          baseDelay,
+          maxDelay,
+          backoffStrategy,
+        });
+
         await sleep(delay);
       }
 

@@ -1,4 +1,5 @@
-import { BackoffStrategy, ICalculateDelayArgs } from "./types";
+import { BackoffStrategy } from "@src/types";
+import { ICalculateDelayArgs } from "./types";
 
 export function calculateDelay(args: ICalculateDelayArgs): number {
   const { attempt, baseDelay, maxDelay, backoffStrategy } = args;
