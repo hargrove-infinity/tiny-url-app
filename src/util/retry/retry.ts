@@ -15,7 +15,7 @@ export function retry<R, E>(
       pinoLogger.info(`Retry #${i}`);
       await sleep(delay);
       pinoLogger.info("Retried action is calling");
-      const [data, error] = await action;
+      const [data, error] = await action();
 
       if (data) {
         pinoLogger.info("Retried action successfully called");

@@ -62,11 +62,12 @@ async function requestSignUp(
 
   const signUpLink = buildSignUpLink(signUpToken);
 
-  const sendSignUpLinkEmailAction = sendSignUpLinkEmail({
-    transporter,
-    toEmails: [requestSignUpDto.username],
-    context: { userName: `${requestSignUpDto.name}`, signUpLink },
-  });
+  const sendSignUpLinkEmailAction = () =>
+    sendSignUpLinkEmail({
+      transporter,
+      toEmails: [requestSignUpDto.username],
+      context: { userName: `${requestSignUpDto.name}`, signUpLink },
+    });
 
   const retriedSendSignUpLinkEmail = retry(sendSignUpLinkEmailAction);
 
