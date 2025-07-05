@@ -12,17 +12,13 @@ export function retry<R, E>(
     let lastError: E | undefined;
 
     for (let i = 1; i <= maxRetries; i++) {
-      pinoLogger.info(`Retry #${i}`);
       await sleep(delay);
-      pinoLogger.info("Retried action is calling");
       const [data, error] = await action();
 
       if (data) {
-        pinoLogger.info("Retried action successfully called");
         return [data, undefined] as [R, undefined];
       }
 
-      pinoLogger.warn("Retried action failed in the loop");
       lastError = error;
     }
 
