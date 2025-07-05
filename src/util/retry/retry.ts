@@ -12,7 +12,10 @@ export function retry<R, E>(
     let lastError: E | undefined;
 
     for (let i = 1; i <= maxRetries; i++) {
-      await sleep(delay);
+      if (i > 1) {
+        await sleep(delay);
+      }
+
       const [data, error] = await action();
 
       if (data) {
