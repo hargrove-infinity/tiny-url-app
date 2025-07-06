@@ -5,6 +5,7 @@ export interface IRetryOptions {
   baseDelay?: number;
   maxDelay?: number;
   backoffStrategy?: BackoffStrategy;
+  retryCondition?: (error: any) => boolean;
 }
 
 export type Action<R, E> = () => Promise<[R, undefined] | [undefined, E]>;

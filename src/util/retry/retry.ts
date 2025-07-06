@@ -13,6 +13,7 @@ export function retry<R, E>(
     baseDelay = 1000,
     maxDelay = 10000,
     backoffStrategy = BackoffStrategy.FIXED,
+    retryCondition,
   } = options || {};
 
   return async function () {
@@ -37,6 +38,10 @@ export function retry<R, E>(
       }
 
       lastError = error;
+
+      if (retryCondition && !retryCondition(error)) {
+        break;
+      }
     }
 
     pinoLogger.warn("Retried action failed finally");
