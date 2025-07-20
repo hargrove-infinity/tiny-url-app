@@ -15,6 +15,7 @@ import {
   prisma,
   sendSignUpLinkEmail,
   buildSignUpLink,
+  retry,
 } from "@src/util";
 import { pinoLogger } from "@src/logger";
 import { ApplicationError, ENV } from "@src/common";
@@ -61,11 +62,16 @@ async function requestSignUp(
 
   const signUpLink = buildSignUpLink(signUpToken);
 
-  const [, errorSendSignUpLinkEmail] = await sendSignUpLinkEmail({
-    transporter,
-    toEmails: [requestSignUpDto.username],
-    context: { userName: `${requestSignUpDto.name}`, signUpLink },
-  });
+  const sendSignUpLinkEmailAction = () =>
+    sendSignUpLinkEmail({
+      transporter,
+      toEmails: [requestSignUpDto.username],
+      context: { userName: `${requestSignUpDto.name}`, signUpLink },
+    });
+
+  const retriedSendSignUpLinkEmail = retry(sendSignUpLinkEmailAction);
+
+  const [, errorSendSignUpLinkEmail] = await retriedSendSignUpLinkEmail();
 
   if (errorSendSignUpLinkEmail) {
     pinoLogger.warn(
