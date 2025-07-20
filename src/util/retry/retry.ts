@@ -12,14 +12,21 @@ export function retry<R, E>(
     maxRetries = 3,
     baseDelay = 1000,
     maxDelay = 10000,
+    maxTimeout = 60000,
     backoffStrategy = BackoffStrategy.FIXED,
     retryCondition,
   } = options || {};
 
   return async function () {
     let lastError: E | undefined;
+    const startTime = Date.now();
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      if (Date.now() - startTime > maxTimeout) {
+        pinoLogger.warn("Retry operation timed out");
+        break;
+      }
+
       if (attempt > 1) {
         const delay = calculateDelay({
           attempt,

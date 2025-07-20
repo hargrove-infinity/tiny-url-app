@@ -4,6 +4,7 @@ export interface IRetryOptions {
   maxRetries?: number;
   baseDelay?: number;
   maxDelay?: number;
+  maxTimeout?: number;
   backoffStrategy?: BackoffStrategy;
   retryCondition?: (error: any) => boolean;
 }
